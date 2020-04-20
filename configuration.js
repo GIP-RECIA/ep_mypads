@@ -136,7 +136,8 @@ module.exports = (function() {
       disableUserList: false,
       disableLogoutButton: false,
       disableUserProfile: false,
-      deleteJobQueue: false
+      deleteJobQueue: false,
+      userLoginsAsAdmin: [ ]
     },
 
     /**
@@ -349,7 +350,7 @@ module.exports = (function() {
       return ld.pick(all, 'title', 'passwordMin', 'passwordMax', 'languages',
         'HTMLExtraHead', 'openRegistration', 'hideHelpBlocks', 'useFirstLastNameInPads',
         'authMethod', 'authCasSettings', 'disableLogoutButton', 'allPadsPublicsAuthentifiedOnly', 'defaultLanguage',
-        'loginMsg', 'disableUserList', 'disableUserProfile'
+        'loginMsg', 'disableUserList', 'disableUserProfile', 'userLoginsAsAdmin'
       );
     },
 
