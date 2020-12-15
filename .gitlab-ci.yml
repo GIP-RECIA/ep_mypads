@@ -20,6 +20,8 @@ cache:
   script:
    - npm install
    - npm run frontend:build
+   - git status
+   - git checkout -- package-lock.json
    - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
    - npm run lint
    - npm run test
@@ -39,9 +41,9 @@ services:
 
 ## Tests
 #
-test_node_latest:
-  image: node:latest
-  <<: *test_definition
+# test_node_latest:
+#   image: node:latest
+#   <<: *test_definition
 
 test_node_8:
   image: node:8-buster
@@ -64,3 +66,11 @@ test_node_12:
 test_node_13:
   image: node:13-buster
   <<: *test_definition
+
+test_node_14:
+  image: node:14-buster
+  <<: *test_definition
+
+# test_node_15:
+#   image: node:15-buster
+#   <<: *test_definition
