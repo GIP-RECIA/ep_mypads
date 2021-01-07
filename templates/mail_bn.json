@@ -2,5 +2,5 @@
     "ACCOUNT_CONFIRMATION": "",
     "ACCOUNT_CONFIRMATION_SUBJECT": "",
     "PASSRECOVER": "",
-    "PASSRECOVER_SUBJECT": ""
+    "PASSRECOVER_SUBJECT": "<%= title %> পাসওয়ার্ড"
 }
