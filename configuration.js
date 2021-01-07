@@ -36,7 +36,7 @@ catch (e) {
     settings = {
       'ep_mypads': {
         'ldap': {
-          'url': 'ldap://rroemhild-test-openldap',
+          'url': 'ldap://rroemhild-test-openldap:10389',
           'bindDN': 'cn=admin,dc=planetexpress,dc=com',
           'bindCredentials': 'GoodNewsEveryone',
           'searchBase': 'ou=people,dc=planetexpress,dc=com',
