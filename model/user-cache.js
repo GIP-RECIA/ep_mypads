@@ -64,6 +64,8 @@ module.exports = (function () {
   */
 
   userCache.init = function (callback) {
+    console.log('Initializing user cache...');
+
     storage.db.findKeys(UPREFIX + '*', null, function (err, keys) {
       if (err) { return callback(err); }
       // If you want to delay the user cache readyness (to test #141 for example),
@@ -72,6 +74,10 @@ module.exports = (function () {
       // (NB: won't work with mockupserver since it waits for cache to be
       // ready before providing the web interface)
       storage.fn.getKeysUncached(keys, function (err, results) {
+        if (err) {
+          console.error('Cannot initialize user cache.', err);
+        }
+
         if (results) {
           var memo = ld.reduce(results, function (memo, val, key) {
             if (val) {
@@ -86,6 +92,8 @@ module.exports = (function () {
           }, { logins: {}, emails: {}, firstname: {}, lastname: {} });
           memo.userCacheReady = true;
           ld.assign(userCache, memo);
+
+          console.log('User cache initialized!');
         }
         callback(null);
       });
