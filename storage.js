@@ -31,8 +31,19 @@ module.exports = (function () {
   'use strict';
   // Dependencies
   var ld = require('lodash');
-
+  var pg = require('pg');
   var storage = {};
+
+  var settings;
+  try {
+    // Normal case : when installed as a plugin
+    settings = require('ep_etherpad-lite/node/utils/Settings');
+  }
+  catch (e) {
+    settings = {};
+  }
+
+  var postgresDB;
 
   // Database PREFIX CONSTANTS
   storage.DBPREFIX       = { GLOBAL: 'mypads:' };
@@ -118,23 +129,30 @@ module.exports = (function () {
    * Same than `getKeys` but tries to get values in bulk, bypassing UeberDB cache
    */
   storage.fn.getKeysUncached = function (keys, callback) {
-    if (storage.db && (storage.db.type === 'postgres' || storage.db.type === 'postgrespool')) {
-      var query = 'SELECT key, value FROM store WHERE key = ANY ($1)';
-      return storage.db.db.wrappedDB.db.query(query, [keys], function (err, queryResult) {
-        if (err) { return callback(err); }
+    if (storage.fn.isPostgresDriver())  {
+      return storage.fn.getPostgres(function (err, db) {
+        if (err) {
+          console.error('Cannot bypass ueberdb to fetch keys.', err);
+          return;
+        }
 
-        var rows = queryResult.rows;
+        var query = 'SELECT key, value FROM store WHERE key = ANY ($1)';
+        return db.query(query, [keys], function (err, queryResult) {
+          if (err) { return callback(err); }
 
-        var results = {};
-        rows.forEach(function (row) {
-          try {
-            if (!ld.isNull(row)) { results[row.key] = JSON.parse(row.value); }
-          } catch (e) {
-            console.error('JSON-PROBLEM:' + row.value);
-          }
+          var rows = queryResult.rows;
+
+          var results = {};
+          rows.forEach(function (row) {
+            try {
+              if (!ld.isNull(row)) { results[row.key] = JSON.parse(row.value); }
+            } catch (e) {
+              console.error('JSON-PROBLEM:' + row.value);
+            }
+          });
+
+          return callback(null, results);
         });
-
-        return callback(null, results);
       });
     }
 
@@ -212,6 +230,26 @@ module.exports = (function () {
       }
     };
     done();
+  };
+
+  storage.fn.isPostgresDriver = function () {
+    return settings.dbSettings && storage.db && (storage.db.type === 'postgres' || storage.db.type === 'postgrespool');
+  };
+
+  storage.fn.getPostgres = function (cb) {
+    if (postgresDB) {
+      return cb(null, postgresDB);
+    }
+
+    postgresDB = new pg.Client(settings.dbSettings);
+    postgresDB.connect(function (err) {
+      if (err) {
+        console.error('PostgreSQL connection error', err.stack);
+        return cb(err);
+      }
+
+      return cb(null, postgresDB);
+    });
   };
 
   return storage;
