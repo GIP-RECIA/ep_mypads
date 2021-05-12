@@ -1,0 +1,513 @@
+body.iframe {
+  background: #f3f3f3;
+}
+
+body.iframe>#mypads {
+  padding-top: 20px;
+}
+
+.mp-tooltip {
+  color: #808080;
+}
+
+.panel-primary {
+  border-color: #808080;
+}
+
+.panel-info {
+  border-color: #F3F3F3;
+}
+
+.panel-primary>.panel-heading {
+  background-color: #808080;
+  border-color: #808080;
+}
+
+.panel-info>.panel-heading {
+  color: #808080;
+  background-color: #F3F3F3;
+  border-color: #F3F3F3;
+}
+
+.nav-tabs>li>a {
+  color: #808080;
+}
+
+/** lycees */
+
+.pads-netocentre-fr a:not(.btn),
+.pads-recia-fr a:not(.btn) {
+  color: #25b2f3;
+  text-decoration: none;
+}
+
+.pads-netocentre-fr a:not(.btn):focus,
+.pads-recia-fr a:not(.btn):focus,
+.pads-netocentre-fr a:not(.btn):hover,
+.pads-recia-fr a:not(.btn):hover {
+  color: #0c98d9;
+  text-decoration: none;
+}
+
+.pads-netocentre-fr .mp-tooltip:hover:after,
+.pads-recia-fr .mp-tooltip:hover:after,
+.pads-netocentre-fr .mp-tooltip:focus:after,
+.pads-recia-fr .mp-tooltip:focus:after {
+  background-color: #9eddfa;
+  color: #303030;
+  border: 1px solid #0c98d9;
+}
+
+.pads-netocentre-fr .form-control:focus,
+.pads-recia-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #0c98d9;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(12, 152, 217, .6);
+}
+
+.pads-netocentre-fr .btn-primary,
+.pads-recia-fr .btn-primary,
+.pads-netocentre-fr .btn-info,
+.pads-recia-fr .btn-info {
+  background-color: #25b2f3;
+  border-color: #0b87c1;
+  color: #fff;
+}
+
+.pads-netocentre-fr .btn-primary:hover,
+.pads-recia-fr .btn-primary:hover,
+.pads-netocentre-fr .btn-info:hover,
+.pads-recia-fr .btn-info:hover,
+.pads-netocentre-fr .btn-primary:focus,
+.pads-recia-fr .btn-primary:focus,
+.pads-netocentre-fr .btn-info:focus,
+.pads-recia-fr .btn-info:focus {
+  background-color: #0c98d9;
+  border-color: #086591;
+  color: #fff;
+}
+
+.pads-netocentre-fr .nav-tabs>li>a:hover,
+.pads-recia-fr .nav-tabs>li>a:hover,
+.pads-netocentre-fr .nav-tabs>li>a:focus,
+.pads-recia-fr .nav-tabs>li>a:focus {
+  color: #25b2f3;
+}
+
+.pads-netocentre-fr .nav-tabs>li.active>a,
+.pads-recia-fr .nav-tabs>li.active>a,
+.pads-netocentre-fr .nav-tabs>li.active>a:focus,
+.pads-recia-fr .nav-tabs>li.active>a:focus,
+.pads-netocentre-fr .nav-tabs>li.active>a:hover,
+.pads-recia-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #25b2f3;
+}
+
+/** agri */
+
+.pads-agri-netocentre-fr a:not(.btn) {
+  color: #2d8c17;
+  text-decoration: none;
+}
+
+.pads-agri-netocentre-fr a:not(.btn):focus,
+.pads-agri-netocentre-fr a:not(.btn):hover {
+  color: #1f6010;
+  text-decoration: none;
+}
+
+.pads-agri-netocentre-fr .mp-tooltip:hover:after,
+.pads-agri-netocentre-fr .mp-tooltip:focus:after {
+  background-color: #60e042;
+  color: #303030;
+  border: 1px solid #1f6010;
+}
+
+.pads-agri-netocentre-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #1f6010;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(31, 96, 16, .6);
+}
+
+.pads-agri-netocentre-fr .btn-primary,
+.pads-agri-netocentre-fr .btn-info {
+  background-color: #2d8c17;
+  border-color: #184a0c;
+  color: #fff;
+}
+
+.pads-agri-netocentre-fr .btn-primary:hover,
+.pads-agri-netocentre-fr .btn-info:hover,
+.pads-agri-netocentre-fr .btn-primary:focus,
+.pads-agri-netocentre-fr .btn-info:focus {
+  background-color: #1f6010;
+  border-color: #0a1e05;
+  color: #fff;
+}
+
+.pads-agri-netocentre-fr .nav-tabs>li>a:hover,
+.pads-agri-netocentre-fr .nav-tabs>li>a:focus {
+  color: #2d8c17;
+}
+
+.pads-agri-netocentre-fr .nav-tabs>li.active>a,
+.pads-agri-netocentre-fr .nav-tabs>li.active>a:focus,
+.pads-agri-netocentre-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #2d8c17;
+}
+
+/* touraine */
+
+.pads-touraine-eschool-fr a:not(.btn) {
+  color: #C60440;
+  text-decoration: none;
+}
+
+.pads-touraine-eschool-fr a:not(.btn):focus,
+.pads-touraine-eschool-fr a:not(.btn):hover {
+  color: #940330;
+  text-decoration: none;
+}
+
+.pads-touraine-eschool-fr .mp-tooltip:hover:after,
+.pads-touraine-eschool-fr .mp-tooltip:focus:after {
+  background-color: #fb4e84;
+  color: #303030;
+  border: 1px solid #940330;
+}
+
+.pads-touraine-eschool-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #940330;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(148, 3, 48, .6);
+}
+
+.pads-touraine-eschool-fr .btn-primary,
+.pads-touraine-eschool-fr .btn-info {
+  background-color: #C60440;
+  border-color: #7b0228;
+  color: #fff;
+}
+
+.pads-touraine-eschool-fr .btn-primary:hover,
+.pads-touraine-eschool-fr .btn-info:hover,
+.pads-touraine-eschool-fr .btn-primary:focus,
+.pads-touraine-eschool-fr .btn-info:focus {
+  background-color: #940330;
+  border-color: #3f0114;
+  color: #fff;
+}
+
+.pads-touraine-eschool-fr .nav-tabs>li>a:hover,
+.pads-touraine-eschool-fr .nav-tabs>li>a:focus {
+  color: #C60440;
+}
+
+.pads-touraine-eschool-fr .nav-tabs>li.active>a,
+.pads-touraine-eschool-fr .nav-tabs>li.active>a:focus,
+.pads-touraine-eschool-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #C60440;
+}
+
+/* chercan */
+/*
+@nocThemeColor: #004899;
+@color2: darken(@nocThemeColor, 10%);
+@color3: darken(@nocThemeColor, 15%);
+@color4: darken(@nocThemeColor, 25%);
+*/
+.pads-chercan-fr a:not(.btn) {
+  color: #004899;
+  text-decoration: none;
+}
+
+.pads-chercan-fr a:not(.btn):focus,
+.pads-chercan-fr a:not(.btn):hover {
+  color: #003066;
+  text-decoration: none;
+}
+
+.pads-chercan-fr .mp-tooltip:hover:after,
+.pads-chercan-fr .mp-tooltip:focus:after {
+  background-color: #1a85ff;
+  color: #303030;
+  border: 1px solid #003066;
+}
+
+.pads-chercan-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #003066;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 48, 102, .6);
+}
+
+.pads-chercan-fr .btn-primary,
+.pads-chercan-fr .btn-info {
+  background-color: #004899;
+  border-color: #00244d;
+  color: #fff;
+}
+
+.pads-chercan-fr .btn-primary:hover,
+.pads-chercan-fr .btn-info:hover,
+.pads-chercan-fr .btn-primary:focus,
+.pads-chercan-fr .btn-info:focus {
+  background-color: #003066;
+  border-color: #000c19;
+  color: #fff;
+}
+
+.pads-chercan-fr .nav-tabs>li>a:hover,
+.pads-chercan-fr .nav-tabs>li>a:focus {
+  color: #004899;
+}
+
+.pads-chercan-fr .nav-tabs>li.active>a,
+.pads-chercan-fr .nav-tabs>li.active>a:focus,
+.pads-chercan-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #004899;
+}
+
+/* colleges41 */
+/*
+@nocThemeColor: #009FE3;
+@color2: darken(@nocThemeColor, 10%);
+@color3: darken(@nocThemeColor, 15%);
+@color4: darken(@nocThemeColor, 25%);
+@color5: lighten(@nocThemeColor, 25%);
+*/
+.pads-colleges41-fr a:not(.btn) {
+  color: #009FE3;
+  text-decoration: none;
+}
+
+.pads-colleges41-fr a:not(.btn):focus,
+.pads-colleges41-fr a:not(.btn):hover {
+  color: #007bb0;
+  text-decoration: none;
+}
+
+.pads-colleges41-fr .mp-tooltip:hover:after,
+.pads-colleges41-fr .mp-tooltip:focus:after {
+  background-color: #63d0ff;
+  color: #303030;
+  border: 1px solid #007bb0;
+}
+
+.pads-colleges41-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #007bb0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 123, 176, .6);
+}
+
+.pads-colleges41-fr .btn-primary,
+.pads-colleges41-fr .btn-info {
+  background-color: #009FE3;
+  border-color: #006996;
+  color: #fff;
+}
+
+.pads-colleges41-fr .btn-primary:hover,
+.pads-colleges41-fr .btn-info:hover,
+.pads-colleges41-fr .btn-primary:focus,
+.pads-colleges41-fr .btn-info:focus {
+  background-color: #007bb0;
+  border-color: #004663;
+  color: #fff;
+}
+
+.pads-colleges41-fr .nav-tabs>li>a:hover,
+.pads-colleges41-fr .nav-tabs>li>a:focus {
+  color: #009FE3;
+}
+
+.pads-colleges41-fr .nav-tabs>li.active>a,
+.pads-colleges41-fr .nav-tabs>li.active>a:focus,
+.pads-colleges41-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #009FE3;
+}
+
+/* e-college-indre */
+/*
+@nocThemeColor: #0069B3;
+@color2: darken(@nocThemeColor, 10%);
+@color3: darken(@nocThemeColor, 15%);
+@color4: darken(@nocThemeColor, 25%);
+@color5: lighten(@nocThemeColor, 50%);
+*/
+.pads-e-college-indre-fr a:not(.btn) {
+  color: #0069B3;
+  text-decoration: none;
+}
+
+.pads-e-college-indre-fr a:not(.btn):focus,
+.pads-e-college-indre-fr a:not(.btn):hover {
+  color: #004b80;
+  text-decoration: none;
+}
+
+.pads-e-college-indre-fr .mp-tooltip:hover:after,
+.pads-e-college-indre-fr .mp-tooltip:focus:after {
+  background-color: #b3e0ff;
+  color: #303030;
+  border: 1px solid #004b80;
+}
+
+.pads-e-college-indre-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #004b80;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 75, 128, .6);
+}
+
+.pads-e-college-indre-fr .btn-primary,
+.pads-e-college-indre-fr .btn-info {
+  background-color: #0069B3;
+  border-color: #003c67;
+  color: #fff;
+}
+
+.pads-e-college-indre-fr .btn-primary:hover,
+.pads-e-college-indre-fr .btn-info:hover,
+.pads-e-college-indre-fr .btn-primary:focus,
+.pads-e-college-indre-fr .btn-info:focus {
+  background-color: #004b80;
+  border-color: #001e34;
+  color: #fff;
+}
+
+.pads-e-college-indre-fr .nav-tabs>li>a:hover,
+.pads-e-college-indre-fr .nav-tabs>li>a:focus {
+  color: #0069B3;
+}
+
+.pads-e-college-indre-fr .nav-tabs>li.active>a,
+.pads-e-college-indre-fr .nav-tabs>li.active>a:focus,
+.pads-e-college-indre-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #0069B3;
+}
+
+/* mon-e-college-loiret */
+/*
+@nocThemeColor: #26448A;
+@color2: darken(@nocThemeColor, 10%);
+@color3: darken(@nocThemeColor, 15%);
+@color4: darken(@nocThemeColor, 25%);
+$color5: lighten($nocThemeColor, 50%);
+*/
+.pads-mon-e-college-loiret-fr a:not(.btn) {
+  color: #26448A;
+  text-decoration: none;
+}
+
+.pads-mon-e-college-loiret-fr a:not(.btn):focus,
+.pads-mon-e-college-loiret-fr a:not(.btn):hover {
+  color: #1b3062;
+  text-decoration: none;
+}
+
+.pads-mon-e-college-loiret-fr .mp-tooltip:hover:after,
+.pads-mon-e-college-loiret-fr .mp-tooltip:focus:after {
+  background-color: #c1cfee;
+  color: #303030;
+  border: 1px solid #1b3062;
+}
+
+.pads-mon-e-college-loiret-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #1b3062;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(27, 48, 98, .6);
+}
+
+.pads-mon-e-college-loiret-fr .btn-primary,
+.pads-mon-e-college-loiret-fr .btn-info {
+  background-color: #26448A;
+  border-color: #15264e;
+  color: #fff;
+}
+
+.pads-mon-e-college-loiret-fr .btn-primary:hover,
+.pads-mon-e-college-loiret-fr .btn-info:hover,
+.pads-mon-e-college-loiret-fr .btn-primary:focus,
+.pads-mon-e-college-loiret-fr .btn-info:focus {
+  background-color: #1b3062;
+  border-color: #0a1326;
+  color: #fff;
+}
+
+.pads-mon-e-college-loiret-fr .nav-tabs>li>a:hover,
+.pads-mon-e-college-loiret-fr .nav-tabs>li>a:focus {
+  color: #26448A;
+}
+
+.pads-mon-e-college-loiret-fr .nav-tabs>li.active>a,
+.pads-mon-e-college-loiret-fr .nav-tabs>li.active>a:focus,
+.pads-mon-e-college-loiret-fr .nav-tabs>li.active>a:hover {
+  color: #fff;
+  background-color: #26448A;
+}
+
+/* colleges-eureliens */
+/*
+@nocThemeColor: #FFCC00;
+@color2: darken(@nocThemeColor, 10%);
+@color3: darken(@nocThemeColor, 15%);
+@color4: darken(@nocThemeColor, 25%);
+$color5: lighten($nocThemeColor, 50%);
+*/
+.pads-colleges-eureliens-fr a:not(.btn) {
+  color: #806600;
+  text-decoration: none;
+}
+
+.pads-colleges-eureliens-fr a:not(.btn):focus,
+.pads-colleges-eureliens-fr a:not(.btn):hover {
+  color: #cca300;
+  text-decoration: none;
+}
+
+.pads-colleges-eureliens-fr .mp-tooltip:hover:after,
+.pads-colleges-eureliens-fr .mp-tooltip:focus:after {
+  background-color: #ffffff;
+  color: #303030;
+  border: 1px solid #cca300;
+}
+
+.pads-colleges-eureliens-fr .form-control:focus {
+  color: #303030;
+  border: 1px solid #cca300;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(204, 163, 0, .6);
+}
+
+.pads-colleges-eureliens-fr .btn-primary,
+.pads-colleges-eureliens-fr .btn-info {
+  background-color: #FFCC00;
+  border-color: #b38f00;
+  color: #000;
+}
+
+.pads-colleges-eureliens-fr .btn-primary:hover,
+.pads-colleges-eureliens-fr .btn-info:hover,
+.pads-colleges-eureliens-fr .btn-primary:focus,
+.pads-colleges-eureliens-fr .btn-info:focus {
+  background-color: #cca300;
+  border-color: #806600;
+  color: #000;
+}
+
+.pads-colleges-eureliens-fr .nav-tabs>li>a:hover,
+.pads-colleges-eureliens-fr .nav-tabs>li>a:focus {
+  color: #FFCC00;
+  background-color: #303030
+}
+
+.pads-colleges-eureliens-fr .nav-tabs>li.active>a,
+.pads-colleges-eureliens-fr .nav-tabs>li.active>a:focus,
+.pads-colleges-eureliens-fr .nav-tabs>li.active>a:hover {
+  color: #000;
+  background-color: #FFCC00;
+}
