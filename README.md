@@ -26,16 +26,6 @@ MyPads manages :
 At the moment, MyPads is publicly available on NPM. So you can install it from etherpad administration. You may need a reboot of your etherpad instance after the plugin install.
 WARNING: if you uninstall MyPads, all its data will be definitely *removed*.
 
-### Manual install
-
-You can install MyPads from source. In order to do that :
-
-* clone this git repository where you want to;
-* go into the directory of your Etherpad instance;
-* type the command `npm install /path/of/your/clone/of/ep_mypads`
-* restart your Etherpad instance and you should see *ep_mypads* listed into your administration back-end
-* homepage is available at http://youretherpad/mypads/index.html
-
 ## Configuration
 
 Configure an admin user in Etherpad's `settings.json` and use those credentials in http://youretherpad/mypads/?/admin
