@@ -6,7 +6,7 @@
         "SAVE": "Salvagardar"
     },
     "ADMIN": {
-        "AUTHENTICATION": "",
+        "AUTHENTICATION": "Paramètres d’autentificacion",
         "ERR": {
             "LANGUAGE_DEFAULT": "Una lenga deu èsser causida.",
             "PARSE_CAS": "",
