@@ -103,7 +103,7 @@ module.exports = (function () {
       throw new TypeError('BACKEND.ERROR.TYPE.SMTP_CONFIG');
     }
     try {
-      mail.server = emailjs.server.connect(opts);
+      mail.server = new emailjs.SMTPClient(opts);
     }
     catch (e) { console.error(e); }
   };
