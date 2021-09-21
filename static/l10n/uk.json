@@ -1,36 +1,36 @@
 {
     "ACTIONS": {
-        "ACTIONS": "",
-        "CANCEL": "",
-        "HELP": "",
-        "SAVE": ""
+        "ACTIONS": "Дії",
+        "CANCEL": "Скасувати",
+        "HELP": "Довідка",
+        "SAVE": "Зберегти"
     },
     "ADMIN": {
-        "AUTHENTICATION": "",
+        "AUTHENTICATION": "Налаштування автентифікації",
         "ERR": {
-            "LANGUAGE_DEFAULT": "",
-            "PARSE_CAS": "",
-            "PARSE_LDAP": "",
-            "PARSE_LOGIN_MSG": "",
-            "PASSWORD_MAX": "",
-            "PASSWORD_MIN": "",
-            "PASSWORD_SIZE": "",
-            "ROOTURL": "",
-            "SMTP_EMAILFROM": "",
-            "TITLE": ""
+            "LANGUAGE_DEFAULT": "Типова мова повинна бути вибрана обов'язково.",
+            "PARSE_CAS": "Не вдалося проаналізувати конфігурацію CAS.",
+            "PARSE_LDAP": "Не вдалося проаналізувати конфігурацію LDAP.",
+            "PARSE_LOGIN_MSG": "Не вдалося проаналізувати повідомлення про конфігурацію входу/підписки.",
+            "PASSWORD_MAX": "Максимальний розмір пароля обов’язковий.",
+            "PASSWORD_MIN": "Мінімальний розмір пароля обов’язковий.",
+            "PASSWORD_SIZE": "Мінімальний розмір не може перевищувати максимальний розмір.",
+            "ROOTURL": "Повинна бути чинна URL-адреса.",
+            "SMTP_EMAILFROM": "Повинна бути чинна е-пошта.",
+            "TITLE": "Заголовок обов'язковий."
         },
-        "ETHERPAD_ACCOUNT": "",
+        "ETHERPAD_ACCOUNT": "Обліковий запис Etherpad",
         "FIELD": {
             "ALLOW_ETHERPADS": "",
             "ALL_PADS_PUBLICS_AUTHENTIFIED_ONLY": "",
-            "APPLY": "",
-            "AUTHENTICATION_METHOD": "",
-            "AUTH_CAS_SETTINGS": "",
-            "AUTH_LDAP_SETTINGS": "",
+            "APPLY": "Застосувати",
+            "AUTHENTICATION_METHOD": "Метод автентифікації",
+            "AUTH_CAS_SETTINGS": "Налаштування CAS",
+            "AUTH_LDAP_SETTINGS": "Налаштування LDAP",
             "AUTH_METHODS": {
                 "cas": "",
                 "internal": "",
-                "ldap": ""
+                "ldap": "LDAP"
             },
             "CHECKMAILS": "",
             "CREATE_USER": "",
@@ -44,16 +44,16 @@
             "PASSWORD_MAX": "",
             "PASSWORD_MIN": "",
             "ROOTURL": "",
-            "SEARCH": "",
-            "SHOW_ALL_USERS": "",
+            "SEARCH": "Пошук",
+            "SHOW_ALL_USERS": "Показати всіх користувачів",
             "SMTP_EMAILFROM": "",
-            "SMTP_HOST": "",
-            "SMTP_PASS": "",
-            "SMTP_PORT": "",
-            "SMTP_SSL": "",
-            "SMTP_TLS": "",
-            "SMTP_USER": "",
-            "TITLE": "",
+            "SMTP_HOST": "Вузол SMTP",
+            "SMTP_PASS": "Пароль",
+            "SMTP_PORT": "Порт SMTP",
+            "SMTP_SSL": "Шифрування за допомогою SSL",
+            "SMTP_TLS": "Шифрування за допомогою TLS",
+            "SMTP_USER": "Користувач",
+            "TITLE": "Заголовок",
             "TOKEN_DURATION": "",
             "TRUST_PROXY": "",
             "USE_FIRST_AND_LAST_NAME_IN_PADS": ""
@@ -104,11 +104,11 @@
             "USER_REMOVE_SURE": "",
             "USE_FIRST_AND_LAST_NAME_IN_PADS": ""
         },
-        "SETTINGS_GENERAL": "",
-        "SETTINGS_MAIL": "",
-        "SETTINGS_PASSWORD": "",
-        "SUBSCRIBE_SUCCESS": "",
-        "USERS_COUNT": "",
+        "SETTINGS_GENERAL": "Загальні налаштування",
+        "SETTINGS_MAIL": "Налаштування е-пошти",
+        "SETTINGS_PASSWORD": "Налаштування пароля",
+        "SUBSCRIBE_SUCCESS": "Користувача успішно створено!",
+        "USERS_COUNT": "Кількість користувачів:",
         "USERS_SEARCH_LOGIN": ""
     },
     "BACKEND": {
@@ -165,7 +165,7 @@
                 "LOGINS_ARR": "",
                 "LOGIN_REQUIRED": "",
                 "LOGIN_STR": "",
-                "MAIL": "",
+                "MAIL": "Хибна е-пошта.",
                 "MSG_STR": "",
                 "PARAMS_REQUIRED": "",
                 "PARAM_STR": "",
@@ -197,19 +197,19 @@
     },
     "BOOKMARK": {
         "HELP": "",
-        "TITLE": ""
+        "TITLE": "Мої закладки"
     },
     "GLOBAL": {
-        "AND": "",
+        "AND": "і",
         "DESCRIPTION": "",
         "FOOTER": "",
-        "LANG": "",
-        "NO": "",
-        "OR": "",
-        "YES": ""
+        "LANG": "Англійська",
+        "NO": "ні",
+        "OR": "або",
+        "YES": "так"
     },
     "GROUP": {
-        "ADD": "",
+        "ADD": "Додати нову теку",
         "ADD_HELP": "",
         "ADD_HELP_LABEL": "",
         "ADD_HELP_PUBLIC_ACCESS": "",
@@ -219,33 +219,33 @@
             "SUCCESS": ""
         },
         "ARCHIVED": "",
-        "BOOKMARK": "",
+        "BOOKMARK": "Закладки",
         "BOOKMARKED": "",
-        "EDIT": "",
-        "EDIT_GROUP": "",
+        "EDIT": "Змінити",
+        "EDIT_GROUP": "Змінити теку",
         "ERR": {
             "NAME": ""
         },
         "FIELD": {
             "ALLOW_USERS_TO_CREATE_PADS": "",
             "ARCHIVED": "",
-            "DESCRIPTION": "",
-            "GROUP_PARAMS": "",
-            "NAME": "",
+            "DESCRIPTION": "Опис",
+            "GROUP_PARAMS": "Параметри теки?",
+            "NAME": "Назва",
             "PRIVATE": "",
             "PUBLIC": "",
             "READONLY": "",
             "RESTRICTED": "",
-            "VISIBILITY": ""
+            "VISIBILITY": "Видимість"
         },
         "FILTERS": {
             "ADMIN": "",
             "HELP": "",
-            "TITLE": "",
+            "TITLE": "Фільтри",
             "USER": ""
         },
-        "GROUP": "",
-        "GROUPS": "",
+        "GROUP": "Тека",
+        "GROUPS": "Теки",
         "HELP": "",
         "INFO": {
             "ADD_SUCCESS": "",
@@ -256,7 +256,7 @@
             "DESCRIPTION": "",
             "EDIT_SUCCESS": "",
             "GROUP_PARAMS": "",
-            "NAME": "",
+            "NAME": "Назва",
             "PAD_ADD_SUCCESS": "",
             "PAD_EDIT_SUCCESS": "",
             "PAD_MOVE": "",
@@ -284,22 +284,22 @@
         },
         "INVITE_USERLIST": "",
         "MARK_SUCCESS": "",
-        "MYGROUPS": "",
-        "NONE": "",
+        "MYGROUPS": "Мої теки",
+        "NONE": "Тек немає",
         "PAD": {
             "ADD": "",
             "ADD_PROMPT": "",
-            "ADMINS": "",
+            "ADMINS": "Адміністратори",
             "DESELECT_ALL": "",
             "EDIT": "",
             "EDIT_PROMPT": "",
-            "EXPAND": "",
-            "FROM_GROUP": "",
+            "EXPAND": "Розгорнути",
+            "FROM_GROUP": "тека:",
             "MOVE": "",
             "MOVE_HELP": "",
             "MOVE_TITLE": "",
             "NONE": "",
-            "OPEN_TAB": "",
+            "OPEN_TAB": "Відкрити в новій вкладці",
             "PAD": "",
             "PADS": "",
             "PUBLIC_DENIED": "",
@@ -307,22 +307,22 @@
             "SELECT_ALL": "",
             "SELECT_AT_LEAST_ONE_PAD": "",
             "SORT_BY": "",
-            "SORT_BY_CREATION": "",
-            "SORT_BY_NAME": "",
-            "SORT_BY_UPDATE": "",
-            "TITLE": "",
-            "USERS": "",
-            "USERS_NONE": "",
+            "SORT_BY_CREATION": "дата створення",
+            "SORT_BY_NAME": "назва",
+            "SORT_BY_UPDATE": "востаннє оновлено",
+            "TITLE": "Заголовок",
+            "USERS": "Користувачі",
+            "USERS_NONE": "Немає користувача",
             "VIEW_HELP": "",
-            "VISIBILITY": ""
+            "VISIBILITY": "Видимість"
         },
-        "PROPERTIES": "",
+        "PROPERTIES": "Властивості",
         "QUIT_GROUP": "",
-        "REMOVE": "",
-        "REMOVE_CHAT_HISTORY": "",
+        "REMOVE": "Вилучити",
+        "REMOVE_CHAT_HISTORY": "Вилучити історію бесіди",
         "SEARCH": {
             "HELP": "",
-            "TITLE": "",
+            "TITLE": "Пошук",
             "TYPE": ""
         },
         "SHARE": "",
@@ -331,11 +331,11 @@
         "SHARE_PASSWORD": "",
         "SORT": {
             "HELP": "",
-            "TITLE": ""
+            "TITLE": "Упорядкувати за"
         },
         "TAGS": {
             "HELP": "",
-            "TITLE": ""
+            "TITLE": "Мітки"
         },
         "UNMARK": "",
         "VIEW": "",
@@ -344,26 +344,26 @@
     },
     "MENU": {
         "ADMIN": "",
-        "BOOKMARK": "",
-        "CONFIG": "",
-        "LOGOUT": "",
+        "BOOKMARK": "Мої закладки",
+        "CONFIG": "Конфігурація",
+        "LOGOUT": "Вийти",
         "PAD": "",
-        "PROFILE": "",
-        "USERLIST": "",
-        "USERS": ""
+        "PROFILE": "Мій профіль",
+        "USERLIST": "Мої списки користувачів",
+        "USERS": "Користувачі"
     },
     "NOTIFICATION": {
-        "ERROR": "",
+        "ERROR": "Помилка",
         "ERROR_UNEXPECTED": "",
         "INFO": "",
-        "SUCCESS": "",
+        "SUCCESS": "Успіх",
         "SUCCESS_GENERIC": "",
-        "WARNING": ""
+        "WARNING": "Попередження"
     },
     "TAG": {
         "HELP": "",
         "PLACEHOLDER": "",
-        "TAGS": ""
+        "TAGS": "Мітки"
     },
     "USER": {
         "AUTH": {
@@ -372,12 +372,12 @@
             "SUBSCRIBE_SUCCESS": "",
             "SUCCESS": "",
             "SUCCESS_OUT": "",
-            "WELCOME": ""
+            "WELCOME": "Вітаємо"
         },
         "COLOR": "",
-        "COLOR_SAMPLE": "",
-        "EMAIL": "",
-        "EMAIL_SAMPLE": "",
+        "COLOR_SAMPLE": "#00cc00",
+        "EMAIL": "Е-пошта",
+        "EMAIL_SAMPLE": "username@example.org",
         "ERR": {
             "COLOR": "",
             "EMAIL": "",
@@ -397,53 +397,53 @@
             "EMAIL": "",
             "LANG": "",
             "LOGIN": "",
-            "OPTIONAL": "",
+            "OPTIONAL": "Необов'язкове поле",
             "PAD_NICKNAME": "",
             "PASSRECOVER_SUCCESS": "",
             "PASSWORD_BEGIN": "",
             "PASSWORD_CHECK": "",
             "PASSWORD_CURRENT": "",
-            "PASSWORD_END": "",
+            "PASSWORD_END": " символів",
             "REMOVE_ACCOUNT": "",
             "REMOVE_ACCOUNT_SUCCESS": "",
             "REMOVE_ACCOUNT_SURE": "",
             "USECOLORINPADS": "",
             "USELOGINANDCOLORINPADS": ""
         },
-        "LANG": "",
-        "LASTNAME": "",
+        "LANG": "Мова",
+        "LASTNAME": "Прізвище",
         "LOGIN": "",
-        "MANDATORY_FIELDS": "",
-        "MYPADS_ACCOUNT": "",
-        "OK": "",
-        "OPTIONAL_FIELDS": "",
-        "ORGANIZATION": "",
+        "MANDATORY_FIELDS": "Обов'язкові поля",
+        "MYPADS_ACCOUNT": "Обліковий запис MyPads",
+        "OK": "Гаразд",
+        "OPTIONAL_FIELDS": "Необов'язкові поля",
+        "ORGANIZATION": "Організація",
         "ORSUB": "",
         "PAD_NICKNAME": "",
-        "PASSCHECK": "",
-        "PASSCURRENT": "",
+        "PASSCHECK": "Підтвердження пароля",
+        "PASSCURRENT": "Поточний пароль",
         "PASSRECOVER": "",
-        "PASSWORD": "",
-        "PASSWORD_LOST": "",
-        "PLEASE_WAIT": "",
-        "PROFILE": "",
+        "PASSWORD": "Пароль",
+        "PASSWORD_LOST": "Загубили пароль?",
+        "PLEASE_WAIT": "Зачекайте, служба зараз завантажується.",
+        "PROFILE": "Профіль",
         "REGISTER": "",
-        "REMOVE_ACCOUNT": "",
+        "REMOVE_ACCOUNT": "Вилучити мій обліковий запис",
         "SUBSCRIBE": "",
-        "UNDEF": "",
+        "UNDEF": "********",
         "USECOLORINPADS": "",
         "USELOGINANDCOLORINPADS": "",
-        "USERNAME": ""
+        "USERNAME": "Ім'я користувача"
     },
     "USERLIST": {
-        "ADD": "",
-        "EDIT": "",
+        "ADD": "Створити новий список користувачів",
+        "EDIT": "Редагувати список користувачів ",
         "ERR": {
-            "NAME": ""
+            "NAME": "Назва списку користувачів обов'язкова."
         },
         "FIELD": {
-            "NAME": "",
-            "USERS": "",
+            "NAME": "Назва",
+            "USERS": "Користувачі",
             "USERSAREA_HELP": "",
             "USERSAREA_PLACEHOLDER": "",
             "USERS_HELP": ""
@@ -460,6 +460,6 @@
             "USER_INVITE": "",
             "USER_SUCCESS": ""
         },
-        "USERLIST": ""
+        "USERLIST": "Список користувачів"
     }
 }
