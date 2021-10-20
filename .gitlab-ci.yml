@@ -23,7 +23,7 @@ services:
 ##
 #
 
-test:
+test-buster:
   image: node:$NODE_VERSION-buster
   stage: test
   script:
@@ -39,3 +39,20 @@ test:
   parallel:
     matrix:
       - NODE_VERSION: ['10', '12', '14']
+
+test-bullseye:
+  image: node:$NODE_VERSION-bullseye
+  stage: test
+  script:
+   - npm install
+   - npm run frontend:build
+   - git status
+   - git checkout -- package-lock.json
+   - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
+   - npm run lint
+   - npm run test
+   - npm run test-ldap
+  retry: 2
+  parallel:
+    matrix:
+      - NODE_VERSION: ['12', '14', '16']
