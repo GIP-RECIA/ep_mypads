@@ -12,22 +12,6 @@ cache:
   paths:
     - node_modules/
 
-### Jobs template
-##
-#
-.test_template: &test_definition
-  stage: test
-  script:
-   - npm install
-   - npm run frontend:build
-   - git status
-   - git checkout -- package-lock.json
-   - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
-   - npm run lint
-   - npm run test
-   - npm run test-ldap
-  retry: 2
-
 ### Services
 ##
 # Bring in any services we need
@@ -39,24 +23,19 @@ services:
 ##
 #
 
-## Tests
-#
-# test_node_latest:
-#   image: node:latest
-#   <<: *test_definition
-
-test_node_10:
-  image: node:10-buster
-  <<: *test_definition
-
-test_node_12:
-  image: node:12-buster
-  <<: *test_definition
-
-test_node_13:
-  image: node:13-buster
-  <<: *test_definition
-
-test_node_14:
-  image: node:14-buster
-  <<: *test_definition
+test:
+  image: node:$NODE_VERSION-buster
+  stage: test
+  script:
+   - npm install
+   - npm run frontend:build
+   - git status
+   - git checkout -- package-lock.json
+   - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
+   - npm run lint
+   - npm run test
+   - npm run test-ldap
+  retry: 2
+  parallel:
+    matrix:
+      - NODE_VERSION: ['10', '12', '14']
