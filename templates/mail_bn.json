@@ -1,6 +1,6 @@
 {
     "ACCOUNT_CONFIRMATION": "",
-    "ACCOUNT_CONFIRMATION_SUBJECT": "",
+    "ACCOUNT_CONFIRMATION_SUBJECT": "<%= title %> এ অ্যাকাউন্ট যাচাই করো",
     "PASSRECOVER": "",
     "PASSRECOVER_SUBJECT": "<%= title %> পাসওয়ার্ড"
 }
