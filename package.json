@@ -1,6 +1,6 @@
 {
   "name": "ep_mypads",
-  "version": "1.7.22",
+  "version": "1.7.23",
   "description": "Groups and private pads for etherpad",
   "main": "index.js",
   "repository": {
