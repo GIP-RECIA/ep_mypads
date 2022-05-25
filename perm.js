@@ -156,7 +156,7 @@ module.exports = (function () {
       return isWaitingforDeletion(params.pid, function(err, val) {
         if (err) { return params.unexpected(err); }
 
-        if (val === null) { // not waiting for deletion
+        if (!val) { // not waiting for deletion
           return params[(conf.get('allowEtherPads') ? 'next' : 'unexpected')]();
         } else { // don't give access to a pad that is waiting for deletion
           return params.unexpected();
