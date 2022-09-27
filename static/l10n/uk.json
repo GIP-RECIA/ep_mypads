@@ -56,14 +56,14 @@
             "TITLE": "Заголовок",
             "TOKEN_DURATION": "Термін дії токена",
             "TRUST_PROXY": "Довіряти проксі",
-            "USE_FIRST_AND_LAST_NAME_IN_PADS": ""
+            "USE_FIRST_AND_LAST_NAME_IN_PADS": "Використовувати ім'я та прізвище користувача псевдонімом у блокноті"
         },
-        "FORM_LOGIN": "",
+        "FORM_LOGIN": "Ім'я користувача адміністратора",
         "FORM_SETTINGS": "Конфігурація MyPads",
         "FORM_USERS_SEARCH": "Пошук користувача",
         "FORM_USER_CREATE": "Створення користувача",
         "FORM_USER_EDIT": "Редагування профілю користувача",
-        "HELP_LOGIN": "",
+        "HELP_LOGIN": "<p>Адміністрування MyPads прив'язане до адміністрування Etherpad. Введіть авторизоване ім'я користувача та пароль, як зазначено в <em>settings.json</em> Etherpad, щоб мати змогу оновити налаштування MyPads.</p>",
         "HELP_SETTINGS": "",
         "HELP_USERS": "",
         "HELP_USER_CREATE": "",
