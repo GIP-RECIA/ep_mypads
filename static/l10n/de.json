@@ -361,7 +361,7 @@
         "WARNING": "Warnung"
     },
     "TAG": {
-        "HELP": "Sie können diesem Element beliebig viele Tags zuordnen.",
+        "HELP": "Sie können diesem Element beliebig viele Tags zuordnen",
         "PLACEHOLDER": "Geben Sie Ihren Tag ein",
         "TAGS": "Tags"
     },
