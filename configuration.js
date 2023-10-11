@@ -138,7 +138,7 @@ module.exports = (function() {
     },
 
     /**
-    * cache object` stored current configuration for faster access than
+    * cache object stored current configuration for faster access than
     * database
     */
 
