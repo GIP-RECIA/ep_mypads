@@ -570,26 +570,26 @@ module.exports = (function () {
       return m('section', [
         m('.btn-group.pull-right', {role:'group'}, buttonsArray),
         m('h2', h2Elements),
-        m('section.description', [  ]),
         m('section.panel.panel-primary.props', [
+          m('.panel-heading',
+          m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
+          ),
+          view.pads(c)
+        ]),
+        m('section.panel.panel-info.pads', [
+          m('.panel-heading',
+          m('h3.panel-title', adminPanelTitle)
+          ),
+          m('section.description', [  ]),
+          view.users(c)
+        ]),
+        m('section.panel.panel-warning.users', [
           m('.panel-heading',
             m('h3.panel-title', conf.LANG.GROUP.PROPERTIES)
           ),
           m('.panel-body', c.group.description),
           view.properties(c)
         ]),
-        m('section.panel.panel-info.pads', [
-          m('.panel-heading',
-            m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
-          ),
-          view.pads(c)
-        ]),
-        m('section.panel.panel-warning.users', [
-          m('.panel-heading',
-            m('h3.panel-title', adminPanelTitle)
-          ),
-          view.users(c)
-        ])
       ]);
     }
   };
