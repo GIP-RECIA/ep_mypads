@@ -282,13 +282,10 @@ module.exports = (function () {
     ]);
     var filterView = m('p.col-sm-4.text-center.form-inline', [
       m('.form-group', [
-        m('label', {
-          for: 'pad-filter-form'
-        }, conf.LANG.GROUP.SEARCH.TITLE+' '),
         m('input.form-control', {
           id: 'pad-filter-form',
           type: 'search',
-          placeholder: conf.LANG.GROUP.SEARCH.TYPE,
+          placeholder: conf.LANG.GROUP.SEARCH.TITLE,
           oninput: m.withAttr('value', filterPads.filterKeyword)
         }),
       ])
