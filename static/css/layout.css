@@ -131,3 +131,11 @@ label[for="pad-filter-form"] {
 .btn-group button:focus + .dropdown-menu {
   display: block;
 }
+
+/* Button to create a new ad */
+a.btn.btn-add-pad {
+  background-color: aliceblue;
+  border: 2px solid steelblue;
+  font-weight: bold;
+  color: steelblue;
+}

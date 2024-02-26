@@ -269,7 +269,7 @@ module.exports = (function () {
     var route   = '/mypads/group/' + c.group._id;
     var GROUP   = conf.LANG.GROUP;
     var addView = m('p.col-sm-4.text-center', [
-      m('a.btn.btn-default', { href: route + '/pad/add', config: m.route }, [
+      m('a.btn.btn-add-pad', { href: route + '/pad/add', config: m.route }, [
         m('i.glyphicon.glyphicon-plus.text-success'),
         ' '+conf.LANG.GROUP.PAD.ADD
       ])
