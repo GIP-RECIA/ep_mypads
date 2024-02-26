@@ -322,8 +322,8 @@
         "REMOVE_CHAT_HISTORY": "Supprimer l’historique du chat",
         "SEARCH": {
             "HELP": "Recherche sur les champs les plus communs avec au moins 2 caractères",
-            "TITLE": "Recherche",
-            "TYPE": "Saisissez ici"
+            "TITLE": "",
+            "TYPE": "Rechercher un nom de pad"
         },
         "SHARE": "Partager",
         "SHARE_ADMIN": "Partager l’administration",

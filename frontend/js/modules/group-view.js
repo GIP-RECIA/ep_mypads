@@ -285,7 +285,7 @@ module.exports = (function () {
         m('input.form-control', {
           id: 'pad-filter-form',
           type: 'search',
-          placeholder: conf.LANG.GROUP.SEARCH.TITLE,
+          placeholder: conf.LANG.GROUP.SEARCH.TYPE,
           oninput: m.withAttr('value', filterPads.filterKeyword)
         }),
       ])
