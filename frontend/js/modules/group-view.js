@@ -502,6 +502,10 @@ module.exports = (function () {
   view.main = function (c) {
     var isBookmarked = (auth.isAuthenticated()) ? (ld.includes(u().bookmarks.groups, c.group._id)) : false;
     var h2Elements   = [ m('span', [
+      m('a.link[href=/mypads]', [
+          m('i', {class: 'glyphicon glyphicon-chevron-left'})
+        ]
+      ),
       m('button.btn.btn-link.btn-lg', {
           onclick: function (e) {
             e.preventDefault();
