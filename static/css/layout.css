@@ -139,3 +139,20 @@ a.btn.btn-add-pad {
   font-weight: bold;
   color: steelblue;
 }
+
+.link-home{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: fit-content;
+  margin-top: 15px;
+}
+
+.link-home>h1 {
+  margin: 0;
+}
+
+.logo-img {
+  border-radius: 10px;
+}

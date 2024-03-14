@@ -158,6 +158,7 @@ module.exports = (function () {
     var asideC  = 'aside.col-md-3.col-xs-12';
     var mainC   = 'main.container.ombre';
     var section = 'section.col-md-9.col-xs-12';
+    var logo = 'img/mypads_logo.jpg';
     // If the user wants to expand pad and if we are on the view pad page
     if (expandPad.wantExpandedPad() && m.route().match(padViewRouteRegex)) {
       header  = header+'.hidden';
@@ -187,7 +188,10 @@ module.exports = (function () {
           ),
         ]),
         m('div.container.ombre', [
-          m('h1', conf.SERVER.title),
+            m('a.link-home[href=/mypads]', [
+              m('img', {src:logo, width:'30', height:'30', class:'logo-img'}),
+              m('h1', conf.SERVER.title)
+            ]),
           m('hr.trait', {role: 'presentation'}),
           m('nav', { class: 'menu-main' }, [
             m('ul.nav.nav-tabs', views.menuMain())
