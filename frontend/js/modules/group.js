@@ -410,8 +410,11 @@ module.exports = (function () {
         }
           return icons;
         })()
-      ]),
-      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()]),
+      ]),console.log(g),
+      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : 
+      m('td', [
+        m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group' }, conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])],
+      ),
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [ ld.size(g.admins), (function () {
         if (isAdmin) {
           return m('a.btn.btn-default.btn-xs.pull-right',

@@ -156,3 +156,15 @@ a.btn.btn-add-pad {
 .logo-img {
   border-radius: 10px;
 }
+
+.restricted-group {
+  background-color: #FFC529;
+  padding: 2px 3px;
+  border-radius: 0.25em;
+}
+
+.public-group {
+  background-color: #66DEA8;
+  padding: 2px 3px;
+  border-radius: 0.25em;
+}

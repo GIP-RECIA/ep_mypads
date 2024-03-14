@@ -236,7 +236,7 @@ module.exports = (function () {
         m('tr.text-center', [
           m('td', ld.size(c.group.pads)),
           (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
-            'td',
+            'td',{class:"toto"},
             conf.LANG.GROUP.FIELD[c.group.visibility.toUpperCase()]
           ),
           (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(

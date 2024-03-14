@@ -41,9 +41,575 @@ module.exports=function(){"use strict";var r=require("mithril"),o=require("lodas
 },{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":43,"lodash":52,"mithril":53}],21:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),t=require("../auth.js"),o=require("../configuration.js"),u=require("../model/group.js"),i=require("../widgets/notification.js"),n={};return n.controller=function(){if(!t.isAuthenticated())return o.unauthUrl(!0),r.route("/login");window.confirm(o.LANG.GROUP.INFO.REMOVE_SURE)?r.request({method:"DELETE",url:o.URLS.GROUP+"/"+r.route.param("key"),data:{auth_token:t.token()}}).then(function(e){var t=u.groups();delete t[e.key],u.groups(t),i.success({body:o.LANG.GROUP.INFO.REMOVE_SUCCESS}),r.route("/mypads/group/list")},function(r){i.error({body:e.result(o.LANG,r.error)})}):r.route("/mypads/group/"+r.route.param("key")+"/view")},n.view=function(){},n}.call(this);
 },{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":43,"lodash":52,"mithril":53}],22:[function(require,module,exports){
-module.exports=function(){"use strict";var i=require("mithril"),t=require("lodash"),e=require("../configuration.js"),n=require("../auth.js"),r=require("../widgets/notification.js"),s=require("./layout.js"),o=require("../model/group.js"),l=require("./pad-mark.js"),a=require("./pad-share.js"),u=require("../helpers/ready.js"),p=require("../helpers/sortingPreferences.js"),d=require("../helpers/filterPads.js"),c=require("./group-mark.js"),A=n.userInfo,g={};g.controller=function(){var s=i.route.param("key"),l={group:{visibility:"",tags:[]},privatePassword:i.prop(""),sendPass:i.prop(!1)};n.isAuthenticated()&&(l.bookmarks=n.userInfo().bookmarks.pads),l.isGuest=!n.isAuthenticated();var a=function(r){if(r)return i.route("/mypads");var a=function(r){if(r)return i.route("/mypads");var a=l.isGuest?o.tmp():o;if(l.group=a.groups()[s],l.isGuest)l.isAdmin=!1,l.isUser=!1,l.pads=t.sortBy(t.compact(t.map(l.group.pads,function(i){return a.pads()[i]})),p.padByField());else{l.isAdmin=t.includes(l.group.admins,n.userInfo()._id),l.isUser=t.includes(l.group.users,n.userInfo()._id);var u=o.pads(),d=o.users();l.pads=t.sortBy(t.map(l.group.pads,function(i){return u[i]}),p.padByField()),l.users=t.map(l.group.users,function(i){return d[i]}),l.admins=t.map(l.group.admins,function(i){return d[i]})}p.padAsc()||l.pads.reverse(),document.title=e.LANG.GROUP.GROUP+" "+l.group.name+" - "+e.SERVER.title};o.groups()[s]?a():(l.isGuest=!0,o.fetchObject({group:s},void 0,a))},u=function(){return n.isAuthenticated()?t.partial(o.fetch,a):t.partial(o.fetchObject,{group:s},void 0,a)}();return t.isEmpty(o.groups())?u():a(),l.sortField=i.prop(p.padByField()),l.sortAsc=i.prop(p.padAsc()),l.sortBy=function(i,e){l.sortField()===i&&"boolean"!=typeof e&&l.sortAsc(!l.sortAsc()),l.sortField(i);var n=l.sortAsc()?"asc":"desc";l.pads=t.sortByOrder(l.pads,i,n),p.updateValues({padByField:l.sortField(),padAsc:l.sortAsc()})},l.quit=function(){window.confirm(e.LANG.GROUP.INFO.RESIGN)&&i.request({method:"POST",url:e.URLS.GROUP+"/resign",data:{gid:l.group._id,auth_token:n.token()}}).then(function(t){var n=o.groups();delete n[t.value._id],o.groups(n),r.success({body:e.LANG.GROUP.INFO.RESIGN_SUCCESS}),i.route("/mypads/group/list")},function(i){r.error({body:t.result(e.LANG,i.error)})})},l.submitPass=function(i){i.preventDefault(),o.fetchObject({group:s},l.privatePassword(),function(i){if(i)return l.sendPass(!1);var e=l.isGuest?o.tmp():o;l.group=e.groups()[s],l.pads=t.sortBy(t.compact(t.map(l.group.pads,function(i){return e.pads()[i]})),p.padByField()),l.sendPass(!0)})},l};var h={};return h.properties=function(n){return i("table.table.table-stripped.table-bordered",[i("thead",i("tr",[i("th",{scope:"col"},e.LANG.GROUP.PAD.PADS),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col",title:e.LANG.GROUP.PAD.VISIBILITY},i("i.glyphicon.glyphicon-eye-open",i("span.sr-only",e.LANG.GROUP.PAD.VISIBILITY))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col"},e.LANG.GROUP.FIELD.READONLY),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col",title:e.LANG.GROUP.PAD.ADMINS},i("i.glyphicon.glyphicon-knight",i("span.sr-only",e.LANG.GROUP.PAD.ADMINS))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col",title:e.LANG.GROUP.PAD.USERS},i("i.glyphicon.glyphicon-user",i("span.sr-only",e.LANG.GROUP.PAD.USERS))),i("th",{scope:"col"},e.LANG.GROUP.TAGS.TITLE)])),i("tbody",i("tr.text-center",[i("td",t.size(n.group.pads)),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",e.LANG.GROUP.FIELD[n.group.visibility.toUpperCase()]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",e.LANG.GLOBAL[n.group.readonly?"YES":"NO"]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",t.size(n.group.admins)),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",t.size(n.group.users)),i("td",i("ul.list-inline",t.map(n.group.tags,function(t){return i("li.label.label-default",t)})))]))])},h.pads=function(n){var r="/mypads/group/"+n.group._id,s=e.LANG.GROUP,o=i("p.col-sm-4.text-center",[i("a.btn.btn-add-pad",{href:r+"/pad/add",config:i.route},[i("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.PAD.ADD])]),u=i("p.text-center",[i("a.btn.btn-default",{href:r+"/pad/move",config:i.route},[i("i.glyphicon.glyphicon-transfer")," "+e.LANG.GROUP.PAD.MOVE])]),p=i("p.col-sm-4.text-center.form-inline",[i(".form-group",[i("input.form-control",{id:"pad-filter-form",type:"search",placeholder:e.LANG.GROUP.SEARCH.TYPE,oninput:i.withAttr("value",d.filterKeyword)})])]),c=function(){return n.sortField()?n.sortAsc()?"top":"bottom":"arrow-combo"}(),A=i("p.col-sm-4.text-right.small",[i("span"," "+e.LANG.GROUP.PAD.SORT_BY),i("button.btn.btn-default.btn-xs",{type:"button",onclick:t.partial(n.sortBy,"ctime")},[e.LANG.GROUP.PAD.SORT_BY_CREATION+" ",i("i.small.glyphicon glyphicon-triangle-"+c)]),i("button.btn.btn-default.btn-xs",{type:"button",onclick:t.partial(n.sortBy,"name")},[e.LANG.GROUP.PAD.SORT_BY_NAME+" ",i("i.small.glyphicon glyphicon-triangle-"+c)])]),g=function(){return 0===t.size(n.group.pads)?i("p",e.LANG.GROUP.PAD.NONE):i("ul.list-group.col-sm-12",t.map(n.pads,function(o){if(void 0===o)return null;var u=[function(){if("restricted"!==n.group.visibility||o.visibility&&"restricted"!==o.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)return i("button.btn.btn-default.btn-xs",{title:e.LANG.GROUP.SHARE,onclick:a.bind(n,n.group._id,o._id)},[i("i.glyphicon.glyphicon-link")])}()];n.isAdmin&&u.push(i("a.btn.btn-default.btn-xs",{href:r+"/pad/edit/"+o._id,config:i.route,title:e.LANG.MENU.CONFIG},[i("i.glyphicon.glyphicon-wrench")]),i("div.btn-group.dropdown",[i("button.btn.btn-default.btn-xs",{"aria-haspopup":"true","aria-expanded":"false"},[i("i.glyphicon.glyphicon-trash.text-danger"),i("span.caret")]),i("ul.dropdown-content.dropdown-menu.dropdown-menu-right",[i("li",[i("a",{href:r+"/pad/remove/chat/history/"+o._id,config:i.route},[e.LANG.GROUP.REMOVE_CHAT_HISTORY])]),i("li.divider",{role:"separator"}),i("li",[i("a",{href:r+"/pad/remove/"+o._id,config:i.route},[e.LANG.GROUP.REMOVE+" "+o.name])])])]));var p=o.name;if(o.visibility&&o.visibility!==n.group.visibility){p+=" ("+e.LANG.GROUP.FIELD[o.visibility.toUpperCase()]+")"}return i("li.list-group-item.group-pad-item",{"data-padname":p},[function(){if(!n.isGuest){var e=t.includes(n.bookmarks,o._id);return i("button.btn.btn-link.btn-lg",{title:e?s.UNMARK:s.BOOKMARK,onclick:function(){l(o)}},[i("i",{class:"glyphicon glyphicon-star"+(e?"":"-empty")})])}}(),i("span.name",[i("a",{href:r+"/pad/view/"+o._id,config:i.route,title:e.LANG.GROUP.VIEW},p)]),i("span.pull-right",u)])}))}(),h=[];return(n.isAdmin||n.group.allowUsersToCreatePads&&!n.isGuest)&&h.push(o),h.push(p,A,g),n.isAdmin&&h.push(u),i("section.panel-body",h)},h.users=function(n){if(n.isGuest)return i("p",e.LANG.GROUP.PAD.PUBLIC_DENIED);var r=function(i){return n.isAdmin?i.firstname||i.lastname?i.firstname+" "+i.lastname+" : "+i.email:i.login+" : "+i.email:i.login},s=function(n){return 0===t.size(n)?i("p",e.LANG.GROUP.PAD.USERS_NONE):i("ul.list-group",t.map(n,function(t){return i("li.list-group-item",r(t))}))},o="/mypads/group/"+n.group._id,l=[i("h4",e.LANG.GROUP.PAD.ADMINS)];e.SERVER.allPadsPublicsAuthentifiedOnly&&(l=[]),n.isAdmin&&l.push(i("p.text-center",i("a.btn.btn-default",{href:o+"/user/share",config:i.route},[i("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.SHARE_ADMIN]))),l.push(s(n.admins));var a=[i("h4",e.LANG.GROUP.PAD.USERS)];return n.isAdmin&&a.push(i("p.text-center",i("a.btn.btn-default",{href:o+"/user/invite",config:i.route},[i("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.INVITE_USER.IU]))),a.push(s(n.users)),i("section.panel-body",[i(e.SERVER.allPadsPublicsAuthentifiedOnly?".col-sm-12":".col-sm-6",l),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i(".col-sm-6",a)])},h.passForm=function(t){return[i("form",{id:"password-form",config:u.inFrame,onsubmit:t.submitPass},[i("label",{for:"mypadspassword"},e.LANG.USER.PASSWORD),i("input",{type:"password",required:!0,placeholder:e.LANG.USER.UNDEF,value:t.privatePassword(),oninput:i.withAttr("value",t.privatePassword)}),i("input.ok",{form:"password-form",type:"submit",value:e.LANG.USER.OK})])]},h.main=function(r){var s=!!n.isAuthenticated()&&t.includes(A().bookmarks.groups,r.group._id),o=[i("span",[i("a.link[href=/mypads]",[i("i",{class:"glyphicon glyphicon-chevron-left"})]),i("button.btn.btn-link.btn-lg",{onclick:function(i){i.preventDefault(),c(r.group)},title:s?e.LANG.GROUP.UNMARK:e.LANG.GROUP.BOOKMARK},[i("i",{class:"glyphicon glyphicon-star"+(s?"":"-empty")})]),e.LANG.GROUP.GROUP+" "+r.group.name])],l="";("restricted"!==r.group.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)&&(l=i("button.btn.btn-default",{title:e.LANG.GROUP.SHARE,onclick:a.bind(r,r.group._id,null)},[i("i.glyphicon.glyphicon-link"),i("span"," "+e.LANG.GROUP.SHARE)]));var u=[l];r.isAdmin&&u.push(i("a.btn.btn-default",{href:"/mypads/group/"+r.group._id+"/edit",config:i.route,title:e.LANG.MENU.CONFIG},[i("i.glyphicon.glyphicon-wrench"),i("span"," "+e.LANG.MENU.CONFIG)]),i("a.btn.btn-danger",{href:"/mypads/group/"+r.group._id+"/remove",config:i.route,title:e.LANG.GROUP.REMOVE},[i("i.glyphicon.glyphicon-trash"),i("span"," "+e.LANG.GROUP.REMOVE)]));var p=r.isAdmin&&r.admins.length>1||!r.isAdmin;if(!r.isGuest&&p&&u.push(i("button.cancel.btn.btn-warning",{onclick:r.quit},[i("i.glyphicon glyphicon-fire")," "+e.LANG.GROUP.QUIT_GROUP])),!(r.isAdmin||r.isUser||"private"!==r.group.visibility||r.sendPass()||e.SERVER.allPadsPublicsAuthentifiedOnly))return i("section",[i("h2",o),h.passForm(r)]);var d=e.LANG.GROUP.PAD.ADMINS+" & "+e.LANG.GROUP.PAD.USERS;return e.SERVER.allPadsPublicsAuthentifiedOnly&&(d=e.LANG.GROUP.PAD.ADMINS),i("section",[i(".btn-group.pull-right",{role:"group"},u),i("h2",o),i("section.panel.panel-primary.props",[i(".panel-heading",i("h3.panel-title",e.LANG.GROUP.PAD.PADS)),h.pads(r)]),i("section.panel.panel-info.pads",[i(".panel-heading",i("h3.panel-title",d)),i("section.description",[]),h.users(r)]),i("section.panel.panel-warning.users",[i(".panel-heading",i("h3.panel-title",e.LANG.GROUP.PROPERTIES)),i(".panel-body",r.group.description),h.properties(r)])])},h.aside=function(){return i("section.user-aside",[i("h2",e.LANG.ACTIONS.HELP),i("article.well",i.trust(e.LANG.GROUP.VIEW_HELP))])},g.view=function(i){return s.view(h.main(i),h.aside(i))},g}.call(this);
+module.exports=function(){"use strict";var t=require("mithril"),i=require("lodash"),e=require("../configuration.js"),n=require("../auth.js"),r=require("../widgets/notification.js"),s=require("./layout.js"),o=require("../model/group.js"),l=require("./pad-mark.js"),a=require("./pad-share.js"),u=require("../helpers/ready.js"),p=require("../helpers/sortingPreferences.js"),d=require("../helpers/filterPads.js"),c=require("./group-mark.js"),A=n.userInfo,g={};g.controller=function(){var s=t.route.param("key"),l={group:{visibility:"",tags:[]},privatePassword:t.prop(""),sendPass:t.prop(!1)};n.isAuthenticated()&&(l.bookmarks=n.userInfo().bookmarks.pads),l.isGuest=!n.isAuthenticated();var a=function(r){if(r)return t.route("/mypads");var a=function(r){if(r)return t.route("/mypads");var a=l.isGuest?o.tmp():o;if(l.group=a.groups()[s],l.isGuest)l.isAdmin=!1,l.isUser=!1,l.pads=i.sortBy(i.compact(i.map(l.group.pads,function(t){return a.pads()[t]})),p.padByField());else{l.isAdmin=i.includes(l.group.admins,n.userInfo()._id),l.isUser=i.includes(l.group.users,n.userInfo()._id);var u=o.pads(),d=o.users();l.pads=i.sortBy(i.map(l.group.pads,function(t){return u[t]}),p.padByField()),l.users=i.map(l.group.users,function(t){return d[t]}),l.admins=i.map(l.group.admins,function(t){return d[t]})}p.padAsc()||l.pads.reverse(),document.title=e.LANG.GROUP.GROUP+" "+l.group.name+" - "+e.SERVER.title};o.groups()[s]?a():(l.isGuest=!0,o.fetchObject({group:s},void 0,a))},u=function(){return n.isAuthenticated()?i.partial(o.fetch,a):i.partial(o.fetchObject,{group:s},void 0,a)}();return i.isEmpty(o.groups())?u():a(),l.sortField=t.prop(p.padByField()),l.sortAsc=t.prop(p.padAsc()),l.sortBy=function(t,e){l.sortField()===t&&"boolean"!=typeof e&&l.sortAsc(!l.sortAsc()),l.sortField(t);var n=l.sortAsc()?"asc":"desc";l.pads=i.sortByOrder(l.pads,t,n),p.updateValues({padByField:l.sortField(),padAsc:l.sortAsc()})},l.quit=function(){window.confirm(e.LANG.GROUP.INFO.RESIGN)&&t.request({method:"POST",url:e.URLS.GROUP+"/resign",data:{gid:l.group._id,auth_token:n.token()}}).then(function(i){var n=o.groups();delete n[i.value._id],o.groups(n),r.success({body:e.LANG.GROUP.INFO.RESIGN_SUCCESS}),t.route("/mypads/group/list")},function(t){r.error({body:i.result(e.LANG,t.error)})})},l.submitPass=function(t){t.preventDefault(),o.fetchObject({group:s},l.privatePassword(),function(t){if(t)return l.sendPass(!1);var e=l.isGuest?o.tmp():o;l.group=e.groups()[s],l.pads=i.sortBy(i.compact(i.map(l.group.pads,function(t){return e.pads()[t]})),p.padByField()),l.sendPass(!0)})},l};var h={};return h.properties=function(n){return t("table.table.table-stripped.table-bordered",[t("thead",t("tr",[t("th",{scope:"col"},e.LANG.GROUP.PAD.PADS),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.VISIBILITY},t("i.glyphicon.glyphicon-eye-open",t("span.sr-only",e.LANG.GROUP.PAD.VISIBILITY))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col"},e.LANG.GROUP.FIELD.READONLY),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.ADMINS},t("i.glyphicon.glyphicon-knight",t("span.sr-only",e.LANG.GROUP.PAD.ADMINS))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.USERS},t("i.glyphicon.glyphicon-user",t("span.sr-only",e.LANG.GROUP.PAD.USERS))),t("th",{scope:"col"},e.LANG.GROUP.TAGS.TITLE)])),t("tbody",t("tr.text-center",[t("td",i.size(n.group.pads)),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",{class:"toto"},e.LANG.GROUP.FIELD[n.group.visibility.toUpperCase()]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",e.LANG.GLOBAL[n.group.readonly?"YES":"NO"]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",i.size(n.group.admins)),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",i.size(n.group.users)),t("td",t("ul.list-inline",i.map(n.group.tags,function(i){return t("li.label.label-default",i)})))]))])},h.pads=function(n){var r="/mypads/group/"+n.group._id,s=e.LANG.GROUP,o=t("p.col-sm-4.text-center",[t("a.btn.btn-add-pad",{href:r+"/pad/add",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.PAD.ADD])]),u=t("p.text-center",[t("a.btn.btn-default",{href:r+"/pad/move",config:t.route},[t("i.glyphicon.glyphicon-transfer")," "+e.LANG.GROUP.PAD.MOVE])]),p=t("p.col-sm-4.text-center.form-inline",[t(".form-group",[t("input.form-control",{id:"pad-filter-form",type:"search",placeholder:e.LANG.GROUP.SEARCH.TYPE,oninput:t.withAttr("value",d.filterKeyword)})])]),c=function(){return n.sortField()?n.sortAsc()?"top":"bottom":"arrow-combo"}(),A=t("p.col-sm-4.text-right.small",[t("span"," "+e.LANG.GROUP.PAD.SORT_BY),t("button.btn.btn-default.btn-xs",{type:"button",onclick:i.partial(n.sortBy,"ctime")},[e.LANG.GROUP.PAD.SORT_BY_CREATION+" ",t("i.small.glyphicon glyphicon-triangle-"+c)]),t("button.btn.btn-default.btn-xs",{type:"button",onclick:i.partial(n.sortBy,"name")},[e.LANG.GROUP.PAD.SORT_BY_NAME+" ",t("i.small.glyphicon glyphicon-triangle-"+c)])]),g=function(){return 0===i.size(n.group.pads)?t("p",e.LANG.GROUP.PAD.NONE):t("ul.list-group.col-sm-12",i.map(n.pads,function(o){if(void 0===o)return null;var u=[function(){if("restricted"!==n.group.visibility||o.visibility&&"restricted"!==o.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)return t("button.btn.btn-default.btn-xs",{title:e.LANG.GROUP.SHARE,onclick:a.bind(n,n.group._id,o._id)},[t("i.glyphicon.glyphicon-link")])}()];n.isAdmin&&u.push(t("a.btn.btn-default.btn-xs",{href:r+"/pad/edit/"+o._id,config:t.route,title:e.LANG.MENU.CONFIG},[t("i.glyphicon.glyphicon-wrench")]),t("div.btn-group.dropdown",[t("button.btn.btn-default.btn-xs",{"aria-haspopup":"true","aria-expanded":"false"},[t("i.glyphicon.glyphicon-trash.text-danger"),t("span.caret")]),t("ul.dropdown-content.dropdown-menu.dropdown-menu-right",[t("li",[t("a",{href:r+"/pad/remove/chat/history/"+o._id,config:t.route},[e.LANG.GROUP.REMOVE_CHAT_HISTORY])]),t("li.divider",{role:"separator"}),t("li",[t("a",{href:r+"/pad/remove/"+o._id,config:t.route},[e.LANG.GROUP.REMOVE+" "+o.name])])])]));var p=o.name;if(o.visibility&&o.visibility!==n.group.visibility){p+=" ("+e.LANG.GROUP.FIELD[o.visibility.toUpperCase()]+")"}return t("li.list-group-item.group-pad-item",{"data-padname":p},[function(){if(!n.isGuest){var e=i.includes(n.bookmarks,o._id);return t("button.btn.btn-link.btn-lg",{title:e?s.UNMARK:s.BOOKMARK,onclick:function(){l(o)}},[t("i",{class:"glyphicon glyphicon-star"+(e?"":"-empty")})])}}(),t("span.name",[t("a",{href:r+"/pad/view/"+o._id,config:t.route,title:e.LANG.GROUP.VIEW},p)]),t("span.pull-right",u)])}))}(),h=[];return(n.isAdmin||n.group.allowUsersToCreatePads&&!n.isGuest)&&h.push(o),h.push(p,A,g),n.isAdmin&&h.push(u),t("section.panel-body",h)},h.users=function(n){if(n.isGuest)return t("p",e.LANG.GROUP.PAD.PUBLIC_DENIED);var r=function(t){return n.isAdmin?t.firstname||t.lastname?t.firstname+" "+t.lastname+" : "+t.email:t.login+" : "+t.email:t.login},s=function(n){return 0===i.size(n)?t("p",e.LANG.GROUP.PAD.USERS_NONE):t("ul.list-group",i.map(n,function(i){return t("li.list-group-item",r(i))}))},o="/mypads/group/"+n.group._id,l=[t("h4",e.LANG.GROUP.PAD.ADMINS)];e.SERVER.allPadsPublicsAuthentifiedOnly&&(l=[]),n.isAdmin&&l.push(t("p.text-center",t("a.btn.btn-default",{href:o+"/user/share",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.SHARE_ADMIN]))),l.push(s(n.admins));var a=[t("h4",e.LANG.GROUP.PAD.USERS)];return n.isAdmin&&a.push(t("p.text-center",t("a.btn.btn-default",{href:o+"/user/invite",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.INVITE_USER.IU]))),a.push(s(n.users)),t("section.panel-body",[t(e.SERVER.allPadsPublicsAuthentifiedOnly?".col-sm-12":".col-sm-6",l),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t(".col-sm-6",a)])},h.passForm=function(i){return[t("form",{id:"password-form",config:u.inFrame,onsubmit:i.submitPass},[t("label",{for:"mypadspassword"},e.LANG.USER.PASSWORD),t("input",{type:"password",required:!0,placeholder:e.LANG.USER.UNDEF,value:i.privatePassword(),oninput:t.withAttr("value",i.privatePassword)}),t("input.ok",{form:"password-form",type:"submit",value:e.LANG.USER.OK})])]},h.main=function(r){var s=!!n.isAuthenticated()&&i.includes(A().bookmarks.groups,r.group._id),o=[t("span",[t("a.link[href=/mypads]",[t("i",{class:"glyphicon glyphicon-chevron-left"})]),t("button.btn.btn-link.btn-lg",{onclick:function(t){t.preventDefault(),c(r.group)},title:s?e.LANG.GROUP.UNMARK:e.LANG.GROUP.BOOKMARK},[t("i",{class:"glyphicon glyphicon-star"+(s?"":"-empty")})]),e.LANG.GROUP.GROUP+" "+r.group.name])],l="";("restricted"!==r.group.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)&&(l=t("button.btn.btn-default",{title:e.LANG.GROUP.SHARE,onclick:a.bind(r,r.group._id,null)},[t("i.glyphicon.glyphicon-link"),t("span"," "+e.LANG.GROUP.SHARE)]));var u=[l];r.isAdmin&&u.push(t("a.btn.btn-default",{href:"/mypads/group/"+r.group._id+"/edit",config:t.route,title:e.LANG.MENU.CONFIG},[t("i.glyphicon.glyphicon-wrench"),t("span"," "+e.LANG.MENU.CONFIG)]),t("a.btn.btn-danger",{href:"/mypads/group/"+r.group._id+"/remove",config:t.route,title:e.LANG.GROUP.REMOVE},[t("i.glyphicon.glyphicon-trash"),t("span"," "+e.LANG.GROUP.REMOVE)]));var p=r.isAdmin&&r.admins.length>1||!r.isAdmin;if(!r.isGuest&&p&&u.push(t("button.cancel.btn.btn-warning",{onclick:r.quit},[t("i.glyphicon glyphicon-fire")," "+e.LANG.GROUP.QUIT_GROUP])),!(r.isAdmin||r.isUser||"private"!==r.group.visibility||r.sendPass()||e.SERVER.allPadsPublicsAuthentifiedOnly))return t("section",[t("h2",o),h.passForm(r)]);var d=e.LANG.GROUP.PAD.ADMINS+" & "+e.LANG.GROUP.PAD.USERS;return e.SERVER.allPadsPublicsAuthentifiedOnly&&(d=e.LANG.GROUP.PAD.ADMINS),t("section",[t(".btn-group.pull-right",{role:"group"},u),t("h2",o),t("section.panel.panel-primary.props",[t(".panel-heading",t("h3.panel-title",e.LANG.GROUP.PAD.PADS)),h.pads(r)]),t("section.panel.panel-info.pads",[t(".panel-heading",t("h3.panel-title",d)),t("section.description",[]),h.users(r)]),t("section.panel.panel-warning.users",[t(".panel-heading",t("h3.panel-title",e.LANG.GROUP.PROPERTIES)),t(".panel-body",r.group.description),h.properties(r)])])},h.aside=function(){return t("section.user-aside",[t("h2",e.LANG.ACTIONS.HELP),t("article.well",t.trust(e.LANG.GROUP.VIEW_HELP))])},g.view=function(t){return s.view(h.main(t),h.aside(t))},g}.call(this);
 },{"../auth.js":2,"../configuration.js":3,"../helpers/filterPads.js":6,"../helpers/ready.js":8,"../helpers/sortingPreferences.js":9,"../model/group.js":10,"../widgets/notification.js":43,"./group-mark.js":20,"./layout.js":25,"./pad-mark.js":29,"./pad-share.js":33,"lodash":52,"mithril":53}],23:[function(require,module,exports){
-module.exports=function(){"use strict";var t=require("mithril"),i=require("lodash"),n=require("../configuration.js"),e=require("../auth.js"),l=e.userInfo,r=require("./layout.js"),o=require("../model/group.js"),s=require("./pad-share.js"),u=require("../helpers/sortingPreferences.js"),a=require("./group-mark.js"),c={};c.controller=function(){if(!e.isAuthenticated())return n.unauthUrl(!0),t.route("/login");document.title=n.LANG.GROUP.MYGROUPS+" - "+n.SERVER.title;var r={groups:{}};r.filters={admins:!1,users:!1};var s=function(t,i,n){r.filters[t]=!!i&&n,r.computeGroups()};return r.filterToggle=function(t){var n=function(n){return i.includes(n[t],l()._id)};s(t,!r.filters[t],n)},r.filterTag=function(t){var n=function(n){return i.includes(n.tags,t)};s(t,!r.filters[t],n)},r.filterVisibility=function(t){r.filterVisibVal===t?(r.filters.visibility=!1,r.filterVisibVal=!1):(r.filterVisibVal=t,r.filters.visibility=function(i){return i.visibility===t}),r.computeGroups()},r.search=t.prop(""),r.filterSearch=function(){r.search().length>2?r.filters.search=function(t){var i=new RegExp(r.search(),"gi");return!!t.name.match(i)||t.tags.toString().match(i)}:r.filters.search=!1,r.computeGroups()},window.c=r,r.sortField=t.prop(u.groupByField()),r.sortAsc=t.prop(u.groupAsc()),r.sortBy=function(t){r.sortField()===t&&r.sortAsc(!r.sortAsc()),r.sortField(t);var n=r.sortAsc()?"asc":"desc";r.groups=i.transform(r.groups,function(e,l,r){e[r]=i.sortByOrder(l,t,n)}),u.updateValues({groupByField:r.sortField(),groupAsc:r.sortAsc()})},r.computeGroups=function(){r.groups=i(o.groups()).values().sortBy(r.sortField()).value(),r.sortAsc()||r.groups.reverse();var t=l().bookmarks.groups;r.groups=i.reduce(r.groups,function(n,e){for(var l in r.filters)if(r.filters[l]&&!r.filters[l](e))return n;return i.includes(t,e._id)&&!e.archived?n.bookmarked.push(e):e.readonly||e.archived?n.archived.push(e):n.normal.push(e),n},{bookmarked:[],archived:[],normal:[]})},i.isEmpty(o.groups())?o.fetch(r.computeGroups):r.computeGroups(),r};var p={};return p.sort=function(e){var l=function(n,l){return t("button.btn.btn-default.btn-xs",{class:e.sortField()===n?" btn-info":"",onclick:i.partial(e.sortBy,n)},[t("span",l+" "),t("i.small.glyphicon glyphicon-triangle-"+(e.sortAsc()?"top":"bottom"))])};return t("section.sort",[t("h3",[t("span",n.LANG.GROUP.SORT.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":n.LANG.GROUP.SORT.HELP})]),t("ul.list-inline",[t("li",[l("ctime",n.LANG.GROUP.PAD.SORT_BY_CREATION)]),t("li",[l("name",n.LANG.GROUP.PAD.SORT_BY_NAME)])])])},p.search=function(i){return t("section.search",[t("h3",[t("span",n.LANG.GROUP.SEARCH.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":n.LANG.GROUP.SEARCH.HELP})]),t(".input-group",[t("input.form-control",{type:"search",placeholder:n.LANG.GROUP.SEARCH.TYPE,minlength:3,pattern:".{3,}",value:i.search(),oninput:t.withAttr("value",i.search),onkeydown:function(t){13===t.keyCode&&(t.preventDefault(),i.filterSearch())}}),t("span.input-group-btn",t("button.btn.btn-default",{type:"button",onclick:i.filterSearch},n.LANG.USER.OK))])])},p.filters=function(e){return t("section.filter",[t("h3",[t("span",n.LANG.GROUP.FILTERS.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":n.LANG.GROUP.FILTERS.HELP})]),t("ul.list-unstyled",[t("li",[t("button.btn.btn-default.btn-xs.btn-block",{class:"admin"+(e.filters.admins?" btn-info":""),onclick:i.partial(e.filterToggle,"admins")},n.LANG.GROUP.FILTERS.ADMIN)]),t("li",[t("button.btn.btn-default.btn-xs.btn-block",{class:"user"+(e.filters.users?" btn-info":""),onclick:i.partial(e.filterToggle,"users")},n.LANG.GROUP.FILTERS.USER)]),t("li",[function(){return i.map(["restricted","private","public"],function(l){return t("button.btn.btn-default.btn-xs.btn-block",{class:"user"+(e.filterVisibVal===l?" btn-info":""),onclick:i.partial(e.filterVisibility,l)},n.LANG.GROUP.FIELD.VISIBILITY+" : "+n.LANG.GROUP.FIELD[l.toUpperCase()])})}()])])])},p.tags=function(e){return t("section.tag",[t("h3",[t("span",n.LANG.GROUP.TAGS.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":n.LANG.GROUP.TAGS.HELP})]),t("ul.list-inline",i.map(o.tags(),function(n){return t("li",[t("button.btn.btn-default.btn-xs",{class:e.filters[n]?"btn-info":"",onclick:i.partial(e.filterTag,n)},n)])}))])},p.aside=function(i){var e=[p.search(i),p.sort(i)];return n.SERVER.allPadsPublicsAuthentifiedOnly||e.push(p.filters(i)),e.push(p.tags(i)),t("section.group-aside",e)},p.group=function(e,r){var o="/mypads/group/"+r._id,u=i.includes(l().bookmarks.groups,r._id),c=n.LANG.GROUP,p=i.includes(r.admins,l()._id),h=[function(){if("restricted"!==r.visibility||n.SERVER.allPadsPublicsAuthentifiedOnly)return t("button.btn.btn-default.btn-xs",{type:"button",onclick:s.bind(e,r._id,null),title:n.LANG.GROUP.SHARE},[t("i.glyphicon.glyphicon-link")])}()];return p&&h.push(t("a.btn.btn-default.btn-xs",{href:o+"/edit",config:t.route,title:n.LANG.MENU.CONFIG},[t("i.glyphicon glyphicon-wrench")]),t("a.btn.btn-default.btn-xs",{href:o+"/remove",config:t.route,title:n.LANG.GROUP.REMOVE},[t("i.glyphicon.glyphicon-trash.text-danger")])),t("tr",[t("th",[t("p.pull-right",h),t("a.btn.btn-link.btn-lg",{onclick:a.bind(e,r,e.computeGroups),href:"/mypads",config:t.route,title:u?c.UNMARK:c.BOOKMARK},[t("i",{class:"glyphicon glyphicon-star"+(u?"":"-empty")})]),t("a",{href:"/mypads/group/"+r._id+"/view",config:t.route,title:n.LANG.GROUP.VIEW_MANAGE},r.name)]),t("td",[i.size(r.pads),function(){var i=[];return p&&i.push(t("a.btn.btn-default.btn-xs.pull-right",{href:o+"/pad/add",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success",{title:n.LANG.GROUP.PAD.ADD})])),i}()]),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",n.LANG.GROUP.FIELD[r.visibility.toUpperCase()]),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",[i.size(r.admins),function(){if(p)return t("a.btn.btn-default.btn-xs.pull-right",{href:o+"/user/share",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success",{title:n.LANG.GROUP.SHARE_ADMIN})])}()]),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",[function(){if("restricted"===r.visibility)return[i.size(r.users),function(){if(p)return t("a.btn.btn-default.btn-xs.pull-right",{href:o+"/user/invite",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success",{title:n.LANG.GROUP.INVITE_USER.IU})])}()]}()]),t("td",[t("ul.list-inline",i.map(r.tags,function(n){return t("li.label.label-default",{class:e.filters[n]?"label-info":"",onclick:i.partial(e.filterTag,n)},n)}))])])},p._groups=function(t,n){return i.map(t.groups[n],i.partial(p.group,t))},p.groups=i.partialRight(p._groups,"normal"),p.bookmarked=i.partialRight(p._groups,"bookmarked"),p.archived=i.partialRight(p._groups,"archived"),p.main=function(i){return t("section",[t("h2",[t("span",n.LANG.GROUP.MYGROUPS),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":n.LANG.GROUP.HELP}),t("a.btn.btn-primary.pull-right",{href:"/mypads/group/add",config:t.route},[t("span",n.LANG.GROUP.ADD)])]),t("section.panel.panel-primary",[t(".panel-heading",t("h3.panel-title",n.LANG.GROUP.GROUPS)),t("table.table.table-stripped.table-bordered",[t("thead",t("tr",[t("th",{scope:"col"},n.LANG.GROUP.GROUPS),t("th",{scope:"col"},n.LANG.GROUP.PAD.PADS),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:n.LANG.GROUP.PAD.VISIBILITY},t("i.glyphicon.glyphicon-eye-open",t("span.sr-only",n.LANG.GROUP.PAD.VISIBILITY))),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:n.LANG.GROUP.PAD.ADMINS},t("i.glyphicon.glyphicon-knight",t("span.sr-only",n.LANG.GROUP.PAD.ADMINS))),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:n.LANG.GROUP.PAD.USERS},t("i.glyphicon.glyphicon-user",t("span.sr-only",n.LANG.GROUP.PAD.USERS))),t("th",{scope:"col"},n.LANG.GROUP.TAGS.TITLE)])),t("tbody",[p.bookmarked(i),p.groups(i)])])]),t("section.panel.panel-default",[t(".panel-heading",t("h3.panel-title",n.LANG.GROUP.ARCHIVED)),t("table.table.table-stripped.table-bordered",[t("thead",t("tr",[t("th",{scope:"col"},n.LANG.GROUP.GROUPS),t("th",{scope:"col"},n.LANG.GROUP.PAD.PADS),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:n.LANG.GROUP.PAD.VISIBILITY},t("i.glyphicon.glyphicon-eye-open",t("span.sr-only",n.LANG.GROUP.PAD.VISIBILITY))),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:n.LANG.GROUP.PAD.ADMINS},t("i.glyphicon.glyphicon-knight",t("span.sr-only",n.LANG.GROUP.PAD.ADMINS))),n.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:n.LANG.GROUP.PAD.USERS},t("i.glyphicon.glyphicon-user",t("span.sr-only",n.LANG.GROUP.PAD.USERS))),t("th",{scope:"col"},n.LANG.GROUP.TAGS.TITLE)])),t("tbody",[p.archived(i)])])])])},c.view=function(t){return r.view(p.main(t),p.aside(t))},c}.call(this);
+/**
+*  vim:set sw=2 ts=2 sts=2 ft=javascript expandtab:
+*
+*  # Group List module
+*
+*  ## License
+*
+*  Licensed to the Apache Software Foundation (ASF) under one
+*  or more contributor license agreements.  See the NOTICE file
+*  distributed with this work for additional information
+*  regarding copyright ownership.  The ASF licenses this file
+*  to you under the Apache License, Version 2.0 (the
+*  "License"); you may not use this file except in compliance
+*  with the License.  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing,
+*  software distributed under the License is distributed on an
+*  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+*  KIND, either express or implied.  See the License for the
+*  specific language governing permissions and limitations
+*  under the License.
+*
+*  ## Description
+*
+*  This module is the main one, containing groups.
+*/
+
+module.exports = (function () {
+  'use strict';
+  // Global dependencies
+  var m  = require('mithril');
+  var ld = require('lodash');
+
+  // Local dependencies
+  var conf               = require('../configuration.js');
+  var auth               = require('../auth.js');
+  var u                  = auth.userInfo;
+  var layout             = require('./layout.js');
+  var model              = require('../model/group.js');
+  var padShare           = require('./pad-share.js');
+  var sortingPreferences = require('../helpers/sortingPreferences.js');
+  var groupMark          = require('./group-mark.js');
+
+  var group = {};
+
+  /**
+  * ## Controller
+  *
+  * Used for module state and actions.
+  */
+
+  group.controller = function () {
+    if (!auth.isAuthenticated()) {
+      conf.unauthUrl(true);
+      return m.route('/login');
+    }
+    document.title = conf.LANG.GROUP.MYGROUPS + ' - ' + conf.SERVER.title;
+    var c          = { groups: {} };
+
+    /**
+    * ### filters
+    *
+    * `filters` is an object of active functions to apply to the current list of
+    * groups. Keys are composed with filter names, being able to remove it if
+    * necessary.
+    */
+    c.filters = { admins: false, users: false };
+
+    /**
+    * #### filterFn
+    *
+    * Private `filterFn` is a function taking :
+    *
+    * - `name` filter for `c.filters` storing
+    * - `cond` expression, for toggling purpose
+    * - `action` function, value for `c.filters[name]` if `cond` is *true*
+    *
+    * It fixes filters according to arguments and calls `computeGroups`.
+    */
+
+    var filterFn = function (name, cond, action) {
+      c.filters[name] = cond ? action : false;
+      c.computeGroups();
+    };
+
+    /**
+    * #### filterToggle
+    *
+    * `filterToggle` is a function taking a `field` string object, key of
+    * `c.filters` for toggling filter, accoding to group `field` (for instance
+    * used for admins and users).
+    */
+
+    c.filterToggle = function (field) {
+      var action = function (g) { return ld.includes(g[field], u()._id); };
+      filterFn(field, !c.filters[field], action);
+    };
+
+    /**
+    * #### filterTag
+    *
+    * `filterTag` is similar to `filterToggle` but works with several tags, as
+    * taken as argument.
+    */
+
+    c.filterTag = function (tag) {
+      var action = function (g) { return ld.includes(g.tags, tag); };
+      filterFn(tag, !c.filters[tag], action);
+    };
+
+    /**
+    * #### filterVisibility
+    *
+    * `filterVisibility` is similar to `filterTag` but works exact given
+    * `visibility` string and keeps in memory old visibility value because it
+    * should only be one selected at the same time.
+    */
+
+    c.filterVisibility = function (visibility) {
+      if (c.filterVisibVal === visibility) {
+        c.filters.visibility = false;
+        c.filterVisibVal     = false;
+      } else {
+        c.filterVisibVal     = visibility;
+        c.filters.visibility = function (g) {
+          return (g.visibility === visibility);
+        };
+      }
+      c.computeGroups();
+    };
+
+    /*
+    * #### filterSearch
+    *
+    * `filterSearch` function checks group *name* and *tags* field with
+    * full-text search pattern `c.search` but only if `c.search` has 3
+    * characters or more.
+    */
+
+    c.search       = m.prop('');
+    c.filterSearch = function () {
+      if (c.search().length > 2) {
+        c.filters.search = function (g) {
+          var re = new RegExp(c.search(), 'gi');
+          if (g.name.match(re)) { return true; }
+          return g.tags.toString().match(re);
+        };
+      } else {
+        c.filters.search = false;
+      }
+      c.computeGroups();
+    };
+
+    /**
+    * ### sortBy
+    *
+    * `c.sortBy` function sort pads by the `field` argument.
+    * If already sorted by the same field, it reverses order.
+    */
+
+    window.c = c;
+    c.sortField = m.prop(sortingPreferences.groupByField());
+    c.sortAsc   = m.prop(sortingPreferences.groupAsc());
+    c.sortBy    = function (field) {
+      if (c.sortField() === field) { c.sortAsc(!c.sortAsc()); }
+      c.sortField(field);
+      var direction = c.sortAsc() ? 'asc' : 'desc';
+      c.groups      = ld.transform(c.groups, function (memo, groups, type) {
+        memo[type] = ld.sortByOrder(groups, field, direction);
+      });
+      sortingPreferences.updateValues({
+        groupByField: c.sortField(),
+        groupAsc: c.sortAsc()
+      });
+    };
+
+    /**
+    * ### computeGroups
+    *
+    * `computeGroups` is an internal function that computed groups according to
+    * list view needs. It :
+    *
+    * - filters according to `c.filters`
+    * - takes model.groups() and creates a new object with separate bookmared,
+    *   archived and normal groups
+    * - sets `c.groups` for usage in view.
+    */
+
+    c.computeGroups = function () {
+      c.groups = ld(model.groups()).values().sortBy(c.sortField()).value();
+      if (!c.sortAsc()) {
+        c.groups.reverse();
+      }
+      var userGroups = u().bookmarks.groups;
+      c.groups = ld.reduce(c.groups, function (memo, g) {
+        for (var k in c.filters) {
+          if (c.filters[k]) {
+            if (!c.filters[k](g)) { return memo; }
+          }
+        }
+        if (ld.includes(userGroups, g._id) && !g.archived) {
+          memo.bookmarked.push(g);
+        } else if (g.readonly || g.archived) {
+          memo.archived.push(g);
+        } else {
+          memo.normal.push(g);
+        }
+        return memo;
+      }, { bookmarked: [], archived: [], normal: [] });
+    };
+
+    // Bootstrapping
+    if (ld.isEmpty(model.groups())) {
+      model.fetch(c.computeGroups);
+    } else {
+      c.computeGroups();
+    }
+
+    return c;
+  };
+
+  /**
+  * ## Views
+  *
+  */
+
+  var view = {};
+
+  view.sort = function (c) {
+    var btn = function (field, txt) {
+      return m('button.btn.btn-default.btn-xs', {
+        class: (c.sortField() === field) ? ' btn-info': '',
+        onclick: ld.partial(c.sortBy, field)
+      }, [
+        m('span', txt+' '),
+        m('i.small.glyphicon glyphicon-triangle-' +
+          (c.sortAsc() ? 'top' : 'bottom'))
+      ]);
+    };
+    return m('section.sort', [
+      m('h3', [
+        m('span', conf.LANG.GROUP.SORT.TITLE),
+        m('i.mp-tooltip.glyphicon glyphicon-info-sign',
+          { 'data-msg': conf.LANG.GROUP.SORT.HELP })
+      ]),
+      m('ul.list-inline', [
+        m('li', [ btn('ctime', conf.LANG.GROUP.PAD.SORT_BY_CREATION) ]),
+        m('li', [ btn('name', conf.LANG.GROUP.PAD.SORT_BY_NAME) ]),
+      ])
+    ]);
+  };
+
+  view.search = function (c) {
+    return m('section.search', [
+      m('h3', [
+        m('span', conf.LANG.GROUP.SEARCH.TITLE),
+        m('i.mp-tooltip.glyphicon glyphicon-info-sign',
+          { 'data-msg': conf.LANG.GROUP.SEARCH.HELP })
+      ]),
+      m('.input-group', [
+        m('input.form-control', {
+          type: 'search',
+          placeholder: conf.LANG.GROUP.SEARCH.TYPE,
+          minlength: 3,
+          pattern: '.{3,}',
+          value: c.search(),
+          oninput: m.withAttr('value', c.search),
+          onkeydown: function (e) {
+            if (e.keyCode === 13) { // ENTER
+              e.preventDefault();
+              c.filterSearch();
+            }
+          }
+        }),
+        m('span.input-group-btn',
+          m('button.btn.btn-default',
+            { type: 'button', onclick: c.filterSearch },
+            conf.LANG.USER.OK)
+        ),
+      ])
+    ]);
+  };
+
+  view.filters = function (c) {
+    return m('section.filter', [
+      m('h3', [
+        m('span', conf.LANG.GROUP.FILTERS.TITLE),
+        m('i.mp-tooltip.glyphicon glyphicon-info-sign',
+          { 'data-msg': conf.LANG.GROUP.FILTERS.HELP })
+      ]),
+      m('ul.list-unstyled', [
+        m('li', [
+          m('button.btn.btn-default.btn-xs.btn-block',
+            {
+              class: 'admin' + (c.filters.admins ? ' btn-info' : ''),
+              onclick: ld.partial(c.filterToggle, 'admins')
+            },
+            conf.LANG.GROUP.FILTERS.ADMIN)
+        ]),
+        m('li', [
+          m('button.btn.btn-default.btn-xs.btn-block',
+            {
+              class: 'user' + (c.filters.users ? ' btn-info' : ''),
+              onclick: ld.partial(c.filterToggle, 'users')
+            },
+          conf.LANG.GROUP.FILTERS.USER)
+        ]),
+        m('li', [
+          (function () {
+            return ld.map(['restricted', 'private', 'public'], function (f) {
+              return m('button.btn.btn-default.btn-xs.btn-block',
+                {
+                  class: 'user' + ((c.filterVisibVal === f) ? ' btn-info' : ''),
+                  onclick: ld.partial(c.filterVisibility, f)
+                }, conf.LANG.GROUP.FIELD.VISIBILITY + ' : ' +
+                  conf.LANG.GROUP.FIELD[f.toUpperCase()]);
+            });
+          })()
+        ])
+      ])
+    ]);
+  };
+
+  view.tags = function (c) {
+    return m('section.tag', [
+      m('h3', [
+        m('span', conf.LANG.GROUP.TAGS.TITLE),
+        m('i.mp-tooltip.glyphicon glyphicon-info-sign',
+          { 'data-msg': conf.LANG.GROUP.TAGS.HELP })
+      ]),
+      m('ul.list-inline', ld.map(model.tags(), function (t) {
+        return m('li', [
+          m('button.btn.btn-default.btn-xs',
+            {
+              class: (c.filters[t] ? 'btn-info': ''),
+              onclick: ld.partial(c.filterTag, t)
+            },
+            t)
+        ]);
+      }))
+    ]);
+  };
+
+  view.aside = function (c) {
+    var views = [ view.search(c), view.sort(c) ];
+    if (!conf.SERVER.allPadsPublicsAuthentifiedOnly) { views.push(view.filters(c)); }
+    views.push(view.tags(c));
+    return m('section.group-aside', views);
+  };
+
+  view.group = function (c, g) {
+    var padRoute     = '/mypads/group/' + g._id;
+    var isBookmarked = (ld.includes(u().bookmarks.groups, g._id));
+    var GROUP        = conf.LANG.GROUP;
+    var isAdmin      = ld.includes(g.admins, u()._id);
+    var actions      = [
+      (function () {
+        if (g.visibility !== 'restricted' || conf.SERVER.allPadsPublicsAuthentifiedOnly) {
+          return m('button.btn.btn-default.btn-xs', {
+            type: 'button',
+            onclick: padShare.bind(c, g._id, null),
+            title: conf.LANG.GROUP.SHARE
+          }, [ m('i.glyphicon.glyphicon-link') ]);
+        }
+      })()
+    ];
+    if (isAdmin) {
+      actions.push(m('a.btn.btn-default.btn-xs', {
+        href: padRoute + '/edit',
+        config: m.route,
+        title: conf.LANG.MENU.CONFIG
+      }, [ m('i.glyphicon glyphicon-wrench') ]),
+      m('a.btn.btn-default.btn-xs', {
+        href: padRoute + '/remove',
+        config: m.route,
+        title: conf.LANG.GROUP.REMOVE
+      }, [ m('i.glyphicon.glyphicon-trash.text-danger') ]));
+    }
+    return m('tr', [
+      m('th', [
+        m('p.pull-right', actions),
+        m('a.btn.btn-link.btn-lg', {
+          onclick: groupMark.bind(c, g, c.computeGroups),
+          href: '/mypads',
+          config: m.route,
+          title: (isBookmarked ? GROUP.UNMARK : GROUP.BOOKMARK)
+        }, [
+          m('i',
+            { class: 'glyphicon glyphicon-star' +
+              (isBookmarked ? '' : '-empty') })
+        ]),
+        m('a', {
+          href: '/mypads/group/' + g._id + '/view',
+          config: m.route,
+          title: conf.LANG.GROUP.VIEW_MANAGE
+        }, g.name)
+      ]),
+      m('td', [
+        ld.size(g.pads), (function () {
+        var icons = [];
+        if (isAdmin) {
+          icons.push(m('a.btn.btn-default.btn-xs.pull-right',
+            { href: padRoute + '/pad/add', config: m.route },
+            [ m('i.glyphicon.glyphicon-plus.text-success',
+                { title: conf.LANG.GROUP.PAD.ADD })
+            ])
+          );
+        }
+          return icons;
+        })()
+      ]),console.log(g),
+      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : 
+      m('td', [
+        m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group' }, conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])],
+      ),
+      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [ ld.size(g.admins), (function () {
+        if (isAdmin) {
+          return m('a.btn.btn-default.btn-xs.pull-right',
+            { href: padRoute + '/user/share', config: m.route },
+            [ m('i.glyphicon.glyphicon-plus.text-success',
+              { title: conf.LANG.GROUP.SHARE_ADMIN })
+            ]);
+        }
+      })()
+      ]),
+      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [
+        (function () {
+          if (g.visibility === 'restricted') {
+            return [
+              ld.size(g.users),
+              (function () {
+                if (isAdmin) {
+                  return m(
+                    'a.btn.btn-default.btn-xs.pull-right',
+                    { href: padRoute + '/user/invite', config: m.route },
+                    [
+                      m('i.glyphicon.glyphicon-plus.text-success',
+                        { title: conf.LANG.GROUP.INVITE_USER.IU })
+                    ]
+                  );
+                }
+              })()
+            ];
+          }
+        })()
+      ]),
+      m('td', [
+        m('ul.list-inline', ld.map(g.tags, function (t) {
+          return m('li.label.label-default', {
+            class: (c.filters[t] ? 'label-info' : ''),
+            onclick: ld.partial(c.filterTag, t)
+          }, t);
+        }))
+      ])
+    ]);
+  };
+
+  view._groups = function (c, type) {
+    return ld.map(c.groups[type], ld.partial(view.group, c));
+  };
+  view.groups     = ld.partialRight(view._groups, 'normal');
+  view.bookmarked = ld.partialRight(view._groups, 'bookmarked');
+  view.archived   = ld.partialRight(view._groups, 'archived');
+
+  view.main = function (c) {
+    return m('section', [
+      m('h2', [
+        m('span', conf.LANG.GROUP.MYGROUPS),
+        m('i.mp-tooltip.glyphicon glyphicon-info-sign',
+          { 'data-msg': conf.LANG.GROUP.HELP }),
+        m('a.btn.btn-primary.pull-right', {
+          href: '/mypads/group/add',
+          config: m.route
+        }, [
+          m('span', conf.LANG.GROUP.ADD)
+        ])
+      ]),
+      m('section.panel.panel-primary', [
+        m('.panel-heading',
+          m('h3.panel-title', conf.LANG.GROUP.GROUPS)
+        ),
+        m('table.table.table-stripped.table-bordered', [
+          m('thead',
+            m('tr', [
+              m('th', {scope: 'col'}, conf.LANG.GROUP.GROUPS),
+              m('th', {scope: 'col'}, conf.LANG.GROUP.PAD.PADS),
+              (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
+                'th',
+                {scope: 'col', title: conf.LANG.GROUP.PAD.VISIBILITY},
+                m('i.glyphicon.glyphicon-eye-open',
+                  m('span.sr-only', conf.LANG.GROUP.PAD.VISIBILITY)
+                )
+              ),
+              (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
+                'th',
+                {scope: 'col', title: conf.LANG.GROUP.PAD.ADMINS},
+                m('i.glyphicon.glyphicon-knight',
+                  m('span.sr-only', conf.LANG.GROUP.PAD.ADMINS)
+                )
+              ),
+              (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
+                'th',
+                {scope: 'col', title: conf.LANG.GROUP.PAD.USERS},
+                m('i.glyphicon.glyphicon-user',
+                  m('span.sr-only', conf.LANG.GROUP.PAD.USERS)
+                )
+              ),
+              m('th', {scope: 'col'}, conf.LANG.GROUP.TAGS.TITLE),
+            ])
+          ),
+          m('tbody', [
+            view.bookmarked(c),
+            view.groups(c)
+
+          ])
+        ])
+      ]),
+      m('section.panel.panel-default', [
+        m('.panel-heading',
+          m('h3.panel-title', conf.LANG.GROUP.ARCHIVED)
+        ),
+        m('table.table.table-stripped.table-bordered', [
+          m('thead',
+            m('tr', [
+              m('th', {scope: 'col'}, conf.LANG.GROUP.GROUPS),
+              m('th', {scope: 'col'}, conf.LANG.GROUP.PAD.PADS),
+              (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
+                'th',
+                {scope: 'col', title: conf.LANG.GROUP.PAD.VISIBILITY},
+                m('i.glyphicon.glyphicon-eye-open',
+                  m('span.sr-only', conf.LANG.GROUP.PAD.VISIBILITY)
+                )
+              ),
+              (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
+                'th',
+                {scope: 'col', title: conf.LANG.GROUP.PAD.ADMINS},
+                m('i.glyphicon.glyphicon-knight',
+                  m('span.sr-only', conf.LANG.GROUP.PAD.ADMINS)
+                )
+              ),
+              (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
+                'th',
+                {scope: 'col', title: conf.LANG.GROUP.PAD.USERS},
+                m('i.glyphicon.glyphicon-user',
+                  m('span.sr-only', conf.LANG.GROUP.PAD.USERS)
+                )
+              ),
+              m('th', {scope: 'col'}, conf.LANG.GROUP.TAGS.TITLE),
+            ])
+          ),
+          m('tbody', [
+            view.archived(c)
+          ])
+        ])
+      ])
+    ]);
+  };
+
+  group.view = function (c) {
+    return layout.view(view.main(c), view.aside(c));
+  };
+
+  return group;
+}).call(this);
+
 },{"../auth.js":2,"../configuration.js":3,"../helpers/sortingPreferences.js":9,"../model/group.js":10,"./group-mark.js":20,"./layout.js":25,"./pad-share.js":33,"lodash":52,"mithril":53}],24:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("../auth.js"),t=require("./layout.js");return{controller:function(){return r.isAdmin()?e.route("/admin"):r.isAuthenticated()?e.route("/mypads"):void e.route("/login")},view:function(){return t.view(e("p","empty home"),e("p","empty aside"))}}}.call(this);
 },{"../auth.js":2,"./layout.js":25,"mithril":53}],25:[function(require,module,exports){
