@@ -455,7 +455,7 @@ module.exports = (function () {
         }
           return icons;
         })()
-      ]),console.log(g),
+      ]),
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : 
       m('td', [
         m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group' }, conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])],
@@ -510,6 +510,13 @@ module.exports = (function () {
   view.archived   = ld.partialRight(view._groups, 'archived');
 
   view.main = function (c) {
+    if(c.archivedIsVisible === undefined) {
+      c.archivedIsVisible = false;
+    }
+    c.toggleArchived = function() {
+      c.archivedIsVisible = !c.archivedIsVisible;
+    };
+    console.log(c.archivedIsVisible);
     return m('section', [
       m('h2', [
         m('span', conf.LANG.GROUP.MYGROUPS),
@@ -564,8 +571,13 @@ module.exports = (function () {
       ]),
       m('section.panel.panel-default', [
         m('.panel-heading',
-          m('h3.panel-title', conf.LANG.GROUP.ARCHIVED)
+          m('h3.panel-title', conf.LANG.GROUP.ARCHIVED),
+          m('button',{
+            onclick: c.toggleArchived,
+          },
+          m('i.glyphicon.glyphicon-chevron-'+ (c.archivedIsVisible? 'up':'down')))
         ),
+        m('div', {class:'archived-group-view-'+ (c.archivedIsVisible? null:'notVisible')}, 
         m('table.table.table-stripped.table-bordered', [
           m('thead',
             m('tr', [
@@ -598,7 +610,7 @@ module.exports = (function () {
           m('tbody', [
             view.archived(c)
           ])
-        ])
+        ]))
       ])
     ]);
   };

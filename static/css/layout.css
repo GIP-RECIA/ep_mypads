@@ -168,3 +168,13 @@ a.btn.btn-add-pad {
   padding: 2px 3px;
   border-radius: 0.25em;
 }
+
+.panel-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.archived-group-view-notVisible {
+  display: none;
+}
