@@ -516,7 +516,6 @@ module.exports = (function () {
     c.toggleArchived = function() {
       c.archivedIsVisible = !c.archivedIsVisible;
     };
-    console.log(c.archivedIsVisible);
     return m('section', [
       m('h2', [
         m('span', conf.LANG.GROUP.MYGROUPS),
