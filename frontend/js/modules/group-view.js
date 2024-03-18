@@ -236,7 +236,7 @@ module.exports = (function () {
         m('tr.text-center', [
           m('td', ld.size(c.group.pads)),
           (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
-            'td',{class:"toto"},
+            'td',
             conf.LANG.GROUP.FIELD[c.group.visibility.toUpperCase()]
           ),
           (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m(
@@ -576,7 +576,7 @@ module.exports = (function () {
           m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
           ),
           view.pads(c)
-        ]),
+        ]),console.log(c),
         m('section.panel.panel-info.pads', [
           m('.panel-heading',
           m('h3.panel-title', adminPanelTitle)

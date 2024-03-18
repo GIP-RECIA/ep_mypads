@@ -321,7 +321,7 @@
         "REMOVE": "Eliminar",
         "REMOVE_CHAT_HISTORY": "Eliminar el historial de chat",
         "SEARCH": {
-            "HELP": "Búsqueda en campos comunes con al menos 2 caracteres",
+            "HELP": "Búsqueda en campos comunes con al menos 3 caracteres",
             "TITLE": "",
             "TYPE": "Buscar un nombre de pad"
         },

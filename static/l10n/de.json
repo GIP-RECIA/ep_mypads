@@ -321,7 +321,7 @@
         "REMOVE": "Löschen",
         "REMOVE_CHAT_HISTORY": "Lösche den Chatverlauf",
         "SEARCH": {
-            "HELP": "Suche in gemeinsamen Feldern mit mindestens 2 Zeichen",
+            "HELP": "Suche in gemeinsamen Feldern mit mindestens 3 Zeichen",
             "TITLE": "",
             "TYPE": "Nach einem Namen für pad suchen"
         },

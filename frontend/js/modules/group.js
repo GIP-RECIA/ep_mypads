@@ -140,15 +140,24 @@ module.exports = (function () {
     */
 
     c.search       = m.prop('');
+    c.padsSearched={group:[], pads:[]};
     c.filterSearch = function () {
       if (c.search().length > 2) {
         c.filters.search = function (g) {
           var re = new RegExp(c.search(), 'gi');
-          if (g.name.match(re)) { return true; }
-          return g.tags.toString().match(re);
+          // Searches in the pads of the group if matches the search input
+          g.pads.forEach((pad)=> {
+            if (pad.match(re)) {
+              c.padsSearched.group.push(g.name);
+              c.padsSearched.pads.push({group:g.name, pad:pad});
+            }
+          });
+          if (g.name.match(re) || ld.includes(c.padsSearched.group, g.name)) { return true; }  
+        return g.tags.toString().match(re);
         };
       } else {
         c.filters.search = false;
+        c.padsSearched={group:[], pads:[]};
       }
       c.computeGroups();
     };
@@ -255,14 +264,14 @@ module.exports = (function () {
   view.search = function (c) {
     return m('section.search', [
       m('h3', [
-        m('span', conf.LANG.GROUP.SEARCH.TITLE),
+        m('span', conf.LANG.GROUP.SEARCH.GENERAL),
         m('i.mp-tooltip.glyphicon glyphicon-info-sign',
           { 'data-msg': conf.LANG.GROUP.SEARCH.HELP })
       ]),
       m('.input-group', [
         m('input.form-control', {
           type: 'search',
-          placeholder: conf.LANG.GROUP.SEARCH.TYPE,
+          placeholder:conf.LANG.GROUP.SEARCH.PLACEHOLDER,
           minlength: 3,
           pattern: '.{3,}',
           value: c.search(),
@@ -396,18 +405,23 @@ module.exports = (function () {
           config: m.route,
           title: conf.LANG.GROUP.VIEW_MANAGE
         }, g.name)
-      ]),
+      ]),console.log(c),
       m('td', [
-        ld.size(g.pads), (function () {
-        var icons = [];
-        if (isAdmin) {
-          icons.push(m('a.btn.btn-default.btn-xs.pull-right',
-            { href: padRoute + '/pad/add', config: m.route },
-            [ m('i.glyphicon.glyphicon-plus.text-success',
-                { title: conf.LANG.GROUP.PAD.ADD })
+          (
+            ld.includes(c.padsSearched.group, g.name) ?
+            m('ul', [
+              c.padsSearched.pads.map( e => m('li',e.pad))
+            ]):
+            ld.size(g.pads)),(function () {
+            var icons = [];
+            if (isAdmin) {
+              icons.push(m('a.btn.btn-default.btn-xs.pull-right',
+              { href: padRoute + '/pad/add', config: m.route },
+              [ m('i.glyphicon.glyphicon-plus.text-success',
+              { title: conf.LANG.GROUP.PAD.ADD })
             ])
-          );
-        }
+            );
+          }
           return icons;
         })()
       ]),
@@ -518,8 +532,7 @@ module.exports = (function () {
           ),
           m('tbody', [
             view.bookmarked(c),
-            view.groups(c)
-
+            view.groups(c),
           ])
         ])
       ]),

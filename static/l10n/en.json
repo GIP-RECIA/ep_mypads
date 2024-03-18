@@ -321,7 +321,7 @@
       "REMOVE": "Remove",
       "REMOVE_CHAT_HISTORY": "Remove chat history",
       "SEARCH": {
-         "HELP": "Search on common fields with at least 2 characters",
+         "HELP": "Search on common fields with at least 3 characters",
          "TITLE": "",
          "TYPE": "Search for a pad name"
       },
