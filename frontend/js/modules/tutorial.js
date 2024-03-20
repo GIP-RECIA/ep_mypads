@@ -51,25 +51,25 @@ module.exports = (function () {
             m.trust(conf.LANG.GROUP.VIEW_HELP),
             m.trust(conf.LANG.GROUP.ADD_HELP),
             m.trust(conf.LANG.GROUP.ADD_HELP_LABEL)
-        ])
+        ]);
     };
 
     view.inviteUser = function () {
-        return m.trust(conf.LANG.GROUP.INVITE_USER.HELP)
+        return m.trust(conf.LANG.GROUP.INVITE_USER.HELP);
     };
 
     view.pad = function () {
         return m('div', [
             m.trust(conf.LANG.GROUP.PAD.VIEW_HELP),
             m('p', conf.LANG.GROUP.INFO.GROUP_PARAMS)
-        ])
+        ]);
     };
 
     view.user = function () {
         return m('div', [
             m.trust(conf.LANG.USER.HELP.PROFILE)
-        ])
-    }
+        ]);
+    };
 
     view.main = function () {
         return m('section', [
@@ -106,7 +106,7 @@ module.exports = (function () {
                     view.inviteUser()
                 ])
             ])
-        ])
+        ]);
     };
    
     tutorial.view = function () {
