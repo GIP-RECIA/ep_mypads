@@ -413,9 +413,10 @@ module.exports = (function () {
             m('ul', [
               c.padsSearched.pads
               .map( function(e) { 
-                // only displays the names of the pads that match the search entered and the name of the affiliated group
+                // only displays the names of the pads that match the search
+                // entered and the name of the affiliated group
                 if(g.name === e.group) {
-                  return m('li',[m('a',{href: padRoute + '/pad/view/' + e.pad, config: m.route}, e.pad)])
+                  return m('li',[m('a',{href: padRoute + '/pad/view/' + e.pad, config: m.route}, e.pad)]);
                 }})
             ]):
             ld.size(g.pads)),(function () {
@@ -435,7 +436,7 @@ module.exports = (function () {
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : 
       m('td', [
         m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group'},
-        conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])],
+        conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])]
       ),
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [ ld.size(g.admins), (function () {
         if (isAdmin) {

@@ -59,6 +59,7 @@ module.exports = (function () {
   var adminUsersCreate     = require('./modules/admin-users-create.js');
   var adminUserForm        = require('./modules/admin-users-form.js');
   var adminUserRemove      = require('./modules/admin-users-remove.js');
+  var tutorial             = require('./modules/tutorial.js');
 
   var route = { model: {} };
 
@@ -101,7 +102,8 @@ module.exports = (function () {
     '/admin/users': adminUsers,
     '/admin/users/create': adminUsersCreate,
     '/admin/users/:login/edit': adminUserForm,
-    '/admin/users/:login/remove': adminUserRemove
+    '/admin/users/:login/remove': adminUserRemove,
+    '/tutorial': tutorial
   };
 
   var myPadsBox = document.getElementById('mypads');

@@ -72,6 +72,11 @@ module.exports = (function () {
           txt: conf.LANG.MENU.PROFILE
         },
         {
+          route: '/tutorial',
+          icon: 'baby-formula',
+          txt: conf.LANG.ACTIONS.HELP
+        },
+        {
           route: '/logout',
           icon: 'off',
           txt: conf.LANG.MENU.LOGOUT
