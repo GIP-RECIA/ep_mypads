@@ -191,7 +191,7 @@ module.exports = (function () {
         c.filters.search = function (g) {
           var re = new RegExp(c.search(), 'gi');
           // Searches in the pads of the group if matches the search input
-          g.pads.forEach((pad)=> {
+          g.pads.forEach( function(pad) {
             if (pad.match(re)) {
               c.padsSearched.group.push(g.name);
               c.padsSearched.pads.push({group:g.name, pad:pad});
@@ -202,7 +202,6 @@ module.exports = (function () {
         };
       } else {
         c.filters.search = false;
-        c.padsSearched={group:[], pads:[]};
       }
       c.computeGroups();
     };
@@ -324,6 +323,7 @@ module.exports = (function () {
           onkeydown: function (e) {
             if (e.keyCode === 13) { // ENTER
               e.preventDefault();
+              c.padsSearched={group:[], pads:[]};
               c.filterSearch();
             }
           }
@@ -446,16 +446,22 @@ module.exports = (function () {
               (isBookmarked ? '' : '-empty') })
         ]),
         m('a', {
-          href: '/mypads/group/' + g._id + '/view',
+          href: padRoute + '/view',
           config: m.route,
           title: conf.LANG.GROUP.VIEW_MANAGE
         }, g.name)
-      ]),console.log(c),
+      ]),
       m('td', [
           (
+            // Check if the group name is present in c.padsSearched.group
             ld.includes(c.padsSearched.group, g.name) ?
             m('ul', [
-              c.padsSearched.pads.map( e => m('li',e.pad))
+              c.padsSearched.pads
+              .map( function(e) { 
+                // only displays the names of the pads that match the search entered and the name of the affiliated group
+                if(g.name === e.group) {
+                  return m('li',[m('a',{href: padRoute + '/pad/view/' + e.pad, config: m.route}, e.pad)])
+                }})
             ]):
             ld.size(g.pads)),(function () {
             var icons = [];
@@ -470,9 +476,11 @@ module.exports = (function () {
           return icons;
         })()
       ]),
+      //  
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : 
       m('td', [
-        m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group' }, conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])],
+        m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group'},
+        conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])],
       ),
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [ ld.size(g.admins), (function () {
         if (isAdmin) {
