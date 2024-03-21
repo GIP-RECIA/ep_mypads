@@ -248,7 +248,6 @@ module.exports = (function () {
           g.password = res.password;
         }
         g.ctime = res.ctime;
-        console.error(res);
         check();
       });
     } else {

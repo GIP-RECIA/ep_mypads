@@ -132,7 +132,7 @@ label[for="pad-filter-form"] {
   display: block;
 }
 
-/* Button to create a new ad */
+/* Button to create a new pad */
 a.btn.btn-add-pad {
   background-color: aliceblue;
   border: 2px solid steelblue;

@@ -415,7 +415,7 @@ module.exports = (function () {
               .map( function(e) { 
                 // only displays the names of the pads that match the search
                 // entered and the name of the affiliated group
-                if(g.name === e.group) {
+                if (g.name === e.group) {
                   return m('li',[m('a',{href: padRoute + '/pad/view/' + e.pad, config: m.route}, e.pad)]);
                 }})
             ]):
@@ -488,7 +488,7 @@ module.exports = (function () {
   view.archived   = ld.partialRight(view._groups, 'archived');
 
   view.main = function (c) {
-    if(c.archivedIsVisible === undefined) {
+    if (c.archivedIsVisible === undefined) {
       c.archivedIsVisible = false;
     }
     c.toggleArchived = function() {
