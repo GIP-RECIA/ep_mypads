@@ -324,8 +324,8 @@
             "HELP": "Recherche sur les champs les plus communs avec au moins 3 caractères",
             "TITLE": "",
             "GENERAL":"Rechercher un dossier, un pad ou un label",
-            "PLACEHOLDER":"Rechercher ici",
-            "TYPE": "Rechercher un nom de pad"
+            "PLACEHOLDER":"Saisissez ici",
+            "TYPE": "Rechercher un pad"
         },
         "SHARE": "Partager",
         "SHARE_ADMIN": "Partager l’administration",

@@ -71,11 +71,12 @@ module.exports = (function () {
           icon: 'home',
           txt: conf.LANG.MENU.PROFILE
         },
-        {
-          route: '/tutorial',
-          icon: 'baby-formula',
-          txt: conf.LANG.ACTIONS.HELP
-        },
+        // in waiting a better text
+        // {
+        //   route: '/tutorial',
+        //   icon: 'info-sign',
+        //   txt: conf.LANG.ACTIONS.HELP
+        // },
         {
           route: '/logout',
           icon: 'off',
