@@ -142,12 +142,13 @@ module.exports = (function () {
     c.search       = m.prop('');
     c.padsSearched={group:[], pads:[]};
     c.filterSearch = function () {
+      c.padsSearched={group:[], pads:[]};
       if (c.search().length > 2) {
         c.filters.search = function (g) {
           var re = new RegExp(c.search(), 'gi');
           // Searches in the pads of the group if matches the search input
           g.pads.forEach( function(pad) {
-            if (pad.match(re)) {
+            if (pad.match(re) && !ld.includes(c.padsSearched.pads, pad)) {
               c.padsSearched.group.push(g.name);
               c.padsSearched.pads.push({group:g.name, pad:pad});
             }
@@ -278,14 +279,13 @@ module.exports = (function () {
           onkeydown: function (e) {
             if (e.keyCode === 13) { // ENTER
               e.preventDefault();
-              c.padsSearched={group:[], pads:[]};
               c.filterSearch();
             }
           }
         }),
         m('span.input-group-btn',
           m('button.btn.btn-default',
-            { type: 'button', onclick: c.filterSearch },
+            { type: 'button', onclick: (c.filterSearch) },
             conf.LANG.USER.OK)
         ),
       ])
@@ -409,7 +409,7 @@ module.exports = (function () {
       m('td', [
           (
             // Check if the group name is present in c.padsSearched.group
-            ld.includes(c.padsSearched.group, g.name) ?
+            ld.includes(c.padsSearched.group, g.name) && c.search().length > 2 ?
             m('ul', [
               c.padsSearched.pads
               .map( function(e) { 
