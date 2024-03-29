@@ -277,8 +277,11 @@ module.exports = (function () {
           value: c.search(),
           oninput: m.withAttr('value', c.search),
           onkeydown: function (e) {
-            if (e.keyCode === 13) { // ENTER
+            if (e.keyCode === 13 ) { // ENTER
               e.preventDefault();
+              c.filterSearch();
+            }
+            if (e.keyCode === 8 ) { // BACKSPACE / DELETE
               c.filterSearch();
             }
           }
@@ -481,7 +484,7 @@ module.exports = (function () {
   };
 
   view._groups = function (c, type) {
-    return ld.map(c.groups[type], ld.partial(view.group, c));
+      return ld.map(c.groups[type], ld.partial(view.group, c));
   };
   view.groups     = ld.partialRight(view._groups, 'normal');
   view.bookmarked = ld.partialRight(view._groups, 'bookmarked');
