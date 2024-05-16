@@ -503,7 +503,7 @@ module.exports = (function () {
   view.main = function (c) {
     var isBookmarked = (auth.isAuthenticated()) ? (ld.includes(u().bookmarks.groups, c.group._id)) : false;
     var h2Elements   = [ m('span', [
-      m('a.link[href=/mypads]', [
+      m('a.link[href=/mypads][title=' + conf.LANG.GROUP.MYGROUPS + ']', [
           m('i', {class: 'glyphicon glyphicon-chevron-left'})
         ]
       ),
