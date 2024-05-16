@@ -153,7 +153,7 @@ module.exports = (function () {
               c.padsSearched.pads.push({group:g.name, pad:pad});
             }
           });
-          if (g.name.match(re) || ld.includes(c.padsSearched.group, g.name)) { return true; }  
+          if (g.name.match(re) || ld.includes(c.padsSearched.group, g.name)) { return true; }
         return g.tags.toString().match(re);
         };
       } else {
@@ -415,7 +415,7 @@ module.exports = (function () {
             ld.includes(c.padsSearched.group, g.name) && c.search().length > 2 ?
             m('ul', [
               c.padsSearched.pads
-              .map( function(e) { 
+              .map( function(e) {
                 // only displays the names of the pads that match the search
                 // entered and the name of the affiliated group
                 if (g.name === e.group) {
@@ -435,10 +435,10 @@ module.exports = (function () {
           return icons;
         })()
       ]),
-      //  
-      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : 
+      //
+      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null :
       m('td', [
-        m('span', {class:g.visibility === 'restricted'? 'restricted-group':'public-group'},
+        m('span', {class: g.visibility + '-group'},
         conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])]
       ),
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [ ld.size(g.admins), (function () {
@@ -556,7 +556,7 @@ module.exports = (function () {
           },
           m('i.glyphicon.glyphicon-chevron-'+ (c.archivedIsVisible? 'up':'down')))
         ),
-        m('div', {class:'archived-group-view-'+ (c.archivedIsVisible? null:'notVisible')}, 
+        m('div', {class:'archived-group-view-'+ (c.archivedIsVisible? null:'notVisible')},
         m('table.table.table-stripped.table-bordered', [
           m('thead',
             m('tr', [
