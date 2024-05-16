@@ -276,12 +276,12 @@ module.exports = (function () {
           pattern: '.{3,}',
           value: c.search(),
           oninput: m.withAttr('value', c.search),
-          onkeydown: function (e) {
-            if (e.keyCode === 13 ) { // ENTER
+          onkeyup: function (e) {
+            if (e.keyCode === 13) { // ENTER
               e.preventDefault();
               c.filterSearch();
             }
-            if (e.keyCode === 8 ) { // BACKSPACE / DELETE
+            if (c.search().length <= 2) {
               c.filterSearch();
             }
           }
