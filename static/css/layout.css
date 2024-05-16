@@ -137,7 +137,12 @@ a.btn.btn-add-pad {
   background-color: aliceblue;
   border: 2px solid steelblue;
   font-weight: bold;
-  color: steelblue;
+  color: #2F75AE;
+}
+
+/* Improve accessibility of btn-danger */
+.btn-danger {
+  background-color: #cc433f !important;
 }
 
 .link-home{
