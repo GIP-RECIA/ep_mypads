@@ -274,7 +274,7 @@ module.exports = (function () {
         ' '+conf.LANG.GROUP.PAD.ADD
       ])
     ]);
-    var moveView = m('p.text-center', [
+    var moveView = m('p.text-center.col-sm-12', [
       m('a.btn.btn-default', { href: route + '/pad/move', config: m.route }, [
         m('i.glyphicon.glyphicon-transfer'),
         ' '+conf.LANG.GROUP.PAD.MOVE
@@ -314,7 +314,7 @@ module.exports = (function () {
     ]);
     var padView = (function () {
       if (ld.size(c.group.pads) === 0) {
-        return m('p', conf.LANG.GROUP.PAD.NONE);
+        return m('p.text-center.col-sm-12', conf.LANG.GROUP.PAD.NONE);
       } else {
         return m('ul.list-group.col-sm-12', ld.map(c.pads, function (p) {
           if (typeof(p) === 'undefined') { return null; }
@@ -400,7 +400,7 @@ module.exports = (function () {
     var padBlocks = [];
     if (c.isAdmin || (c.group.allowUsersToCreatePads && !c.isGuest)) { padBlocks.push(addView);}
     padBlocks.push(filterView, sortView, padView);
-    if (c.isAdmin) { padBlocks.push(moveView);}
+    if (c.isAdmin && ld.size(c.group.pads) !== 0) { padBlocks.push(moveView);}
     return m('section.panel-body', padBlocks);
   };
 
