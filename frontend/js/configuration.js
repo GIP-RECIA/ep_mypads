@@ -71,7 +71,12 @@ module.exports = (function () {
       url: config.URLS.RAWBASE + 'l10n/' + key + '.json'
     }).then(function (resp) {
       config.USERLANG = key;
-      config.LANG = resp;
+      // Keep english sentences if no translation is provided
+      config.LANG = ld.merge(config.LANG, resp, function(a, b) {
+        if (b === '') {
+          return a;
+        }
+      });
     }, function (err) {
       console.log('updatel:' + err);
       config.USERLANG = USERLANG_DEFAULT;

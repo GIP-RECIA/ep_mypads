@@ -88,6 +88,18 @@ var auth              = require('./auth.js');
 var perm              = require('./perm.js');
 var common            = require('./model/common.js');
 
+function mergeTrad (en, lang) {
+  return ld.merge(en, lang, function(a, b) {
+    if (b === '') {
+      return a;
+    }
+  });
+}
+
+function parseMailTemplate (lang, opt) {
+  return JSON.parse(rFS(__dirname + '/templates/mail_' + lang + '.json', opt));
+}
+
 module.exports = (function () {
   'use strict';
 
@@ -122,13 +134,14 @@ module.exports = (function () {
       app.use('/mypads/functest', express.static(__dirname + '/spec/frontend'));
     }
     var rFSOpts = { encoding: 'utf8' };
+    var l10nEn = parseMailTemplate('en', rFSOpts);
     api.l10n    = {
       mail: {
-        de: JSON.parse(rFS(__dirname + '/templates/mail_de.json', rFSOpts)),
-        en: JSON.parse(rFS(__dirname + '/templates/mail_en.json', rFSOpts)),
-        es: JSON.parse(rFS(__dirname + '/templates/mail_es.json', rFSOpts)),
-        fr: JSON.parse(rFS(__dirname + '/templates/mail_fr.json', rFSOpts)),
-        it: JSON.parse(rFS(__dirname + '/templates/mail_it.json', rFSOpts)),
+        de: mergeTrad(ld.clone(l10nEn), parseMailTemplate('de', rFSOpts)),
+        en: l10nEn,
+        es: mergeTrad(ld.clone(l10nEn), parseMailTemplate('es', rFSOpts)),
+        fr: mergeTrad(ld.clone(l10nEn), parseMailTemplate('fr', rFSOpts)),
+        it: mergeTrad(ld.clone(l10nEn), parseMailTemplate('it', rFSOpts)),
       }
     };
     auth.init(app);
