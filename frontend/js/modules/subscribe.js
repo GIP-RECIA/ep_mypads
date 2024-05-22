@@ -338,6 +338,7 @@ module.exports = (function () {
       );
     } else if (!c.adminView()) {
       var log                   = fields.login;
+      log.input.attrs.config    = form.focusOnInit;
       log.input.attrs.maxlength = 40;
       log.label.attrs.class     = 'col-sm-4';
       requiredFields.splice(0, 0,
