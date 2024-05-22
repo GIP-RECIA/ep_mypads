@@ -113,9 +113,9 @@ section.pad iframe {
   border: 1px solid #BDBDBD;
   border-radius: 5px 0 5px 5px;
 }
-label[for="pad-filter-form"] {
+/* label[for="pad-filter-form"] {
   padding-right: 10px;
-}
+} */
 
 .monospace {
   font-family: monospace;
@@ -130,4 +130,60 @@ label[for="pad-filter-form"] {
  * avoid bootstrap dropdown.js requirement */
 .btn-group button:focus + .dropdown-menu {
   display: block;
+}
+
+/* Button to create a new pad */
+a.btn.btn-add-pad {
+  background-color: aliceblue;
+  border: 2px solid steelblue;
+  font-weight: bold;
+  color: #2F75AE;
+}
+
+/* Improve accessibility of btn-danger */
+.btn-danger {
+  background-color: #cc433f !important;
+}
+
+.link-home{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: fit-content;
+  margin-top: 15px;
+}
+
+.link-home>h1 {
+  margin: 0;
+}
+
+.logo-img {
+  border-radius: 10px;
+}
+
+.public-group,
+.restricted-group,
+.private-group {
+  padding: 2px 3px;
+  border-radius: 0.25em;
+}
+.private-group {
+  background-color: #FF7B7B;
+}
+.restricted-group {
+  background-color: #FFC529;
+}
+.public-group {
+  background-color: #66DEA8;
+}
+
+.panel-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.archived-group-view-notVisible {
+  display: none;
 }

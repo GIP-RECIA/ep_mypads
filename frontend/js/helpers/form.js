@@ -133,7 +133,7 @@ module.exports = (function () {
   */
 
   form.focusOnInit = function (element, isInit) {
-    if (isInit) { element.focus(); }
+    if (!isInit) { element.focus(); }
   };
 
   return form;

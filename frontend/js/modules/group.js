@@ -140,12 +140,21 @@ module.exports = (function () {
     */
 
     c.search       = m.prop('');
+    c.padsSearched={group:[], pads:[]};
     c.filterSearch = function () {
+      c.padsSearched={group:[], pads:[]};
       if (c.search().length > 2) {
         c.filters.search = function (g) {
           var re = new RegExp(c.search(), 'gi');
-          if (g.name.match(re)) { return true; }
-          return g.tags.toString().match(re);
+          // Searches in the pads of the group if matches the search input
+          g.pads.forEach( function(pad) {
+            if (pad.match(re) && !ld.includes(c.padsSearched.pads, pad)) {
+              c.padsSearched.group.push(g.name);
+              c.padsSearched.pads.push({group:g.name, pad:pad});
+            }
+          });
+          if (g.name.match(re) || ld.includes(c.padsSearched.group, g.name)) { return true; }
+        return g.tags.toString().match(re);
         };
       } else {
         c.filters.search = false;
@@ -255,28 +264,31 @@ module.exports = (function () {
   view.search = function (c) {
     return m('section.search', [
       m('h3', [
-        m('span', conf.LANG.GROUP.SEARCH.TITLE),
+        m('span', conf.LANG.GROUP.SEARCH.GENERAL),
         m('i.mp-tooltip.glyphicon glyphicon-info-sign',
           { 'data-msg': conf.LANG.GROUP.SEARCH.HELP })
       ]),
       m('.input-group', [
         m('input.form-control', {
           type: 'search',
-          placeholder: conf.LANG.GROUP.SEARCH.TYPE,
+          placeholder:conf.LANG.GROUP.SEARCH.PLACEHOLDER,
           minlength: 3,
           pattern: '.{3,}',
           value: c.search(),
           oninput: m.withAttr('value', c.search),
-          onkeydown: function (e) {
+          onkeyup: function (e) {
             if (e.keyCode === 13) { // ENTER
               e.preventDefault();
+              c.filterSearch();
+            }
+            if (c.search().length <= 2) {
               c.filterSearch();
             }
           }
         }),
         m('span.input-group-btn',
           m('button.btn.btn-default',
-            { type: 'button', onclick: c.filterSearch },
+            { type: 'button', onclick: (c.filterSearch) },
             conf.LANG.USER.OK)
         ),
       ])
@@ -392,26 +404,43 @@ module.exports = (function () {
               (isBookmarked ? '' : '-empty') })
         ]),
         m('a', {
-          href: '/mypads/group/' + g._id + '/view',
+          href: padRoute + '/view',
           config: m.route,
           title: conf.LANG.GROUP.VIEW_MANAGE
         }, g.name)
       ]),
       m('td', [
-        ld.size(g.pads), (function () {
-        var icons = [];
-        if (isAdmin) {
-          icons.push(m('a.btn.btn-default.btn-xs.pull-right',
-            { href: padRoute + '/pad/add', config: m.route },
-            [ m('i.glyphicon.glyphicon-plus.text-success',
-                { title: conf.LANG.GROUP.PAD.ADD })
+          (
+            // Check if the group name is present in c.padsSearched.group
+            ld.includes(c.padsSearched.group, g.name) && c.search().length > 2 ?
+            m('ul', [
+              c.padsSearched.pads
+              .map( function(e) {
+                // only displays the names of the pads that match the search
+                // entered and the name of the affiliated group
+                if (g.name === e.group) {
+                  return m('li',[m('a',{href: padRoute + '/pad/view/' + e.pad, config: m.route}, e.pad)]);
+                }})
+            ]):
+            ld.size(g.pads)),(function () {
+            var icons = [];
+            if (isAdmin) {
+              icons.push(m('a.btn.btn-default.btn-xs.pull-right',
+              { href: padRoute + '/pad/add', config: m.route },
+              [ m('i.glyphicon.glyphicon-plus.text-success',
+              { title: conf.LANG.GROUP.PAD.ADD })
             ])
-          );
-        }
+            );
+          }
           return icons;
         })()
       ]),
-      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()]),
+      //
+      (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null :
+      m('td', [
+        m('span', {class: g.visibility + '-group'},
+        conf.LANG.GROUP.FIELD[g.visibility.toUpperCase()])]
+      ),
       (conf.SERVER.allPadsPublicsAuthentifiedOnly) ? null : m('td', [ ld.size(g.admins), (function () {
         if (isAdmin) {
           return m('a.btn.btn-default.btn-xs.pull-right',
@@ -455,13 +484,19 @@ module.exports = (function () {
   };
 
   view._groups = function (c, type) {
-    return ld.map(c.groups[type], ld.partial(view.group, c));
+      return ld.map(c.groups[type], ld.partial(view.group, c));
   };
   view.groups     = ld.partialRight(view._groups, 'normal');
   view.bookmarked = ld.partialRight(view._groups, 'bookmarked');
   view.archived   = ld.partialRight(view._groups, 'archived');
 
   view.main = function (c) {
+    if (c.archivedIsVisible === undefined) {
+      c.archivedIsVisible = false;
+    }
+    c.toggleArchived = function() {
+      c.archivedIsVisible = !c.archivedIsVisible;
+    };
     return m('section', [
       m('h2', [
         m('span', conf.LANG.GROUP.MYGROUPS),
@@ -509,15 +544,19 @@ module.exports = (function () {
           ),
           m('tbody', [
             view.bookmarked(c),
-            view.groups(c)
-
+            view.groups(c),
           ])
         ])
       ]),
       m('section.panel.panel-default', [
         m('.panel-heading',
-          m('h3.panel-title', conf.LANG.GROUP.ARCHIVED)
+          m('h3.panel-title', conf.LANG.GROUP.ARCHIVED),
+          m('button',{
+            onclick: c.toggleArchived,
+          },
+          m('i.glyphicon.glyphicon-chevron-'+ (c.archivedIsVisible? 'up':'down')))
         ),
+        m('div', {class:'archived-group-view-'+ (c.archivedIsVisible? null:'notVisible')},
         m('table.table.table-stripped.table-bordered', [
           m('thead',
             m('tr', [
@@ -550,7 +589,7 @@ module.exports = (function () {
           m('tbody', [
             view.archived(c)
           ])
-        ])
+        ]))
       ])
     ]);
   };
