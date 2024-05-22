@@ -137,6 +137,7 @@ module.exports = (function () {
     var l10nEn = parseMailTemplate('en', rFSOpts);
     api.l10n    = {
       mail: {
+        bn: mergeTrad(ld.clone(l10nEn), parseMailTemplate('bn', rFSOpts)),
         de: mergeTrad(ld.clone(l10nEn), parseMailTemplate('de', rFSOpts)),
         en: l10nEn,
         es: mergeTrad(ld.clone(l10nEn), parseMailTemplate('es', rFSOpts)),
