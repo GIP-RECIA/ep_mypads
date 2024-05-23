@@ -321,9 +321,9 @@
         "REMOVE": "Elimina",
         "REMOVE_CHAT_HISTORY": "Elimina la cronologia della chat",
         "SEARCH": {
-            "HELP": "Cerca nei campi più comuni con almeno 2 caratteri",
-            "TITLE": "Cerca",
-            "TYPE": "Inserisci qui"
+            "HELP": "Cerca nei campi più comuni con almeno 3 caratteri",
+            "TITLE": "",
+            "TYPE": "Cercare il nome di un pad"
         },
         "SHARE": "Condividi",
         "SHARE_ADMIN": "Condividi amministrazione",

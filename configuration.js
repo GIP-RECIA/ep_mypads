@@ -88,7 +88,18 @@ module.exports = (function() {
       hideHelpBlocks: false,
       passwordMin: 8,
       passwordMax: 30,
-      languages: { en: 'English', fr: 'Français', de: 'Deutsch', es: 'Español', it: 'Italiano'},
+      languages: {
+        bn: 'Bengali',
+        de: 'Deutsch',
+        en: 'English',
+        en_CA: 'English (Canada)',
+        fr: 'Français',
+        es: 'Español',
+        it: 'Italiano',
+        oc: 'Occitan',
+        uk: 'Ukrainian',
+        zh_Hans: 'Chinese (Simplified)'
+      },
       loginMsg: { en: '', fr: '', de: '', es: '', it: '' },
       defaultLanguage: 'en',
       HTMLExtraHead: '',
@@ -138,7 +149,7 @@ module.exports = (function() {
     },
 
     /**
-    * cache object` stored current configuration for faster access than
+    * cache object stored current configuration for faster access than
     * database
     */
 

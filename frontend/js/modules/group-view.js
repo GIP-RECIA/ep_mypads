@@ -269,12 +269,12 @@ module.exports = (function () {
     var route   = '/mypads/group/' + c.group._id;
     var GROUP   = conf.LANG.GROUP;
     var addView = m('p.col-sm-4.text-center', [
-      m('a.btn.btn-default', { href: route + '/pad/add', config: m.route }, [
+      m('a.btn.btn-add-pad', { href: route + '/pad/add', config: m.route }, [
         m('i.glyphicon.glyphicon-plus.text-success'),
         ' '+conf.LANG.GROUP.PAD.ADD
       ])
     ]);
-    var moveView = m('p.text-center', [
+    var moveView = m('p.text-center.col-sm-12', [
       m('a.btn.btn-default', { href: route + '/pad/move', config: m.route }, [
         m('i.glyphicon.glyphicon-transfer'),
         ' '+conf.LANG.GROUP.PAD.MOVE
@@ -282,13 +282,11 @@ module.exports = (function () {
     ]);
     var filterView = m('p.col-sm-4.text-center.form-inline', [
       m('.form-group', [
-        m('label', {
-          for: 'pad-filter-form'
-        }, conf.LANG.GROUP.SEARCH.TITLE+' '),
+        m('label',{for:'pad-filter-form'}, conf.LANG.GROUP.SEARCH.TYPE),
         m('input.form-control', {
           id: 'pad-filter-form',
           type: 'search',
-          placeholder: conf.LANG.GROUP.SEARCH.TYPE,
+          placeholder: conf.LANG.GROUP.SEARCH.PLACEHOLDER,
           oninput: m.withAttr('value', filterPads.filterKeyword)
         }),
       ])
@@ -316,7 +314,7 @@ module.exports = (function () {
     ]);
     var padView = (function () {
       if (ld.size(c.group.pads) === 0) {
-        return m('p', conf.LANG.GROUP.PAD.NONE);
+        return m('p.text-center.col-sm-12', conf.LANG.GROUP.PAD.NONE);
       } else {
         return m('ul.list-group.col-sm-12', ld.map(c.pads, function (p) {
           if (typeof(p) === 'undefined') { return null; }
@@ -402,7 +400,7 @@ module.exports = (function () {
     var padBlocks = [];
     if (c.isAdmin || (c.group.allowUsersToCreatePads && !c.isGuest)) { padBlocks.push(addView);}
     padBlocks.push(filterView, sortView, padView);
-    if (c.isAdmin) { padBlocks.push(moveView);}
+    if (c.isAdmin && ld.size(c.group.pads) !== 0) { padBlocks.push(moveView);}
     return m('section.panel-body', padBlocks);
   };
 
@@ -505,6 +503,10 @@ module.exports = (function () {
   view.main = function (c) {
     var isBookmarked = (auth.isAuthenticated()) ? (ld.includes(u().bookmarks.groups, c.group._id)) : false;
     var h2Elements   = [ m('span', [
+      m('a.link[href=/mypads][title=' + conf.LANG.GROUP.MYGROUPS + ']', [
+          m('i', {class: 'glyphicon glyphicon-chevron-left'})
+        ]
+      ),
       m('button.btn.btn-link.btn-lg', {
           onclick: function (e) {
             e.preventDefault();
@@ -570,26 +572,26 @@ module.exports = (function () {
       return m('section', [
         m('.btn-group.pull-right', {role:'group'}, buttonsArray),
         m('h2', h2Elements),
-        m('section.description', [  ]),
         m('section.panel.panel-primary.props', [
+          m('.panel-heading',
+          m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
+          ),
+          view.pads(c)
+        ]),console.log(c),
+        m('section.panel.panel-info.pads', [
+          m('.panel-heading',
+          m('h3.panel-title', adminPanelTitle)
+          ),
+          m('section.description', [  ]),
+          view.users(c)
+        ]),
+        m('section.panel.panel-warning.users', [
           m('.panel-heading',
             m('h3.panel-title', conf.LANG.GROUP.PROPERTIES)
           ),
           m('.panel-body', c.group.description),
           view.properties(c)
         ]),
-        m('section.panel.panel-info.pads', [
-          m('.panel-heading',
-            m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
-          ),
-          view.pads(c)
-        ]),
-        m('section.panel.panel-warning.users', [
-          m('.panel-heading',
-            m('h3.panel-title', adminPanelTitle)
-          ),
-          view.users(c)
-        ])
       ]);
     }
   };

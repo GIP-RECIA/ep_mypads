@@ -321,9 +321,9 @@
         "REMOVE": "Löschen",
         "REMOVE_CHAT_HISTORY": "Lösche den Chatverlauf",
         "SEARCH": {
-            "HELP": "Suche in gemeinsamen Feldern mit mindestens 2 Zeichen",
-            "TITLE": "Suche",
-            "TYPE": "Hier eingeben"
+            "HELP": "Suche in gemeinsamen Feldern mit mindestens 3 Zeichen",
+            "TITLE": "",
+            "TYPE": "Nach einem Namen für pad suchen"
         },
         "SHARE": "Teilen",
         "SHARE_ADMIN": "Freigaben verwalten",
@@ -361,7 +361,7 @@
         "WARNING": "Warnung"
     },
     "TAG": {
-        "HELP": "Sie können diesem Element beliebig viele Tags zuordnen.",
+        "HELP": "Sie können diesem Element beliebig viele Tags zuordnen",
         "PLACEHOLDER": "Geben Sie Ihren Tag ein",
         "TAGS": "Tags"
     },
