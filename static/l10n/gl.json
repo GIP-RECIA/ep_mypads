@@ -1,12 +1,12 @@
 {
     "ACTIONS": {
-        "ACTIONS": "",
-        "CANCEL": "",
-        "HELP": "",
-        "SAVE": ""
+        "ACTIONS": "Accións",
+        "CANCEL": "Cancelar",
+        "HELP": "Axuda",
+        "SAVE": "Gardar"
     },
     "ADMIN": {
-        "AUTHENTICATION": "",
+        "AUTHENTICATION": "Axustes de autenticación",
         "ERR": {
             "LANGUAGE_DEFAULT": "",
             "PARSE_CAS": "",
