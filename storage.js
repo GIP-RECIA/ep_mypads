@@ -62,8 +62,9 @@ module.exports = (function () {
     // Testing case : we need to mock the database connection, using ueberDB and
     // coherent default configuration with eptherpad-lite one.
     var ueberDB = require('ueberdb2');
-    storage.db  = new ueberDB.database('dirty', { filename: './test.db' });
-    storage.db.init(function (err) { if (err) { console.error(err); } });
+    storage.db  = new ueberDB.Database('dirty', { filename: './test.db' });
+    // storage.db.init(function (err) { if (err) { console.error(err); } });
+    storage.db.init();
   }
 
   /**
@@ -186,7 +187,7 @@ module.exports = (function () {
 
   storage.fn.setKeys = function (kv, callback) {
     var done;
-    var pairs = ld.pairs(kv);
+    var pairs = ld.toPairs(kv);
     var setK  = function (k, v) { storage.db.set(k, v, done); };
     done = function (err) {
       if (err) { return callback(err); }
@@ -211,7 +212,7 @@ module.exports = (function () {
 
   storage.fn.setKeysIfNotExists = function (kv, callback) {
     var done;
-    var pairs = ld.pairs(kv);
+    var pairs = ld.toPairs(kv);
     var setK = function (k, v) { storage.db.set(k, v, done); };
     done = function (err) {
       if (err) { return callback(err); }
