@@ -36,7 +36,10 @@ module.exports = (function () {
     var db = require('../../storage.js').db;
     db.close(function () {
       unlink('./test.db', function () {
-        db.init(ld.partial(storage.init, done));
+        db.init();
+        storage.init(function (err) {
+          if (err) { return done(err); }
+        });
       });
     });
   };
