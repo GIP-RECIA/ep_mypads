@@ -181,7 +181,7 @@ module.exports = (function () {
           m('select.form-control', {
             name: 'userlists',
             onchange: m.withAttr('value', c.userlistAdd)
-          }, (ld.map(ld.pairs(auth.userInfo().userlists), function (ul) {
+          }, (ld.map(ld.toPairs(auth.userInfo().userlists), function (ul) {
             return m('option', { value: ul[0] }, ul[1].name);
           })).concat(m('option', {
             selected: true,
