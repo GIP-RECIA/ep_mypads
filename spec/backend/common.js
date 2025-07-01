@@ -39,6 +39,7 @@ module.exports = (function () {
         db.init();
         storage.init(function (err) {
           if (err) { return done(err); }
+          done();
         });
       });
     });
