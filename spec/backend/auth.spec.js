@@ -79,7 +79,7 @@
           lastname: 'Lewis',
           email: 'parker@lewis.me'
         };
-        user.set(params, done);
+        user.set(params, ()=>done());
       });
     });
 

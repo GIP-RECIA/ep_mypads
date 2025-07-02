@@ -392,7 +392,7 @@ module.exports = (function () {
 
         // Setting users as invited
         removed = ld.difference(g.users, users.uids);
-        g.users = ld.unique(ld.reject(users.uids,
+        g.users = ld.uniq(ld.reject(users.uids,
           ld.partial(ld.includes, g.admins)));
       } else {
         // Remove users from invite before setting them as admins
@@ -403,7 +403,7 @@ module.exports = (function () {
 
         // Setting users as admins
         removed  = ld.difference(g.admins, users.uids);
-        g.admins = ld.unique(ld.reject(users.uids,
+        g.admins = ld.uniq(ld.reject(users.uids,
           ld.partial(ld.includes, g.users)));
         if ((ld.size(g.admins)) === 0) {
           return callback(
