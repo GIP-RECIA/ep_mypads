@@ -123,22 +123,27 @@
           conf.cache = ld.clone(conf.DEFAULTS);
         });
 
-        it('should throw an error if no options have been fixed', function () {
-          expect(ld.partial(mail.connect))
-            .toThrowError(/ERROR.TYPE.SMTP_CONFIG/);
+        it('should throw an error if no options have been fixed', async function () {
+            let error;
+            try {
+                await mail.connect();
+            } catch (e) {
+                error = e;
+            }
+            const expectedError = new Error('BACKEND.ERROR.TYPE.SMTP_CONFIG');
+            expect(error).toEqual(expectedError);
         });
 
-        it('should return an error if options are incorrect', function (done) {
+        it('should return an error if options are incorrect', async function () {
           conf.cache.SMTPPort = 25;
           conf.cache.SMTPHost = 'localhost';
           conf.cache.SMTPSSL = false;
           conf.cache.SMTPTLS = false;
           conf.cache.emailFrom = 'parker@mondovideo.com';
-          mail.connect();
+          await mail.connect();
           mail.send('parker@lewis.me', 'subject', 'message', function (err) {
             expect(err).toMatch('MAIL_NOT_CONFIGURED');
             expect(mail.server.smtp.state()).toBe(0);
-            done();
           });
         });
 
@@ -149,39 +154,35 @@
           });
           afterAll(function () { conf.cache.SMTPEmailFrom = undefined; });
 
-          it('should not login with invalid credentials', function (done) {
+          it('should not login with invalid credentials', async function () {
             ld.assign(conf.cache, clientOpts);
             conf.cache.SMTPUser = 'parker';
             conf.cache.SMTPPass = 'lovesKuKu';
-            mail.connect();
+            await mail.connect();
             mail.send('parker@lewis.me', 'subject', 'message', function (err) {
               expect(err).toMatch('no form of authorization supported');
               expect(mail.server.smtp.authorized()).toBeFalsy();
               expect(mail.server.smtp.state()).toBe(2);
-              done();
             });
           });
 
           it('should connect to a valid basic SMTP Server otherwise',
-            function (done) {
+            async function () {
               ld.assign(conf.cache, clientOpts);
               delete conf.cache.SMTPUser;
               delete conf.cache.SMTPPass;
-              mail.connect();
+              await mail.connect();
               mail.send('parker@lewis.me', 'subject', 'message',
                 function (err) {
                   expect(err).toMatch('bad response');
                   expect(err.smtp).toMatch('550 not null to prevent');
                   expect(mail.server.smtp.authorized()).toBeTruthy();
                   expect(mail.server.smtp.state()).toBe(2);
-                  done();
                 }
               );
             }
           );
-
         });
-
       });
 
       describe('send', function () {
