@@ -120,7 +120,7 @@
 
             beforeAll(function (done) {
                 specCommon.reInitDatabase(function () {
-                    user.set(guest, done);
+                    user.set(guest, ()=>done());
                 });
             });
             afterAll(specCommon.reInitDatabase);
@@ -140,7 +140,7 @@
                 });
                 afterAll(function (done) {
                     var b = { body: { auth_token: token } };
-                    rq.get(authRoute + '/logout', b, done);
+                    rq.get(authRoute + '/logout', b, ()=>done());
                 });
 
                 it('should return an error if params are inexistent', function (done) {
@@ -332,7 +332,7 @@
 
             });
 
-            describe('auth.adminlogout GET', function () {});
+            // describe('auth.adminlogout GET', function () {});
 
         });
 
@@ -343,7 +343,7 @@
 
                 beforeAll(function (done) {
                     conf.set('title', 'Amigo', function () {
-                        conf.set('field', 3, done);
+                        conf.set('field', 3, () => done());
                     });
                 });
 
@@ -384,7 +384,7 @@
             });
 
             afterAll(function (done) {
-                rq.get(route + 'auth/logout', { body: { auth_token: token } },  done);
+                rq.get(route + 'auth/logout', { body: { auth_token: token } },  ()=>done());
             });
 
             describe('configuration.all GET', function () {
@@ -597,12 +597,12 @@
                     firstname: 'Shelly',
                     lastname: 'Lewis'
                 };
-                user.set(params, done);
+                user.set(params, ()=>done());
             });
 
             afterAll(function (done) {
                 conf.cache.checkMails = false;
-                rq.get(route + 'auth/logout', done);
+                rq.get(route + 'auth/logout', ()=>done());
             });
 
             it('should create in inactive account according to the configuration',
@@ -659,7 +659,7 @@
                     function (done) {
                         rq.post(userRoute, function (err, resp, body) {
                             expect(resp.statusCode).toBe(400);
-                            expect(body.error).toMatch('PARAM_STR');
+                            expect(body.error).toMatch('PARAMS_REQUIRED');
                             var b = { body: { login: 'parker', password: '' } };
                             rq.post(userRoute, b, function (err, resp, body) {
                                 expect(resp.statusCode).toBe(400);
@@ -1491,7 +1491,7 @@
             afterAll(function (done) {
                 var b = { body: { auth_token: token } };
                 rq.get(route + 'auth/logout', b, function () {
-                    specCommon.reInitDatabase(done);
+                    specCommon.reInitDatabase(()=>done());
                 });
             });
 
@@ -1645,7 +1645,6 @@
                                 expect(ld.isObject(body.value)).toBeTruthy();
                                 var users = ld.union(body.value.users, body.value.admins);
                                 expect(ld.includes(users, uid)).toBeFalsy();
-                                done();
                                 group.del(g._id, function (err) {
                                     expect(err).toBeNull();
                                     done();
