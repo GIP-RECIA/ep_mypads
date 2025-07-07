@@ -312,9 +312,6 @@
         });
 
       });
-
-      describe('auth.adminlogout GET', function () {});
-
     });
 
     describe('unAuth legitimate tests', function () {
@@ -1641,7 +1638,6 @@
                   expect(ld.isObject(body.value)).toBeTruthy();
                   var users = ld.union(body.value.users, body.value.admins);
                   expect(ld.includes(users, uid)).toBeFalsy();
-                  done();
                   group.del(g._id, function (err) {
                     expect(err).toBeNull();
                     done();
