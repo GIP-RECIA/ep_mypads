@@ -60,10 +60,11 @@
     "request": "^2.88.2",
     "smtp-server": "~3.13.7",
     "tough-cookie": "^5.1.2",
+    "uglifyify": "^5.0.2",
     "watchify": "^4.0.0"
   },
   "scripts": {
-    "frontend:build": "./node_modules/browserify/bin/cmd.js -t partialify -d -o static/js/mypads.js frontend.js",
+    "frontend:build": "./node_modules/browserify/bin/cmd.js -t partialify -t [ uglifyify --sourcemap ] -d -o static/js/mypads.js frontend.js",
     "frontend:watch": "./node_modules/watchify/bin/cmd.js -t partialify -o static/js/mypads.js frontend.js",
     "functest:build": "./node_modules/browserify/bin/cmd.js -o spec/frontend/mypads.js spec/frontend/entry.js",
     "functest:watch": "./node_modules/watchify/bin/cmd.js -o spec/frontend/mypads.js spec/frontend/entry.js",
