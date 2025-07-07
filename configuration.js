@@ -33,10 +33,12 @@ try {
 }
 catch (e) {
   if (process.env.TEST_LDAP) {
+    // Testing ldap case :
+    // please use https://github.com/rroemhild/docker-test-openldap
     settings = {
       'ep_mypads': {
         'ldap': {
-          'url': 'ldap://rroemhild-test-openldap:10389',
+          'url': 'ldap://localhost:10389',
           'bindDN': 'cn=admin,dc=planetexpress,dc=com',
           'bindCredentials': 'GoodNewsEveryone',
           'searchBase': 'ou=people,dc=planetexpress,dc=com',
