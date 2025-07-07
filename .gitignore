@@ -5,3 +5,4 @@ test.db
 npm-debug.log
 .zanata-cache/
 ep_mypads*tgz
+.idea
