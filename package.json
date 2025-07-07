@@ -54,7 +54,6 @@
     "jasmine": "^5.8.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jshint": "^2.13.6",
-    "minifyify": "^7.3.5",
     "mithril": "^2.3.3",
     "normalize.css": "^8.0.1",
     "partialify": "~3.1.6",
@@ -64,7 +63,7 @@
     "watchify": "^4.0.0"
   },
   "scripts": {
-    "frontend:build": "./node_modules/browserify/bin/cmd.js -t partialify -d -p [minifyify --map mypads.map.json --output static/js/mypads.map.json] -o static/js/mypads.js frontend.js",
+    "frontend:build": "./node_modules/browserify/bin/cmd.js -t partialify -d -o static/js/mypads.js frontend.js",
     "frontend:watch": "./node_modules/watchify/bin/cmd.js -t partialify -o static/js/mypads.js frontend.js",
     "functest:build": "./node_modules/browserify/bin/cmd.js -o spec/frontend/mypads.js spec/frontend/entry.js",
     "functest:watch": "./node_modules/watchify/bin/cmd.js -o spec/frontend/mypads.js spec/frontend/entry.js",
