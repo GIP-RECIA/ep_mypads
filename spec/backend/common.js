@@ -21,7 +21,6 @@
 
 module.exports = (function () {
   'use strict';
-  var ld = require('lodash');
   var storage = require('../../storage.js');
   var common = {};
 

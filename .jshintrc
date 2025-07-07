@@ -8,7 +8,7 @@
   "immed": true,
   "indent": 2,
   "latedef": true,
-  "maxlen": 120,
+  "maxlen": 180,
   "noarg": true,
   "nocomma": true,
   "noempty": true,
