@@ -4,10 +4,10 @@
 },{"./frontend/js/configuration.js":3,"./frontend/js/route.js":43}],2:[function(require,module,exports){
 module.exports=function(){var n=require("mithril"),t={admToken:function(){return localStorage.getItem("admToken")},isAdmin:function(){return!!t.admToken()}};return t.userInfo=n.prop(),t.token=function(){return localStorage.getItem("token")},t.isAuthenticated=function(){return!!t.token()},t.fn={},t.fn.xhrConfig=function(n){n.setRequestHeader("Authorization","JWT "+t.token())},t}.call(this);
 
-},{"mithril":56}],3:[function(require,module,exports){
+},{"mithril":53}],3:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),n=require("lodash"),S=require("./auth.js"),R={};R.URLS={RAWBASE:window.location.pathname.replace(new RegExp("index.html"),"")},R.URLS.BASE=R.URLS.RAWBASE+"api",R.URLS.CONF=R.URLS.BASE+"/configuration",R.URLS.AUTH=R.URLS.BASE+"/auth",R.URLS.LOGIN=R.URLS.AUTH+"/login",R.URLS.LOGOUT=R.URLS.AUTH+"/logout",R.URLS.CASLOGIN=R.URLS.AUTH+"/login/cas",R.URLS.CHECK=R.URLS.AUTH+"/check",R.URLS.USER=R.URLS.BASE+"/user",R.URLS.ALL_USERS=R.URLS.BASE+"/all-users",R.URLS.SEARCH_USERS=R.URLS.BASE+"/search-users",R.URLS.USERMARK=R.URLS.USER+"mark",R.URLS.GROUP=R.URLS.BASE+"/group",R.URLS.PAD=R.URLS.BASE+"/pad",R.URLS.USERLIST=R.URLS.BASE+"/userlist",R.URLS.PASSRECOVER=R.URLS.BASE+"/passrecover",R.URLS.ACCOUNT_CONFIRMATION=R.URLS.BASE+"/accountconfirm",R.URLS.CACHECHECK=R.URLS.BASE+"/cache/check",R.SERVER=e.prop();var t;return R.USERLANG="en",R.LANG=require("../../static/l10n/en.json"),R.updateLang=function(S){e.request({method:"GET",url:R.URLS.RAWBASE+"l10n/"+S+".json"}).then(function(e){R.USERLANG=S,R.LANG=n.merge(R.LANG,e,function(e,n){if(""===n)return e})},function(e){console.log("updatel:"+e),R.USERLANG="en";var n=R.LANG.BACKEND.ERROR.CONFIGURATION.LANG_PROBLEM+" ("+e+")";(0,require("./widgets/notification.js").error)({body:n})})},R.unauthUrl=(t="",function(e){return e&&(t=window.location.toString()),t}),R.init=function(t){e.request({method:"GET",url:R.URLS.CONF,data:S.isAuthenticated()?{auth_token:S.token()}:void 0}).then(function(e){R.SERVER=e.value,!e.auth&&S.isAuthenticated()&&localStorage.removeItem("token"),S.userInfo(e.user);var o=window.navigator.userLanguage||window.navigator.language;(o=n.find(n.keys(R.SERVER.languages),function(e){return n.startsWith(o,e)}))&&"en"!==o&&R.updateLang(o),t()},function(e){console.log("confinit:"+e);var n=R.LANG.BACKEND.ERROR.CONFIGURATION.CANTGET+" ("+e+")";(0,require("./widgets/notification.js").error)({body:n})})},R}.call(this);
 
-},{"../../static/l10n/en.json":76,"./auth.js":2,"./widgets/notification.js":44,"lodash":52,"mithril":56}],4:[function(require,module,exports){
+},{"../../static/l10n/en.json":54,"./auth.js":2,"./widgets/notification.js":44,"lodash":52,"mithril":53}],4:[function(require,module,exports){
 module.exports=function(){var e={},n=new RegExp("<","g"),r=new RegExp(">","g");return e.cleanup=function(e){return e.replace(n,"&lt;").replace(r,"&gt;")},e}.call(this);
 
 },{}],5:[function(require,module,exports){
@@ -19,121 +19,121 @@ module.exports=function(){var e={filterKeyword:function(e){var t;if(void 0===e||
 },{}],7:[function(require,module,exports){
 module.exports=function(){var i=require("mithril"),t={icon:function(t,n,a,l){var e="glyphicon mp-tooltip glyphicon-";e+=t.valid[n]()?"info-sign":"exclamation-sign";var o=t.valid[n]()?a:l;return i("i",{class:e,"data-msg":o})},field:function(n,a,l,e){return{label:i("label",{for:a},[l,e]),input:i("input.form-control",{name:a,value:n.data[a]()||"",oninput:t.handleField.bind(null,n)}),icon:e}},initFields:function(t,n){t.data={},t.valid={},n.forEach(function(n){t.data[n]=i.prop(),t.valid[n]=i.prop(!0)})},handleField:function(i,t,n){n||(n=t,t=void 0);var a=n.target.getAttribute("name");i.data[a](n.target.value),i.valid[a](t?n.target.checkValidity()&&t(i,n):n.target.checkValidity())},focusOnInit:function(i,t){t||i.focus()}};return t}.call(this);
 
-},{"mithril":56}],8:[function(require,module,exports){
+},{"mithril":53}],8:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),o=require("../configuration.js"),n={checkLoop:function(r,i){i||(n.inFrame(r,i),e.request({method:"GET",url:o.URLS.CACHECHECK}).then(function(e){if(e.userCacheReady){var o=document.getElementById("hide-when-ready").classList,r=document.querySelectorAll(".show-when-ready");return o.add("hidden"),[].forEach.call(r,function(e){e.classList.remove("hidden")}),"user cache ready"}setTimeout(function(){return n.checkLoop()},500)},function(e){console.log("user cache check loop:"+e);var r=o.LANG.BACKEND.CONFIGURATION.LANG_PROBLEM+" ("+e+")";(0,require("../widgets/notification.js").error)({body:r}),e&&setTimeout(function(){return n.checkLoop()},500)}))}},r=new RegExp("/mypads");return n.inFrame=function(e,o){if(!o){var n=location.href;window.displaymode=n,!window.parent.location.href.match(r)||void 0!==window.parent.displaymode&&window.parent.displaymode===n||window.parent.location.reload()}},n}.call(this);
 
-},{"../configuration.js":3,"../widgets/notification.js":44,"mithril":56}],9:[function(require,module,exports){
+},{"../configuration.js":3,"../widgets/notification.js":44,"mithril":53}],9:[function(require,module,exports){
 module.exports=function(){var r=require("../configuration.js"),e=require("js-cookie"),i={},n={padByField:"ctime",padAsc:!0,groupByField:"ctime",groupAsc:!0};return i.init=function(){var r=e.get("sortingPreferences");if(r)try{var i=JSON.parse(r);for(var t in i)n.hasOwnProperty(t)&&(n[t]=i[t])}catch(r){}},i.updateValues=function(i){for(var t in i)n.hasOwnProperty(t)&&(n[t]=i[t]);e.set("sortingPreferences",JSON.stringify(n),{expires:365,path:r.URLS.RAWBASE})},i.padByField=function(){return n.padByField},i.padAsc=function(){return n.padAsc},i.groupByField=function(){return n.groupByField},i.groupAsc=function(){return n.groupAsc},i.init(),i}.call(this);
 
 },{"../configuration.js":3,"js-cookie":50}],10:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),u=require("../configuration.js"),t=require("../auth.js"),o=require("../widgets/notification.js"),s=require("js-base64").Base64.encode,a={init:function(){e.assign(a,{groups:r.prop({}),pads:r.prop({}),users:r.prop([]),admins:r.prop([]),tags:r.prop([]),bookmarks:r.prop({groups:r.prop({}),pads:r.prop({})}),tmp:r.prop({groups:r.prop({}),pads:r.prop({})})})}};return a.init(),a.fetch=function(s){var n=function(r){o.error({body:e.result(u.LANG,r.error)}),s&&s(r)},p=t.isAuthenticated()?{auth_token:t.token()}:void 0;r.request({url:u.URLS.GROUP,method:"GET",data:p}).then(function(o){a.groups(o.value.groups),a.pads(o.value.pads),a.bookmarks(o.value.bookmarks);var i=t.userInfo();o.value.users[i._id]=i,a.users(o.value.users);var d=e(o.value.groups).values().pluck("tags").flatten().union().value();a.tags(d),r.request({url:u.URLS.USERLIST,method:"GET",data:p}).then(function(r){i.userlists=r.value,t.userInfo(i),s&&s(null,r)},n)},n)},a.fetchObject=function(n,p,i){var d,l=function(r){o.error({body:e.result(u.LANG,r.error)}),i&&i(r)},c=function(e){var o={url:u.URLS.PAD+"/"+n.pad+"?",method:"GET"};p&&(o.url+="&password="+s(p)),t.isAuthenticated()&&(o.url+="&auth_token="+t.token()),r.request(o).then(function(r){var e=a.tmp(),u=e.pads();u[r.key]=r.value,e.pads(u),a.tmp(e),i&&i(null,r)},function(r){if("BACKEND.ERROR.TYPE.PASSWORD_MISSING"===r.error){var u={_id:n.pad,visibility:"private"},t=a.tmp(),o=t.pads();return o[n.pad]=u,t.pads(o),a.tmp(t),i(null,{key:n.pad,value:u})}return"BACKEND.ERROR.PERMISSION.UNAUTHORIZED"===r.error||"BACKEND.ERROR.CONFIGURATION.KEY_NOT_FOUND"===r.error?l(r):e?i(null,e):void l(r)})};d={url:u.URLS.GROUP+"/"+n.group+"?",method:"GET"},p&&(d.url+="&password="+s(p)),t.isAuthenticated()&&(d.url+="&auth_token="+t.token()),r.request(d).then(function(r){var u=a.tmp(),t=u.groups();t[r.key]=r.value,u.groups(t),u.pads(e.merge(u.pads(),r.pads)),a.tmp(u),!n.pad||e.includes(r.pads,n.pad)?i&&i(null,r):c(r)},function(r){if(n.pad)return c();l(r)})},a}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"js-base64":49,"lodash":52,"mithril":56}],11:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"js-base64":49,"lodash":52,"mithril":53}],11:[function(require,module,exports){
 module.exports=function(){var r=require("mithril"),e=require("lodash"),o=require("../configuration.js"),t=require("../widgets/notification.js"),i={controller:function(){var i=r.route.param("token");r.request({url:o.URLS.ACCOUNT_CONFIRMATION,method:"POST",data:{token:i}}).then(function(){r.route("/login"),t.success({body:o.LANG.USER.INFO.ACCOUNT_CONFIRMATION_SUCCESS})},function(i){r.route("/login"),t.error({body:e.result(o.LANG,i.error)})})},view:function(){}};return i}.call(this);
 
-},{"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":56}],12:[function(require,module,exports){
+},{"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":53}],12:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("lodash"),t=require("../configuration.js"),o=require("../auth.js"),u=require("../widgets/notification.js"),i={controller:function(){e.request({url:t.URLS.AUTH+"/admin/logout",method:"GET",data:{auth_token:o.admToken()}}).then(function(){document.title=t.SERVER.title,localStorage.removeItem("admToken"),u.success({body:t.LANG.USER.AUTH.SUCCESS_OUT}),e.route("/")},function(o){u.error({body:r.result(t.LANG,o.error)}),e.route("/")})}};return i}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":56}],13:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":53}],13:[function(require,module,exports){
 module.exports=function(){var r=require("mithril"),e=require("lodash"),i=require("../configuration.js"),t=require("../auth.js"),n=require("../widgets/notification.js"),a=require("./layout.js"),s=require("../helpers/form.js"),o=require("./subscribe.js"),u={controller:function(){if(!t.isAdmin())return r.route("/admin");document.title=i.LANG.ADMIN.FORM_USER_CREATE+" - "+i.SERVER.title;var a={adminView:r.prop(!1),profileView:r.prop(!1),user:r.prop(!1)},o=function(t){return r.route("/admin/users"),n.error({body:e.result(i.LANG,t.error)})};return a.submit={subscribe:function(s){s.preventDefault();var u=a.data.password();if(u&&u!==a.data.passwordConfirm())return n.warning({body:i.LANG.USER.ERR.PASSWORD_MISMATCH});r.request({method:"POST",url:i.URLS.USER,data:e.assign(a.data,{auth_token:t.admToken()})}).then(function(){n.success({body:i.LANG.ADMIN.SUBSCRIBE_SUCCESS}),r.route("/admin/users")},o)}},function(){a.fields=["login","password","passwordConfirm","email","firstname","lastname","organization","padNickname","lang","color","hideHelp"],s.initFields(a,a.fields);var t=a.user();e.forEach(a.fields,function(i){e.startsWith(i,"password")||(a.data[i]=r.prop(t[i]))}),a.data.lang(i.SERVER.defaultLanguage)}(),a}},d={main:function(e){var t=[r("h2",i.LANG.ADMIN.FORM_USER_CREATE),o.views.form(e)];return r("section",{class:"user"},t)},aside:function(){return r("section.user-aside",[r("h2",i.LANG.ACTIONS.HELP),r("article.well",r.trust(i.LANG.ADMIN.HELP_USER_CREATE))])}};return u.view=function(r){return a.view(d.main(r),d.aside())},u}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./subscribe.js":36,"lodash":52,"mithril":56}],14:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./subscribe.js":36,"lodash":52,"mithril":53}],14:[function(require,module,exports){
 module.exports=function(){var r=require("mithril"),e=require("lodash"),i=require("../configuration.js"),t=require("../auth.js"),n=require("../widgets/notification.js"),a=require("./layout.js"),o=require("../helpers/form.js"),s=require("./subscribe.js"),u={};u.controller=function(){if(!t.isAdmin())return r.route("/admin");document.title=i.LANG.ADMIN.FORM_USER_EDIT+" - "+i.SERVER.title;var a={adminView:r.prop(!0),profileView:r.prop(!1),user:r.prop(!1)},s=function(t){return r.route("/admin/users"),n.error({body:e.result(i.LANG,t.error)})};return a.submit={profileSave:function(o){o.preventDefault();var u=a.data.password();if(u&&u!==a.data.passwordConfirm())return n.warning({body:i.LANG.USER.ERR.PASSWORD_MISMATCH});r.request({method:"PUT",url:i.URLS.USER+"/"+a.data.login(),data:e.assign(a.data,{auth_token:t.admToken()})}).then(function(r){t.userInfo(r.value),n.success({body:i.LANG.USER.AUTH.PROFILE_SUCCESS})},s)}},r.request({method:"GET",url:i.URLS.USER+"/"+r.route.param("login"),data:{auth_token:t.admToken()}}).then(function(i){a.user(i.value),function(){a.fields=["login","password","passwordConfirm","email","firstname","lastname","organization","padNickname","lang","color","hideHelp"],o.initFields(a,a.fields);var i=a.user();e.forEach(a.fields,function(t){e.startsWith(t,"password")||(a.data[t]=r.prop(i[t]))})}()},s),a};var d={main:function(e){var t=[r("h2",i.LANG.ADMIN.FORM_USER_EDIT+" "+e.user().login),s.views.form(e)];return r("section",{class:"user"},t)},aside:function(){return r("section.user-aside",[r("h2",i.LANG.ACTIONS.HELP),r("article.well",r.trust(i.LANG.ADMIN.HELP_USER_EDIT))])}};return u.view=function(r){return a.view(d.main(r),d.aside())},u}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./subscribe.js":36,"lodash":52,"mithril":56}],15:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./subscribe.js":36,"lodash":52,"mithril":53}],15:[function(require,module,exports){
 module.exports=function(){var r=require("mithril"),e=require("lodash"),i=require("../configuration.js"),o=require("../auth.js"),t=require("../widgets/notification.js"),n={controller:function(){if(!o.isAdmin())return r.route("/admin");var n=r.route.param("login");r.route("/admin/users"),window.confirm(i.LANG.ADMIN.INFO.USER_REMOVE_SURE)&&r.request({method:"DELETE",url:i.URLS.USER+"/"+n,data:{auth_token:o.admToken()}}).then(function(){t.success({body:i.LANG.USER.INFO.REMOVE_ACCOUNT_SUCCESS})},function(r){t.error({body:e.result(i.LANG,r.error)})})}};return n}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":56}],16:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":53}],16:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("lodash"),n=require("../configuration.js"),i=require("../auth.js"),s=require("../widgets/notification.js"),t=require("./layout.js"),o=require("./user.js"),u=require("../helpers/form.js"),a={controller:function(){if(!i.isAdmin())return e.route("/admin");document.title=n.LANG.ADMIN.FORM_USERS_SEARCH+" - "+n.SERVER.title;var t={user:e.prop(null),users:e.prop(!1),usersCount:e.prop(!1),fields:["login"]};return u.initFields(t,t.fields),t.search=function(o){o.preventDefault(),t.users(!1),t.usersCount(!1),e.request({method:"GET",url:n.URLS.SEARCH_USERS+"/"+t.data.login(),data:{auth_token:i.admToken()}}).then(function(e){t.users(e.users),t.usersCount(e.usersCount),s.info({body:n.LANG.ADMIN.INFO.USER_FOUND})},function(e){t.users(!1),t.usersCount(!1),s.error({body:r.result(n.LANG,e.error)})})},t.loadAllUsers=function(o){o.preventDefault(),t.user(null),t.data.login(null),e.request({method:"GET",url:n.URLS.ALL_USERS,data:{auth_token:i.admToken()}}).then(function(e){t.users(e.users),t.usersCount(e.usersCount),s.info({body:n.LANG.ADMIN.INFO.USER_FOUND})},function(e){t.users(!1),t.usersCount(!1),s.error({body:r.result(n.LANG,e.error)})})},t}},l={form:function(r){var i=o.view.field.login(r);i.input.attrs.config=u.focusOnInit,i.icon.attrs["data-msg"]=n.LANG.ADMIN.INFO.USERS_SEARCH_LOGIN;var s=[e("fieldset.block-group",[e("legend",n.LANG.ADMIN.USERS_SEARCH_LOGIN),e("div.form-group",[i.label,i.input])]),l.user(r),l.users(r),e("input.block.send",{form:"users-form",type:"submit",class:"btn btn-default",value:n.LANG.ADMIN.FIELD.SEARCH}),e("span"," "),e("button.btn.btn-info",{onclick:r.loadAllUsers},n.LANG.ADMIN.FIELD.SHOW_ALL_USERS)];return"internal"===n.SERVER.authMethod&&s.push(e("span"," "),e("a.btn.btn-info",{href:"/admin/users/create",config:e.route},n.LANG.ADMIN.FIELD.CREATE_USER)),e("form.block",{id:"users-form",onsubmit:r.search},s)},user:function(r){var i=r.user();if(null!==i){if(i){var s=[e("a",{href:"/admin/users/"+i.login+"/edit",config:e.route,title:n.LANG.GROUP.EDIT},[e("i.glyphicon glyphicon-pencil")]),e("a",{href:"/admin/users/"+i.login+"/remove",config:e.route,title:n.LANG.GROUP.REMOVE},[e("i.glyphicon glyphicon-trash")])],t=i.login;return t=i.firstname||i.lastname?[t,"(",i.firstname,i.lastname," - ",i.email,")"].join(" "):[t,"(",i.email,")"].join(" "),e("ul.admin-users",[e("li.block-group",[e("span.block.actions",s)," ",e("span.block.name",t)])])}return e("p.admin-users",n.LANG.ADMIN.INFO.USER_NONE)}},users:function(i){var s=i.users();if(s){var t=[];return r.forEach(r.sortBy(r.keys(s)),function(r){var i=s[r],o=[e("a",{href:"/admin/users/"+r+"/edit",config:e.route,title:n.LANG.GROUP.EDIT},[e("i.glyphicon glyphicon-pencil")]),e("a",{href:"/admin/users/"+r+"/remove",config:e.route,title:n.LANG.GROUP.REMOVE},[e("i.glyphicon glyphicon-trash")])],u=r;u=i.firstname||i.lastname?[u,"(",i.firstname,i.lastname," - ",i.email,")"].join(" "):[u,"(",i.email,")"].join(" "),t.push(e("li.block-group",[e("span.block.actions",o)," ",e("span.block.name",u)]))}),e("div",[e("b",[n.LANG.ADMIN.USERS_COUNT+" ",i.usersCount()]),e("ul.admin-users",t)])}},main:function(r){var i=[e("h2.block",n.LANG.ADMIN.FORM_USERS_SEARCH),l.form(r)];return e("section",{class:"block-group user admin"},i)},aside:function(){return e("section.user-aside",[e("h2",n.LANG.ACTIONS.HELP),e("article",e.trust(n.LANG.ADMIN.HELP_USERS))])}};return a.view=function(e){return t.view(l.main(e),l.aside(e))},a}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"lodash":52,"mithril":56}],17:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"lodash":52,"mithril":53}],17:[function(require,module,exports){
 module.exports=function(){var t=require("mithril"),e=require("lodash"),a=require("json-beautify"),n=require("../configuration.js"),r=require("../auth.js"),i=require("../widgets/notification.js"),o=require("./layout.js"),s=require("./user.js"),l=require("../helpers/form.js"),c={controller:function(){document.title=n.LANG.ADMIN.FORM_LOGIN+" - "+n.SERVER.title;var a={};localStorage.removeItem("token"),l.initFields(a,["login","password"]);var o=function(o){o&&localStorage.setItem("admToken",o.token),t.request({url:n.URLS.CONF,method:"GET",data:{auth_token:r.admToken()}}).then(function(r){if(!r.auth)return localStorage.removeItem("admToken");if(l.initFields(a,["title","rootUrl","allowEtherPads","passwordMin","passwordMax","defaultLanguage","checkMails","tokenDuration","SMTPHost","SMTPPort","SMTPSSL","SMTPTLS","SMTPUser","SMTPPass","SMTPEmailFrom","HTMLExtraHead","openRegistration","hideHelpBlocks","useFirstLastNameInPads","insensitiveMailMatch","authMethod","authLdapSettings","authCasSettings","allPadsPublicsAuthentifiedOnly","deleteJobQueue","loginMsg","trustProxy"]),a.currentConf=r.value,e.forIn(r.value,function(e,n){a.data[n]=t.prop(e)}),0===a.data.rootUrl().length&&!a.data.trustProxy()){var o=window.location;a.data.rootUrl(o.protocol+"//"+o.host)}var s=function(t){return t=t||0,function(e){return void 0!==e&&(t=parseInt(e,10)),t}};a.data.passwordMin=s(a.data.passwordMin()),a.data.passwordMax=s(a.data.passwordMax()),a.data.passwordMin.toJSON=function(){return a.data.passwordMin()},a.data.passwordMax.toJSON=function(){return a.data.passwordMax()},document.title=n.LANG.ADMIN.FORM_SETTINGS+" - "+n.SERVER.title,i.success({body:n.LANG.USER.AUTH.SUCCESS})},function(t){i.error({body:e.result(n.LANG,t.error)})})};return r.isAdmin()&&o(),a.login=function(r){r.preventDefault(),t.request({url:n.URLS.AUTH+"/admin/login",method:"POST",data:a.data}).then(o,function(t){i.error({body:e.result(n.LANG,t.error)})})},a.submit=function(o){if(o.preventDefault(),a.data.passwordMin()>a.data.passwordMax())i.warning({body:n.LANG.ADMIN.ERR.PASSWORD_SIZE}),document.querySelector('input[name="passwordMin"]').focus();else{var s=e.reduce(a.data,function(t,e,n){return e()!==a.currentConf[n]&&(t[n]=e),t},{}),l=e.toPairs(s),c=function(o){t.request({method:"PUT",url:n.URLS.CONF+"/"+o[0],data:{value:o[1](),auth_token:r.admToken()}}).then(function(t){l.length>0?c(l.pop()):(a.currentConf[t.key]=t.value,n.SERVER[t.key]=t.value,i.success({body:n.LANG.ADMIN.INFO.SUCCESS}))},function(t){i.error({body:e.result(n.LANG,t.error)})})};l.length>0?c(l.pop()):i.info({body:n.LANG.ADMIN.INFO.NOCHANGE})}},a}},d={form:function(e){var a=s.view.field.login(e);a.input.attrs.config=l.focusOnInit,a.icon.attrs["data-msg"]=n.LANG.ADMIN.INFO.LOGIN;var r=s.view.field.password(e);return r.icon.attrs["data-msg"]=n.LANG.USER.PASSWORD,delete r.input.attrs.pattern,delete r.input.attrs.minlength,delete r.input.attrs.maxlength,a.label.attrs.class="col-sm-4",r.label.attrs.class="col-sm-4",t("form.form-horizontal.col-sm-8.col-sm-offset-2.well",{id:"login-form",onsubmit:e.login},[t("fieldset",[t("legend",n.LANG.ADMIN.ETHERPAD_ACCOUNT),t(".form-group",[a.label,t(".col-sm-7",a.input)]),t(".form-group",[r.label,t(".col-sm-7",r.input)]),t("input.btn.btn-success.pull-right",{form:"login-form",type:"submit",value:n.LANG.USER.LOGIN})])])},settings:function(r){var o,s,c,d=n.LANG.ADMIN,u={title:function(){var t=l.icon(r,"title",d.INFO.TITLE,d.ERR.TITLE),a=l.field(r,"title",d.FIELD.TITLE,t);return e.assign(a.input.attrs,{required:!0}),a}(),rootUrl:function(){var t=l.icon(r,"rootUrl",d.INFO.ROOTURL,d.ERR.ROOTURL),a=l.field(r,"rootUrl",d.FIELD.ROOTURL,t);return e.assign(a.input.attrs,{type:"url"}),a}(),trustProxy:function(){var a=l.icon(r,"trustProxy",d.INFO.TRUST_PROXY),n={name:"trustProxy"};r.data.trustProxy&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.trustProxy(),onchange:t.withAttr("checked",r.data.trustProxy)}),t("label",[i,d.FIELD.TRUST_PROXY,a])}(),HTMLExtraHead:{label:t("label",{for:"HTMLExtraHead"},n.LANG.ADMIN.FIELD.HTMLEXTRA_HEAD),icon:t("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":n.LANG.ADMIN.INFO.HTMLEXTRA_HEAD}),textarea:t("textarea.form-control",{name:"HTMLExtraHead",class:"monospace",value:r.data.HTMLExtraHead(),onchange:t.withAttr("value",r.data.HTMLExtraHead)},r.data.HTMLExtraHead())},loginMsg:(o=t("label",{for:"loginMsg"},d.FIELD.LOGIN_MSG),s=t("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":d.INFO.LOGIN_MSG}),c=r.data.loginMsg(),delete c.attrs,{label:o,icon:s,textarea:t("textarea.form-control",{name:"loginMsg",rows:10,class:"monospace",value:a(c,null,4),onchange:t.withAttr("value",function(t){try{t=JSON.parse(t),r.data.loginMsg(t)}catch(t){i.error({body:n.LANG.ADMIN.ERR.PARSE_LOGIN_MSG})}})},r.data.loginMsg())}),passwordMin:function(){var t=l.icon(r,"passwordMin",d.INFO.PASSWORD_MIN,d.ERR.PASSWORD_MIN),a=l.field(r,"passwordMin",d.FIELD.PASSWORD_MIN,t);return e.assign(a.input.attrs,{type:"number",min:"1",required:!0}),a}(),passwordMax:function(){var t=l.icon(r,"passwordMax",d.INFO.PASSWORD_MAX,d.ERR.PASSWORD_MAX),a=l.field(r,"passwordMax",d.FIELD.PASSWORD_MAX,t);return e.assign(a.input.attrs,{type:"number",min:"1",required:!0}),a}(),defaultLanguage:function(){var a=t("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":n.LANG.ADMIN.INFO.LANGUAGE_DEFAULT});return{label:t("label",{for:"defaultLanguage"},[n.LANG.ADMIN.FIELD.LANGUAGE_DEFAULT,a]),icon:a,select:t("select.form-control",{name:"defaultLanguage",required:!0,value:r.data.defaultLanguage(),onchange:t.withAttr("value",r.data.defaultLanguage)},e.reduce(n.SERVER.languages,function(e,a,n){return e.push(t("option",{value:n},a)),e},[]))}}(),allowEtherPads:function(){var a=l.icon(r,"allowEtherPads",d.INFO.ALLOW_ETHERPADS),n={name:"allowEtherPads"};r.data.allowEtherPads&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.allowEtherPads(),onchange:t.withAttr("checked",r.data.allowEtherPads)}),t("label",[i,d.FIELD.ALLOW_ETHERPADS,a])}(),hideHelpBlocks:function(){var a=l.icon(r,"hideHelpBlocks",d.INFO.HIDE_HELP_BLOCKS),n={name:"hideHelpBlocks"};r.data.hideHelpBlocks&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.hideHelpBlocks(),onchange:t.withAttr("checked",r.data.hideHelpBlocks)}),t("label",[i,d.FIELD.HIDE_HELP_BLOCKS,a])}(),useFirstLastNameInPads:function(){var a=l.icon(r,"useFirstLastNameInPads",d.INFO.USE_FIRST_AND_LAST_NAME_IN_PADS),n={name:"useFirstLastNameInPads"};r.data.useFirstLastNameInPads&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.useFirstLastNameInPads(),onchange:t.withAttr("checked",r.data.useFirstLastNameInPads)}),t("label",[i,d.FIELD.USE_FIRST_AND_LAST_NAME_IN_PADS,a])}(),insensitiveMailMatch:function(){var a=l.icon(r,"insensitiveMailMatch",d.INFO.INSENSITIVE_MAIL_MATCH),n={name:"insensitiveMailMatch"};r.data.insensitiveMailMatch&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.insensitiveMailMatch(),onchange:t.withAttr("checked",r.data.insensitiveMailMatch)}),t("label",[i,d.FIELD.INSENSITIVE_MAIL_MATCH,a])}(),allPadsPublicsAuthentifiedOnly:function(){var a=l.icon(r,"allPadsPublicsAuthentifiedOnly",d.INFO.ALL_PADS_PUBLICS_AUTHENTIFIED_ONLY),n={name:"allPadsPublicsAuthentifiedOnly"};r.data.allPadsPublicsAuthentifiedOnly&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.allPadsPublicsAuthentifiedOnly(),onchange:t.withAttr("checked",r.data.allPadsPublicsAuthentifiedOnly)}),t("label",[i,d.FIELD.ALL_PADS_PUBLICS_AUTHENTIFIED_ONLY,a])}(),deleteJobQueue:function(){var a=l.icon(r,"deleteJobQueue",d.INFO.DELETE_JOB_QUEUE),n={name:"deleteJobQueue"};r.data.deleteJobQueue&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.deleteJobQueue(),onchange:t.withAttr("checked",r.data.deleteJobQueue)}),t("label",[i,d.FIELD.DELETE_JOB_QUEUE,a])}(),openRegistration:function(){var a=l.icon(r,"openRegistration",d.INFO.OPEN_REGISTRATION),n={name:"openRegistration"};r.data.openRegistration&&(n.checked="checked");var i=t('input[type="checkbox"]',n);e.assign(i.attrs,{type:"checkbox",checked:r.data.openRegistration(),onchange:t.withAttr("checked",r.data.openRegistration)});var o={};return"internal"!==r.data.authMethod()&&(o.class="hidden"),t("label",o,[i,d.FIELD.OPEN_REGISTRATION,a])}(),authMethod:function(){var a=t("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":d.INFO.AUTHENTICATION_METHOD});return{label:t("label",{for:"defaultLanguage"},[d.FIELD.AUTHENTICATION_METHOD,a]),icon:a,select:t("select.form-control",{name:"authMethod",required:!0,value:r.data.authMethod(),onchange:t.withAttr("value",r.data.authMethod)},e.reduce(r.data.availableAuthMethods(),function(e,a){return e.push(t("option",{value:a},d.FIELD.AUTH_METHODS[a])),e},[]))}}(),authLdapSettings:function(){var e=t("label",{for:"authLdapSettings"},d.FIELD.AUTH_LDAP_SETTINGS),o=t.trust("<p>"+d.INFO.AUTH_LDAP_SETTINGS+"</p>"),s=r.data.authLdapSettings();return delete s.attrs,{label:e,help:o,textarea:t("textarea.form-control",{name:"authLdapSettings",rows:18,class:"monospace",value:a(s,null,4),onchange:t.withAttr("value",function(t){try{t=JSON.parse(t),r.data.authLdapSettings(t)}catch(t){i.error({body:n.LANG.ADMIN.ERR.PARSE_LDAP})}})},r.data.authLdapSettings())}}(),authCasSettings:function(){var e=t("label",{for:"authCasSettings"},d.FIELD.AUTH_CAS_SETTINGS),o=t.trust("<p>"+d.INFO.AUTH_CAS_SETTINGS+"</p>"),s=r.data.authCasSettings();return delete s.attrs,{label:e,help:o,textarea:t("textarea.form-control",{name:"authCasSettings",rows:18,class:"monospace",value:a(s,null,4),onchange:t.withAttr("value",function(t){try{t=JSON.parse(t),r.data.authCasSettings(t)}catch(t){i.error({body:n.LANG.ADMIN.ERR.PARSE_CAS})}})},r.data.authCasSettings())}}(),checkMails:function(){var a=l.icon(r,"checkMails",d.INFO.CHECKMAILS),n={name:"checkMails"};r.data.checkMails&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.checkMails(),onchange:t.withAttr("checked",r.data.checkMails)}),t("label",[i,d.FIELD.CHECKMAILS,a])}(),tokenDuration:function(){var t=l.icon(r,"tokenDuration",d.INFO.TOKEN_DURATION),a=l.field(r,"tokenDuration",d.FIELD.TOKEN_DURATION,t);return e.assign(a.label.attrs,{style:"clear: left;"}),e.assign(a.input.attrs,{type:"number"}),a}(),SMTPHost:function(){var t=l.icon(r,"SMTPHost",d.INFO.SMTP_HOST);return l.field(r,"SMTPHost",d.FIELD.SMTP_HOST,t)}(),SMTPPort:function(){var t=l.icon(r,"SMTPPort",d.INFO.SMTP_PORT),a=l.field(r,"SMTPPort",d.FIELD.SMTP_PORT,t);return e.assign(a.input.attrs,{type:"number",min:1}),a}(),SMTPSSL:function(){var a=l.icon(r,"SMTPSSL",d.INFO.SMTP_SSL),n={name:"SMTPSSL"};r.data.SMTPSSL&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.SMTPSSL(),onchange:t.withAttr("checked",r.data.SMTPSSL)}),t("label",[i,d.FIELD.SMTP_SSL,a])}(),SMTPTLS:function(){var a=l.icon(r,"SMTPTLS",d.INFO.SMTP_TLS),n={name:"SMTPTLS"};r.data.SMTPTLS&&(n.checked="checked");var i=t('input[type="checkbox"]',n);return e.assign(i.attrs,{type:"checkbox",checked:r.data.SMTPTLS(),onchange:t.withAttr("checked",r.data.SMTPTLS)}),t("label",[i,d.FIELD.SMTP_TLS,a])}(),SMTPUser:function(){var t=l.icon(r,"SMTPUser",d.INFO.SMTP_USER),a=l.field(r,"SMTPUser",d.FIELD.SMTP_USER,t);return e.assign(a.label.attrs,{style:"clear: left;"}),a}(),SMTPPass:function(){var t=l.icon(r,"SMTPPass",d.INFO.SMTP_PASS),a=l.field(r,"SMTPPass",d.FIELD.SMTP_PASS,t);return e.assign(a.input.attrs,{type:"password"}),a}(),SMTPEmailFrom:function(){var t=l.icon(r,"SMTPEmailFrom",d.INFO.SMTP_EMAILFROM,d.ERR.SMTP_EMAILFROM),a=l.field(r,"SMTPEmailFrom",d.FIELD.SMTP_EMAILFROM,t);return e.assign(a.input.attrs,{type:"email"}),a}()};return t("form",{id:"settings-form",onsubmit:r.submit},[t("fieldset",[t("legend",n.LANG.ADMIN.SETTINGS_GENERAL),t("div",[t("div.form-group",[u.title.label,u.title.input]),t("div.form-group",[u.rootUrl.label,u.rootUrl.input]),t("div.checkbox",[u.trustProxy]),t("div.form-group",[u.defaultLanguage.label,u.defaultLanguage.select]),t("div.checkbox",[u.allowEtherPads]),t("div.checkbox",[u.hideHelpBlocks]),t("div.checkbox",[u.useFirstLastNameInPads]),t("div.checkbox",[u.insensitiveMailMatch]),t("div.checkbox",[u.allPadsPublicsAuthentifiedOnly]),t("div.checkbox",[u.deleteJobQueue]),t("div.form-group",[u.HTMLExtraHead.label,u.HTMLExtraHead.icon,u.HTMLExtraHead.textarea]),t("div.form-group",[u.loginMsg.label,u.loginMsg.icon,u.loginMsg.textarea])])]),t("fieldset",[t("legend",n.LANG.ADMIN.AUTHENTICATION),t("div",[t("div.form-group",[u.authMethod.label,u.authMethod.select]),t("div.checkbox","internal"!==r.data.authMethod()?{class:"hidden"}:void 0,[u.openRegistration]),t("div.form-group","ldap"!==r.data.authMethod()?{class:"hidden"}:void 0,[u.authLdapSettings.label,u.authLdapSettings.help,u.authLdapSettings.textarea]),t("div.form-group","cas"!==r.data.authMethod()?{class:"hidden"}:void 0,[u.authCasSettings.label,u.authCasSettings.help,u.authCasSettings.textarea])])]),t("fieldset",[t("legend",n.LANG.ADMIN.SETTINGS_PASSWORD),t("div",[t("div.form-group",[u.passwordMin.label,u.passwordMin.input]),t("div.form-group",[u.passwordMax.label,u.passwordMax.input])])]),t("fieldset",[t("legend",n.LANG.ADMIN.SETTINGS_MAIL),t("div",[t("div.checkbox",[u.checkMails]),t("div.form-group",[u.tokenDuration.label,u.tokenDuration.input]),t("div.form-group",[u.SMTPHost.label,u.SMTPHost.input]),t("div.form-group",[u.SMTPPort.label,u.SMTPPort.input]),t("div.checkbox",[u.SMTPSSL]),t("div.checkbox",[u.SMTPTLS]),t("div.form-group",[u.SMTPUser.label,u.SMTPUser.input]),t("div.form-group",[u.SMTPPass.label,u.SMTPPass.input]),t("div.form-group",[u.SMTPEmailFrom.label,u.SMTPEmailFrom.input])])]),t("input.btn.btn-success",{form:"settings-form",type:"submit",value:n.LANG.ADMIN.FIELD.APPLY})])},main:function(e){var a=r.isAdmin()?[t("h2",n.LANG.ADMIN.FORM_SETTINGS),d.settings(e)]:[t("h2",n.LANG.ADMIN.FORM_LOGIN),d.form(e)];return t("section",{class:"block-group user admin"},a)},aside:function(){var e=r.isAdmin()?"HELP_SETTINGS":"HELP_LOGIN";return t("section.user-aside",[t("h2",n.LANG.ACTIONS.HELP),t("article.well",t.trust(n.LANG.ADMIN[e]))])}};return c.view=function(t){return o.view(d.main(t),d.aside(t))},c}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"json-beautify":51,"lodash":52,"mithril":56}],18:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"json-beautify":51,"lodash":52,"mithril":53}],18:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),t=require("../configuration.js"),o=require("../auth.js"),i=o.userInfo,n=require("./layout.js"),a=require("./group-mark.js"),u=require("./pad-mark.js"),s=require("../model/group.js"),p={controller:function(){if(!o.isAuthenticated())return t.unauthUrl(!0),r.route("/login");document.title=t.LANG.BOOKMARK.TITLE+" - "+t.SERVER.title;var n={computeBookmarks:function(){var r=i().bookmarks,t=function(r,t){return e(r).values().filter(function(r){return e.includes(t,r._id)}).sortBy("name").value()};n.bookmarks={groups:t(s.bookmarks().groups,r.groups),pads:t(s.bookmarks().pads,r.pads)}},unmark:function(r,e){("groups"===e?a:u)(r,n.computeBookmarks)}};return e.isEmpty(s.groups())?s.fetch(n.computeBookmarks):n.computeBookmarks(),n}},l={_items:function(o,i){var n="";switch(i){case"groups":n=t.LANG.GROUP.NONE;break;case"pads":n=t.LANG.GROUP.PAD.NONE}return 0===e.size(o.bookmarks[i])?r("p",n):r("ul.list-unstyled",e.map(o.bookmarks[i],function(n){var a;return a="groups"===i?"/mypads/group/"+n._id+"/view":"/mypads/group/"+n.group+"/pad/view/"+n._id,r("li",[r("button.btn.btn-link.btn-lg",{title:t.LANG.GROUP.UNMARK,onclick:e.partial(o.unmark,n,i)},[r("i.glyphicon glyphicon-star")]),r("a",{href:a,config:r.route},n.name)])}))}};return l.groups=e.partialRight(l._items,"groups"),l.pads=e.partialRight(l._items,"pads"),l.aside=function(){return r("section.user-aside",[r("h2",t.LANG.ACTIONS.HELP),r("article.well",r.trust(t.LANG.BOOKMARK.HELP))])},l.main=function(e){return r("section",[r("h2",t.LANG.BOOKMARK.TITLE),r("section.panel.panel-primary",[r(".panel-heading",r("h3.panel-title",t.LANG.GROUP.GROUPS)),r(".panel-body",l.groups(e))]),r("section.panel.panel-info",[r(".panel-heading",r("h3.panel-title",t.LANG.GROUP.PAD.PADS)),r(".panel-body",l.pads(e))])])},p.view=function(r){return n.view(l.main(r),l.aside(r))},p}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"./group-mark.js":20,"./layout.js":25,"./pad-mark.js":29,"lodash":52,"mithril":56}],19:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"./group-mark.js":20,"./layout.js":25,"./pad-mark.js":29,"lodash":52,"mithril":53}],19:[function(require,module,exports){
 module.exports=function(){"use strict";var e=require("mithril"),i=require("lodash"),r=require("../configuration.js"),t=require("../auth.js"),a=require("./layout.js"),o=require("../helpers/form.js"),n=require("../widgets/notification.js"),s=require("../widgets/tag.js"),l=require("../model/group.js"),c={controller:function(){if(!t.isAuthenticated())return r.unauthUrl(!0),e.route("/login");var a={},c=function(){var t;if(a.addView=e.prop("/mypads/group/add"===e.route()),document.title=a.addView()?r.LANG.GROUP.ADD:r.LANG.GROUP.EDIT_GROUP,document.title+=" - "+r.SERVER.title,a.fields=["name","description","visibility","password","readonly","allowUsersToCreatePads","archived"],o.initFields(a,a.fields),a.data.visibility("restricted"),!a.addView()){var n=e.route.param("key");a.group=l.groups()[n],i.map(i.keys(a.group),function(i){a.data[i]=e.prop(a.group[i])}),a.data.password=e.prop(""),t=a.group.tags}a.tag=new s.controller({current:t||[],tags:l.tags()}),a.data.tags=function(){return a.tag.current},a.data.tags.toJSON=function(){return a.tag.current}};return i.isEmpty(l.groups())?l.fetch(c):c(),a.submit=function(o){o.preventDefault();var s,c=(s={params:{},extra:{}},a.addView()?(s.params.method="POST",s.params.url=r.URLS.GROUP,s.extra.msg=r.LANG.GROUP.INFO.ADD_SUCCESS):(s.params.method="PUT",s.params.url=r.URLS.GROUP+"/"+a.group._id,s.extra.msg=r.LANG.GROUP.INFO.EDIT_SUCCESS),s);c.params.data=i.assign(a.data,{admin:t.userInfo()._id}),c.params.data.auth_token=t.token(),e.request(c.params).then(function(r){var t=l.groups();t[r.key]=r.value,l.groups(t),l.tags(i.union(l.tags(),r.value.tags)),n.success({body:c.extra.msg}),e.route("/mypads/group/"+r.value._id+"/view")},function(e){n.error({body:i.result(r.LANG,e.error)})})},a}},u={};return c.views=u,u.icon={},u.icon.common=function(i){return e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":i})},u.icon.name=function(e){return o.icon(e,"name",r.LANG.GROUP.INFO.NAME,r.LANG.GROUP.ERR.NAME)},u.icon.description=function(e){return o.icon(e,"description",r.LANG.GROUP.INFO.DESCRIPTION)},u.icon.visibility=function(){return u.icon.common(r.LANG.GROUP.INFO.VISIBILITY)},u.icon.password=function(){return u.icon.common(r.LANG.GROUP.INFO.PASSWORD)},u.icon.readonly=function(){return u.icon.common(r.LANG.GROUP.INFO.READONLY)},u.icon.allowUsersToCreatePads=function(){return u.icon.common(r.LANG.GROUP.INFO.ALLOW_USERS_TO_CREATE_PADS)},u.icon.archived=function(){return u.icon.common(r.LANG.GROUP.INFO.ARCHIVED)},u.field={},u.field.name=function(e){var t=o.field(e,"name",r.LANG.GROUP.INFO.NAME,u.icon.name(e));return i.assign(t.input.attrs,{placeholder:r.LANG.GROUP.INFO.NAME,required:!0,maxlength:40,config:o.focusOnInit}),t.label.attrs.class="col-sm-4",t},u.field.description=function(i){var t=u.icon.description(i);return{label:e("label.col-sm-4",{for:"description"},[r.LANG.GROUP.FIELD.DESCRIPTION,t]),icon:t,textarea:e("textarea.form-control",{name:"description",value:i.data.description()||"",onchange:e.withAttr("value",i.data.description)},i.data.description())}},u.field.visibility=function(t,a){a=!!i.isUndefined(a)||a;var o=u.icon.visibility();return{label:e("label.col-sm-4",{for:"visibility"},[r.LANG.GROUP.FIELD.VISIBILITY,o]),icon:o,select:e("select.form-control",{name:"visibility",required:!0,value:t.data.visibility(),onchange:e.withAttr("value",t.data.visibility)},[a?e("option",{value:"restricted"},r.LANG.GROUP.FIELD.RESTRICTED):e("option",{value:""},""),e("option",{value:"private"},r.LANG.GROUP.FIELD.PRIVATE),e("option",{value:"public"},r.LANG.GROUP.FIELD.PUBLIC)])}},u.field.password=function(i){var t=u.icon.password();return{label:e("label.col-sm-4",{for:"password"},[r.LANG.USER.PASSWORD,t]),icon:t,input:e("input.form-control",{name:"password",type:"password",placeholder:r.LANG.USER.UNDEF,value:i.data.password(),required:i.addView()&&"private"===i.data.visibility(),oninput:e.withAttr("value",i.data.password)})}},u.field.readonly=function(i){var t=u.icon.readonly();return{label:e("label",[e("input",{name:"readonly",type:"checkbox",checked:i.data.readonly(),onchange:e.withAttr("checked",i.data.readonly)}),[r.LANG.GROUP.FIELD.READONLY,t]]),icon:t}},u.field.allowUsersToCreatePads=function(i){var t=u.icon.allowUsersToCreatePads();return{label:e("label",[e("input",{name:"allowUsersToCreatePads",type:"checkbox",checked:i.data.allowUsersToCreatePads(),onchange:e.withAttr("checked",i.data.allowUsersToCreatePads)}),[r.LANG.GROUP.FIELD.ALLOW_USERS_TO_CREATE_PADS,t]]),icon:t}},u.field.archived=function(i){var t=u.icon.archived();return{label:e("label",[e("input",{name:"archived",type:"checkbox",checked:i.data.archived(),onchange:e.withAttr("checked",i.data.archived)}),[r.LANG.GROUP.FIELD.ARCHIVED,t]]),icon:t}},u.field.tag=function(e){return s.view(e.tag)},u.form=function(t){var a=i.reduce(t.fields,function(e,i){return e[i]=u.field[i](t),e},{}),o=[e(".form-group",[a.name.label,e(".col-sm-7",a.name.input)]),e(".form-group",[a.description.label,e(".col-sm-7",a.description.textarea)])];return r.SERVER.allPadsPublicsAuthentifiedOnly||o.push(e(".form-group",[a.visibility.label,e(".col-sm-7",a.visibility.select)])),"private"===t.data.visibility()&&o.push(e(".form-group",[a.password.label,e(".col-sm-7",a.password.input)])),t.addView()||r.SERVER.allPadsPublicsAuthentifiedOnly||o.push([e(".form-group",e(".col-sm-7 .col-sm-offset-4",e(".checkbox",[a.readonly.label]))),e(".form-group",e(".col-sm-7 .col-sm-offset-4",e(".checkbox",[a.archived.label]))),e(".form-group",e(".col-sm-7 .col-sm-offset-4",e(".checkbox",[a.allowUsersToCreatePads.label])))]),o.push(u.field.tag(t)),e("form.form-horizontal",{id:"group-form",onsubmit:t.submit},[e("fieldset",[e("legend",r.LANG.GROUP.GROUP),e("div",o)]),e("input.btn.btn-success.pull-right",{form:"group-form",type:"submit",value:r.LANG.ACTIONS.SAVE})])},u.main=function(i){return e("section",{class:"user group-form"},[e("h2",i.addView()?r.LANG.GROUP.ADD:r.LANG.GROUP.EDIT_GROUP),u.form(i)])},u.aside=function(){var i=r.SERVER.allPadsPublicsAuthentifiedOnly?r.LANG.GROUP.ADD_HELP_PUBLIC_ACCESS:r.LANG.GROUP.ADD_HELP;return i+=r.LANG.GROUP.ADD_HELP_LABEL,e("section.user-aside",[e("h2",r.LANG.ACTIONS.HELP),e("article.well",e.trust(i))])},c.view=function(e){return a.view(u.main(e),u.aside(e))},c}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"../widgets/tag.js":45,"./layout.js":25,"lodash":52,"mithril":56}],20:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"../widgets/tag.js":45,"./layout.js":25,"lodash":52,"mithril":53}],20:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),o=require("lodash"),e=require("../auth.js"),u=require("../configuration.js"),s=require("../widgets/notification.js"),t=require("../model/group.js");return function(i,n){var a=i._id,k=e.userInfo();o.includes(k.bookmarks.groups,a)?o.pull(k.bookmarks.groups,a):k.bookmarks.groups.push(a),void 0!==t.bookmarks().groups[a]?delete t.bookmarks().groups[a]:t.bookmarks().groups[a]=i,r.request({url:u.URLS.USERMARK,method:"POST",data:{type:"groups",key:a,auth_token:e.token()}}).then(function(){s.success({body:u.LANG.GROUP.MARK_SUCCESS}),n&&n()},function(r){return s.error({body:o.result(u.LANG,r.error)})})}}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":56}],21:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":53}],21:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),t=require("../auth.js"),o=require("../configuration.js"),u=require("../model/group.js"),i=require("../widgets/notification.js"),n={controller:function(){if(!t.isAuthenticated())return o.unauthUrl(!0),r.route("/login");window.confirm(o.LANG.GROUP.INFO.REMOVE_SURE)?r.request({method:"DELETE",url:o.URLS.GROUP+"/"+r.route.param("key"),data:{auth_token:t.token()}}).then(function(e){var t=u.groups();delete t[e.key],u.groups(t),i.success({body:o.LANG.GROUP.INFO.REMOVE_SUCCESS}),r.route("/mypads/group/list")},function(r){i.error({body:e.result(o.LANG,r.error)})}):r.route("/mypads/group/"+r.route.param("key")+"/view")},view:function(){}};return n}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":56}],22:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":53}],22:[function(require,module,exports){
 module.exports=function(){"use strict";var i=require("mithril"),t=require("lodash"),e=require("../configuration.js"),n=require("../auth.js"),r=require("../widgets/notification.js"),s=require("./layout.js"),o=require("../model/group.js"),l=require("./pad-mark.js"),a=require("./pad-share.js"),u=require("../helpers/ready.js"),p=require("../helpers/sortingPreferences.js"),d=require("../helpers/filterPads.js"),c=require("./group-mark.js"),A=n.userInfo,g={controller:function(){var s=i.route.param("key"),l={group:{visibility:"",tags:[]},privatePassword:i.prop(""),sendPass:i.prop(!1)};n.isAuthenticated()&&(l.bookmarks=n.userInfo().bookmarks.pads),l.isGuest=!n.isAuthenticated();var a=function(r){if(r)return i.route("/mypads");var a=function(r){if(r)return i.route("/mypads");var a=l.isGuest?o.tmp():o;if(l.group=a.groups()[s],l.isGuest)l.isAdmin=!1,l.isUser=!1,l.pads=t.sortBy(t.compact(t.map(l.group.pads,function(i){return a.pads()[i]})),p.padByField());else{l.isAdmin=t.includes(l.group.admins,n.userInfo()._id),l.isUser=t.includes(l.group.users,n.userInfo()._id);var u=o.pads(),d=o.users();l.pads=t.sortBy(t.map(l.group.pads,function(i){return u[i]}),p.padByField()),l.users=t.map(l.group.users,function(i){return d[i]}),l.admins=t.map(l.group.admins,function(i){return d[i]})}p.padAsc()||l.pads.reverse(),document.title=e.LANG.GROUP.GROUP+" "+l.group.name+" - "+e.SERVER.title};o.groups()[s]?a():(l.isGuest=!0,o.fetchObject({group:s},void 0,a))},u=n.isAuthenticated()?t.partial(o.fetch,a):t.partial(o.fetchObject,{group:s},void 0,a);return t.isEmpty(o.groups())?u():a(),l.sortField=i.prop(p.padByField()),l.sortAsc=i.prop(p.padAsc()),l.sortBy=function(i,e){l.sortField()===i&&"boolean"!=typeof e&&l.sortAsc(!l.sortAsc()),l.sortField(i);var n=l.sortAsc()?"asc":"desc";l.pads=t.sortByOrder(l.pads,i,n),p.updateValues({padByField:l.sortField(),padAsc:l.sortAsc()})},l.quit=function(){window.confirm(e.LANG.GROUP.INFO.RESIGN)&&i.request({method:"POST",url:e.URLS.GROUP+"/resign",data:{gid:l.group._id,auth_token:n.token()}}).then(function(t){var n=o.groups();delete n[t.value._id],o.groups(n),r.success({body:e.LANG.GROUP.INFO.RESIGN_SUCCESS}),i.route("/mypads/group/list")},function(i){r.error({body:t.result(e.LANG,i.error)})})},l.submitPass=function(i){i.preventDefault(),o.fetchObject({group:s},l.privatePassword(),function(i){if(i)return l.sendPass(!1);var e=l.isGuest?o.tmp():o;l.group=e.groups()[s],l.pads=t.sortBy(t.compact(t.map(l.group.pads,function(i){return e.pads()[i]})),p.padByField()),l.sendPass(!0)})},l}},h={properties:function(n){return i("table.table.table-stripped.table-bordered",[i("thead",i("tr",[i("th",{scope:"col"},e.LANG.GROUP.PAD.PADS),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col",title:e.LANG.GROUP.PAD.VISIBILITY},i("i.glyphicon.glyphicon-eye-open",i("span.sr-only",e.LANG.GROUP.PAD.VISIBILITY))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col"},e.LANG.GROUP.FIELD.READONLY),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col",title:e.LANG.GROUP.PAD.ADMINS},i("i.glyphicon.glyphicon-knight",i("span.sr-only",e.LANG.GROUP.PAD.ADMINS))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("th",{scope:"col",title:e.LANG.GROUP.PAD.USERS},i("i.glyphicon.glyphicon-user",i("span.sr-only",e.LANG.GROUP.PAD.USERS))),i("th",{scope:"col"},e.LANG.GROUP.TAGS.TITLE)])),i("tbody",i("tr.text-center",[i("td",t.size(n.group.pads)),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",e.LANG.GROUP.FIELD[n.group.visibility.toUpperCase()]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",e.LANG.GLOBAL[n.group.readonly?"YES":"NO"]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",t.size(n.group.admins)),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i("td",t.size(n.group.users)),i("td",i("ul.list-inline",t.map(n.group.tags,function(t){return i("li.label.label-default",t)})))]))])},pads:function(n){var r="/mypads/group/"+n.group._id,s=e.LANG.GROUP,o=i("p.col-sm-4.text-center",[i("a.btn.btn-add-pad",{href:r+"/pad/add",config:i.route},[i("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.PAD.ADD])]),u=i("p.text-center.col-sm-12",[i("a.btn.btn-default",{href:r+"/pad/move",config:i.route},[i("i.glyphicon.glyphicon-transfer")," "+e.LANG.GROUP.PAD.MOVE])]),p=i("p.col-sm-4.text-center.form-inline",[i(".form-group",[i("label",{for:"pad-filter-form"},e.LANG.GROUP.SEARCH.TYPE),i("input.form-control",{id:"pad-filter-form",type:"search",placeholder:e.LANG.GROUP.SEARCH.PLACEHOLDER,oninput:i.withAttr("value",d.filterKeyword)})])]),c=n.sortField()?n.sortAsc()?"top":"bottom":"arrow-combo",A=i("p.col-sm-4.text-right.small",[i("span"," "+e.LANG.GROUP.PAD.SORT_BY),i("button.btn.btn-default.btn-xs",{type:"button",onclick:t.partial(n.sortBy,"ctime")},[e.LANG.GROUP.PAD.SORT_BY_CREATION+" ",i("i.small.glyphicon glyphicon-triangle-"+c)]),i("button.btn.btn-default.btn-xs",{type:"button",onclick:t.partial(n.sortBy,"name")},[e.LANG.GROUP.PAD.SORT_BY_NAME+" ",i("i.small.glyphicon glyphicon-triangle-"+c)])]),g=0===t.size(n.group.pads)?i("p.text-center.col-sm-12",e.LANG.GROUP.PAD.NONE):i("ul.list-group.col-sm-12",t.map(n.pads,function(o){if(void 0===o)return null;var u=[function(){if("restricted"!==n.group.visibility||o.visibility&&"restricted"!==o.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)return i("button.btn.btn-default.btn-xs",{title:e.LANG.GROUP.SHARE,onclick:a.bind(n,n.group._id,o._id)},[i("i.glyphicon.glyphicon-link")])}()];n.isAdmin&&u.push(i("a.btn.btn-default.btn-xs",{href:r+"/pad/edit/"+o._id,config:i.route,title:e.LANG.MENU.CONFIG},[i("i.glyphicon.glyphicon-wrench")]),i("div.btn-group.dropdown",[i("button.btn.btn-default.btn-xs",{"aria-haspopup":"true","aria-expanded":"false"},[i("i.glyphicon.glyphicon-trash.text-danger"),i("span.caret")]),i("ul.dropdown-content.dropdown-menu.dropdown-menu-right",[i("li",[i("a",{href:r+"/pad/remove/chat/history/"+o._id,config:i.route},[e.LANG.GROUP.REMOVE_CHAT_HISTORY])]),i("li.divider",{role:"separator"}),i("li",[i("a",{href:r+"/pad/remove/"+o._id,config:i.route},[e.LANG.GROUP.REMOVE+" "+o.name])])])]));var p=o.name;return o.visibility&&o.visibility!==n.group.visibility&&(p+=" ("+e.LANG.GROUP.FIELD[o.visibility.toUpperCase()]+")"),i("li.list-group-item.group-pad-item",{"data-padname":p},[function(){if(!n.isGuest){var e=t.includes(n.bookmarks,o._id);return i("button.btn.btn-link.btn-lg",{title:e?s.UNMARK:s.BOOKMARK,onclick:function(){l(o)}},[i("i",{class:"glyphicon glyphicon-star"+(e?"":"-empty")})])}}(),i("span.name",[i("a",{href:r+"/pad/view/"+o._id,config:i.route,title:e.LANG.GROUP.VIEW},p)]),i("span.pull-right",u)])})),h=[];return(n.isAdmin||n.group.allowUsersToCreatePads&&!n.isGuest)&&h.push(o),h.push(p,A,g),n.isAdmin&&0!==t.size(n.group.pads)&&h.push(u),i("section.panel-body",h)}};return h.users=function(n){if(n.isGuest)return i("p",e.LANG.GROUP.PAD.PUBLIC_DENIED);var r=function(r){return 0===t.size(r)?i("p",e.LANG.GROUP.PAD.USERS_NONE):i("ul.list-group",t.map(r,function(t){return i("li.list-group-item",function(i){return n.isAdmin?i.firstname||i.lastname?i.firstname+" "+i.lastname+" : "+i.email:i.login+" : "+i.email:i.login}(t))}))},s="/mypads/group/"+n.group._id,o=[i("h4",e.LANG.GROUP.PAD.ADMINS)];e.SERVER.allPadsPublicsAuthentifiedOnly&&(o=[]),n.isAdmin&&o.push(i("p.text-center",i("a.btn.btn-default",{href:s+"/user/share",config:i.route},[i("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.SHARE_ADMIN]))),o.push(r(n.admins));var l=[i("h4",e.LANG.GROUP.PAD.USERS)];return n.isAdmin&&l.push(i("p.text-center",i("a.btn.btn-default",{href:s+"/user/invite",config:i.route},[i("i.glyphicon.glyphicon-plus.text-success")," "+e.LANG.GROUP.INVITE_USER.IU]))),l.push(r(n.users)),i("section.panel-body",[i(e.SERVER.allPadsPublicsAuthentifiedOnly?".col-sm-12":".col-sm-6",o),e.SERVER.allPadsPublicsAuthentifiedOnly?null:i(".col-sm-6",l)])},h.passForm=function(t){return[i("form",{id:"password-form",config:u.inFrame,onsubmit:t.submitPass},[i("label",{for:"mypadspassword"},e.LANG.USER.PASSWORD),i("input",{type:"password",required:!0,placeholder:e.LANG.USER.UNDEF,value:t.privatePassword(),oninput:i.withAttr("value",t.privatePassword)}),i("input.ok",{form:"password-form",type:"submit",value:e.LANG.USER.OK})])]},h.main=function(r){var s=!!n.isAuthenticated()&&t.includes(A().bookmarks.groups,r.group._id),o=[i("span",[i("a.link[href=/mypads][title="+e.LANG.GROUP.MYGROUPS+"]",[i("i",{class:"glyphicon glyphicon-chevron-left"})]),i("button.btn.btn-link.btn-lg",{onclick:function(i){i.preventDefault(),c(r.group)},title:s?e.LANG.GROUP.UNMARK:e.LANG.GROUP.BOOKMARK},[i("i",{class:"glyphicon glyphicon-star"+(s?"":"-empty")})]),e.LANG.GROUP.GROUP+" "+r.group.name])],l="";("restricted"!==r.group.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)&&(l=i("button.btn.btn-default",{title:e.LANG.GROUP.SHARE,onclick:a.bind(r,r.group._id,null)},[i("i.glyphicon.glyphicon-link"),i("span"," "+e.LANG.GROUP.SHARE)]));var u=[l];r.isAdmin&&u.push(i("a.btn.btn-default",{href:"/mypads/group/"+r.group._id+"/edit",config:i.route,title:e.LANG.MENU.CONFIG},[i("i.glyphicon.glyphicon-wrench"),i("span"," "+e.LANG.MENU.CONFIG)]),i("a.btn.btn-danger",{href:"/mypads/group/"+r.group._id+"/remove",config:i.route,title:e.LANG.GROUP.REMOVE},[i("i.glyphicon.glyphicon-trash"),i("span"," "+e.LANG.GROUP.REMOVE)]));var p=r.isAdmin&&r.admins.length>1||!r.isAdmin;if(!r.isGuest&&p&&u.push(i("button.cancel.btn.btn-warning",{onclick:r.quit},[i("i.glyphicon glyphicon-fire")," "+e.LANG.GROUP.QUIT_GROUP])),!(r.isAdmin||r.isUser||"private"!==r.group.visibility||r.sendPass()||e.SERVER.allPadsPublicsAuthentifiedOnly))return i("section",[i("h2",o),h.passForm(r)]);var d=e.LANG.GROUP.PAD.ADMINS+" & "+e.LANG.GROUP.PAD.USERS;return e.SERVER.allPadsPublicsAuthentifiedOnly&&(d=e.LANG.GROUP.PAD.ADMINS),i("section",[i(".btn-group.pull-right",{role:"group"},u),i("h2",o),i("section.panel.panel-primary.props",[i(".panel-heading",i("h3.panel-title",e.LANG.GROUP.PAD.PADS)),h.pads(r)]),console.log(r),i("section.panel.panel-info.pads",[i(".panel-heading",i("h3.panel-title",d)),i("section.description",[]),h.users(r)]),i("section.panel.panel-warning.users",[i(".panel-heading",i("h3.panel-title",e.LANG.GROUP.PROPERTIES)),i(".panel-body",r.group.description),h.properties(r)])])},h.aside=function(){return i("section.user-aside",[i("h2",e.LANG.ACTIONS.HELP),i("article.well",i.trust(e.LANG.GROUP.VIEW_HELP))])},g.view=function(i){return s.view(h.main(i),h.aside(i))},g}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/filterPads.js":6,"../helpers/ready.js":8,"../helpers/sortingPreferences.js":9,"../model/group.js":10,"../widgets/notification.js":44,"./group-mark.js":20,"./layout.js":25,"./pad-mark.js":29,"./pad-share.js":33,"lodash":52,"mithril":56}],23:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/filterPads.js":6,"../helpers/ready.js":8,"../helpers/sortingPreferences.js":9,"../model/group.js":10,"../widgets/notification.js":44,"./group-mark.js":20,"./layout.js":25,"./pad-mark.js":29,"./pad-share.js":33,"lodash":52,"mithril":53}],23:[function(require,module,exports){
 module.exports=function(){"use strict";var t=require("mithril"),i=require("lodash"),e=require("../configuration.js"),n=require("../auth.js"),l=n.userInfo,r=require("./layout.js"),s=require("../model/group.js"),o=require("./pad-share.js"),a=require("../helpers/sortingPreferences.js"),u=require("./group-mark.js"),c={controller:function(){if(!n.isAuthenticated())return e.unauthUrl(!0),t.route("/login");document.title=e.LANG.GROUP.MYGROUPS+" - "+e.SERVER.title;var r={groups:{},filters:{admins:!1,users:!1}},o=function(t,i,e){r.filters[t]=!!i&&e,r.computeGroups()};return r.filterToggle=function(t){o(t,!r.filters[t],function(e){return i.includes(e[t],l()._id)})},r.filterTag=function(t){o(t,!r.filters[t],function(e){return i.includes(e.tags,t)})},r.filterVisibility=function(t){r.filterVisibVal===t?(r.filters.visibility=!1,r.filterVisibVal=!1):(r.filterVisibVal=t,r.filters.visibility=function(i){return i.visibility===t}),r.computeGroups()},r.search=t.prop(""),r.padsSearched={group:[],pads:[]},r.filterSearch=function(){r.padsSearched={group:[],pads:[]},r.search().length>2?r.filters.search=function(t){var e=new RegExp(r.search(),"gi");return t.pads.forEach(function(n){n.match(e)&&!i.includes(r.padsSearched.pads,n)&&(r.padsSearched.group.push(t.name),r.padsSearched.pads.push({group:t.name,pad:n}))}),!(!t.name.match(e)&&!i.includes(r.padsSearched.group,t.name))||t.tags.toString().match(e)}:r.filters.search=!1,r.computeGroups()},window.c=r,r.sortField=t.prop(a.groupByField()),r.sortAsc=t.prop(a.groupAsc()),r.sortBy=function(t){r.sortField()===t&&r.sortAsc(!r.sortAsc()),r.sortField(t);var e=r.sortAsc()?"asc":"desc";r.groups=i.transform(r.groups,function(n,l,r){n[r]=i.sortByOrder(l,t,e)}),a.updateValues({groupByField:r.sortField(),groupAsc:r.sortAsc()})},r.computeGroups=function(){r.groups=i(s.groups()).values().sortBy(r.sortField()).value(),r.sortAsc()||r.groups.reverse();var t=l().bookmarks.groups;r.groups=i.reduce(r.groups,function(e,n){for(var l in r.filters)if(r.filters[l]&&!r.filters[l](n))return e;return i.includes(t,n._id)&&!n.archived?e.bookmarked.push(n):n.readonly||n.archived?e.archived.push(n):e.normal.push(n),e},{bookmarked:[],archived:[],normal:[]})},i.isEmpty(s.groups())?s.fetch(r.computeGroups):r.computeGroups(),r}},p={sort:function(n){var l=function(e,l){return t("button.btn.btn-default.btn-xs",{class:n.sortField()===e?" btn-info":"",onclick:i.partial(n.sortBy,e)},[t("span",l+" "),t("i.small.glyphicon glyphicon-triangle-"+(n.sortAsc()?"top":"bottom"))])};return t("section.sort",[t("h3",[t("span",e.LANG.GROUP.SORT.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":e.LANG.GROUP.SORT.HELP})]),t("ul.list-inline",[t("li",[l("ctime",e.LANG.GROUP.PAD.SORT_BY_CREATION)]),t("li",[l("name",e.LANG.GROUP.PAD.SORT_BY_NAME)])])])},search:function(i){return t("section.search",[t("h3",[t("span",e.LANG.GROUP.SEARCH.GENERAL),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":e.LANG.GROUP.SEARCH.HELP})]),t(".input-group",[t("input.form-control",{type:"search",placeholder:e.LANG.GROUP.SEARCH.PLACEHOLDER,minlength:3,pattern:".{3,}",value:i.search(),oninput:t.withAttr("value",i.search),onkeyup:function(t){13===t.keyCode&&(t.preventDefault(),i.filterSearch()),i.search().length<=2&&i.filterSearch()}}),t("span.input-group-btn",t("button.btn.btn-default",{type:"button",onclick:i.filterSearch},e.LANG.USER.OK))])])},filters:function(n){return t("section.filter",[t("h3",[t("span",e.LANG.GROUP.FILTERS.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":e.LANG.GROUP.FILTERS.HELP})]),t("ul.list-unstyled",[t("li",[t("button.btn.btn-default.btn-xs.btn-block",{class:"admin"+(n.filters.admins?" btn-info":""),onclick:i.partial(n.filterToggle,"admins")},e.LANG.GROUP.FILTERS.ADMIN)]),t("li",[t("button.btn.btn-default.btn-xs.btn-block",{class:"user"+(n.filters.users?" btn-info":""),onclick:i.partial(n.filterToggle,"users")},e.LANG.GROUP.FILTERS.USER)]),t("li",[i.map(["restricted","private","public"],function(l){return t("button.btn.btn-default.btn-xs.btn-block",{class:"user"+(n.filterVisibVal===l?" btn-info":""),onclick:i.partial(n.filterVisibility,l)},e.LANG.GROUP.FIELD.VISIBILITY+" : "+e.LANG.GROUP.FIELD[l.toUpperCase()])})])])])},tags:function(n){return t("section.tag",[t("h3",[t("span",e.LANG.GROUP.TAGS.TITLE),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":e.LANG.GROUP.TAGS.HELP})]),t("ul.list-inline",i.map(s.tags(),function(e){return t("li",[t("button.btn.btn-default.btn-xs",{class:n.filters[e]?"btn-info":"",onclick:i.partial(n.filterTag,e)},e)])}))])},aside:function(i){var n=[p.search(i),p.sort(i)];return e.SERVER.allPadsPublicsAuthentifiedOnly||n.push(p.filters(i)),n.push(p.tags(i)),t("section.group-aside",n)},group:function(n,r){var s,a="/mypads/group/"+r._id,c=i.includes(l().bookmarks.groups,r._id),p=e.LANG.GROUP,d=i.includes(r.admins,l()._id),h=[function(){if("restricted"!==r.visibility||e.SERVER.allPadsPublicsAuthentifiedOnly)return t("button.btn.btn-default.btn-xs",{type:"button",onclick:o.bind(n,r._id,null),title:e.LANG.GROUP.SHARE},[t("i.glyphicon.glyphicon-link")])}()];return d&&h.push(t("a.btn.btn-default.btn-xs",{href:a+"/edit",config:t.route,title:e.LANG.MENU.CONFIG},[t("i.glyphicon glyphicon-wrench")]),t("a.btn.btn-default.btn-xs",{href:a+"/remove",config:t.route,title:e.LANG.GROUP.REMOVE},[t("i.glyphicon.glyphicon-trash.text-danger")])),t("tr",[t("th",[t("p.pull-right",h),t("a.btn.btn-link.btn-lg",{onclick:u.bind(n,r,n.computeGroups),href:"/mypads",config:t.route,title:c?p.UNMARK:p.BOOKMARK},[t("i",{class:"glyphicon glyphicon-star"+(c?"":"-empty")})]),t("a",{href:a+"/view",config:t.route,title:e.LANG.GROUP.VIEW_MANAGE},r.name)]),t("td",[i.includes(n.padsSearched.group,r.name)&&n.search().length>2?t("ul",[n.padsSearched.pads.map(function(i){if(r.name===i.group)return t("li",[t("a",{href:a+"/pad/view/"+i.pad,config:t.route},i.pad)])})]):i.size(r.pads),(s=[],d&&s.push(t("a.btn.btn-default.btn-xs.pull-right",{href:a+"/pad/add",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success",{title:e.LANG.GROUP.PAD.ADD})])),s)]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",[t("span",{class:r.visibility+"-group"},e.LANG.GROUP.FIELD[r.visibility.toUpperCase()])]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",[i.size(r.admins),function(){if(d)return t("a.btn.btn-default.btn-xs.pull-right",{href:a+"/user/share",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success",{title:e.LANG.GROUP.SHARE_ADMIN})])}()]),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("td",[function(){if("restricted"===r.visibility)return[i.size(r.users),function(){if(d)return t("a.btn.btn-default.btn-xs.pull-right",{href:a+"/user/invite",config:t.route},[t("i.glyphicon.glyphicon-plus.text-success",{title:e.LANG.GROUP.INVITE_USER.IU})])}()]}()]),t("td",[t("ul.list-inline",i.map(r.tags,function(e){return t("li.label.label-default",{class:n.filters[e]?"label-info":"",onclick:i.partial(n.filterTag,e)},e)}))])])},_groups:function(t,e){return i.map(t.groups[e],i.partial(p.group,t))}};return p.groups=i.partialRight(p._groups,"normal"),p.bookmarked=i.partialRight(p._groups,"bookmarked"),p.archived=i.partialRight(p._groups,"archived"),p.main=function(i){return void 0===i.archivedIsVisible&&(i.archivedIsVisible=!1),i.toggleArchived=function(){i.archivedIsVisible=!i.archivedIsVisible},t("section",[t("h2",[t("span",e.LANG.GROUP.MYGROUPS),t("i.mp-tooltip.glyphicon glyphicon-info-sign",{"data-msg":e.LANG.GROUP.HELP}),t("a.btn.btn-primary.pull-right",{href:"/mypads/group/add",config:t.route},[t("span",e.LANG.GROUP.ADD)])]),t("section.panel.panel-primary",[t(".panel-heading",t("h3.panel-title",e.LANG.GROUP.GROUPS)),t("table.table.table-stripped.table-bordered",[t("thead",t("tr",[t("th",{scope:"col"},e.LANG.GROUP.GROUPS),t("th",{scope:"col"},e.LANG.GROUP.PAD.PADS),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.VISIBILITY},t("i.glyphicon.glyphicon-eye-open",t("span.sr-only",e.LANG.GROUP.PAD.VISIBILITY))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.ADMINS},t("i.glyphicon.glyphicon-knight",t("span.sr-only",e.LANG.GROUP.PAD.ADMINS))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.USERS},t("i.glyphicon.glyphicon-user",t("span.sr-only",e.LANG.GROUP.PAD.USERS))),t("th",{scope:"col"},e.LANG.GROUP.TAGS.TITLE)])),t("tbody",[p.bookmarked(i),p.groups(i)])])]),t("section.panel.panel-default",[t(".panel-heading",t("h3.panel-title",e.LANG.GROUP.ARCHIVED),t("button",{onclick:i.toggleArchived},t("i.glyphicon.glyphicon-chevron-"+(i.archivedIsVisible?"up":"down")))),t("div",{class:"archived-group-view-"+(i.archivedIsVisible?null:"notVisible")},t("table.table.table-stripped.table-bordered",[t("thead",t("tr",[t("th",{scope:"col"},e.LANG.GROUP.GROUPS),t("th",{scope:"col"},e.LANG.GROUP.PAD.PADS),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.VISIBILITY},t("i.glyphicon.glyphicon-eye-open",t("span.sr-only",e.LANG.GROUP.PAD.VISIBILITY))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.ADMINS},t("i.glyphicon.glyphicon-knight",t("span.sr-only",e.LANG.GROUP.PAD.ADMINS))),e.SERVER.allPadsPublicsAuthentifiedOnly?null:t("th",{scope:"col",title:e.LANG.GROUP.PAD.USERS},t("i.glyphicon.glyphicon-user",t("span.sr-only",e.LANG.GROUP.PAD.USERS))),t("th",{scope:"col"},e.LANG.GROUP.TAGS.TITLE)])),t("tbody",[p.archived(i)])]))])])},c.view=function(t){return r.view(p.main(t),p.aside(t))},c}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/sortingPreferences.js":9,"../model/group.js":10,"./group-mark.js":20,"./layout.js":25,"./pad-share.js":33,"lodash":52,"mithril":56}],24:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/sortingPreferences.js":9,"../model/group.js":10,"./group-mark.js":20,"./layout.js":25,"./pad-share.js":33,"lodash":52,"mithril":53}],24:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("../auth.js"),t=require("./layout.js");return{controller:function(){return r.isAdmin()?e.route("/admin"):r.isAuthenticated()?e.route("/mypads"):void e.route("/login")},view:function(){return t.view(e("p","empty home"),e("p","empty aside"))}}}.call(this);
 
-},{"../auth.js":2,"./layout.js":25,"mithril":56}],25:[function(require,module,exports){
+},{"../auth.js":2,"./layout.js":25,"mithril":53}],25:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),t=require("lodash"),o=require("../configuration.js"),n=require("../auth.js"),i=require("../widgets/notification.js"),r=require("../helpers/expandPad.js"),a={},u={menuMain:function(){var i={auth:[{route:"/mypads",icon:"duplicate",txt:o.LANG.MENU.PAD},{route:"/mybookmarks",icon:"star",txt:o.LANG.MENU.BOOKMARK},{route:"/myuserlists",icon:"user",txt:o.LANG.MENU.USERLIST},{route:"/myprofile",icon:"home",txt:o.LANG.MENU.PROFILE},{route:"/logout",icon:"off",txt:o.LANG.MENU.LOGOUT}],admin:[{route:"/admin",icon:"wrench",txt:o.LANG.MENU.CONFIG},{route:"/admin/users",icon:"user",txt:o.LANG.MENU.USERS},{route:"/admin/logout",icon:"off",txt:o.LANG.MENU.LOGOUT}],unauth:[{route:"/login",icon:"lock",txt:o.LANG.USER.LOGIN},{route:"/subscribe",icon:"user",txt:o.LANG.USER.SUBSCRIBE}]};"internal"===o.SERVER.authMethod&&!1!==o.SERVER.openRegistration||(i.unauth=[{route:"/login",icon:"lock",txt:o.LANG.USER.LOGIN}]);var r=function(t){var o=e.route().slice(0,t.route.length)===t.route;return 0===e.route().indexOf("/admin")&&(o=e.route()===t.route),e("li",{class:o?"active":""},[e("a",{href:t.route,config:e.route},[e("i",{class:"glyphicon glyphicon-"+t.icon,title:t.txt}),e("span"," "+t.txt)])])};return n.isAuthenticated()?(!o.SERVER.hideHelpBlocks&&n.userInfo().hideHelp&&document.getElementsByTagName("body")[0].classList.add("hidehelpblocks"),t.map(i.auth,r)):n.isAdmin()?t.map(i.admin,r):t.map(i.unauth,r)}},c=new RegExp("/mypads/group/[^/]*/pad/view/[^/]*"),s=new RegExp("/mypads$");return a.view=function(n,a){var l="header",d="footer.container.ombre",m="aside.col-md-3.col-xs-12",h="main.container.ombre",p="section.col-md-9.col-xs-12";return r.wantExpandedPad()&&e.route().match(c)&&(l+=".hidden",d+=".hidden",m+=".hidden",h="main.container-fluid.ombre",p="section.col-md-12.col-xs-12"),e.route().match(s)&&(p+=".groupList"),[e(l,[e("div.lang.container.form-inline",[e("select.form-control",t.reduce(o.SERVER.languages,function(t,n,i){var r={onclick:o.updateLang.bind(null,i),value:i};return i===o.USERLANG&&(r.selected="selected"),t.push(e("option",r,n)),t},[]))]),e("div.container.ombre",[e("a.link-home[href=/mypads]",[e("img",{src:"img/mypads_logo.jpg",width:"30",height:"30",class:"logo-img"}),e("h1",o.SERVER.title)]),e("hr.trait",{role:"presentation"}),e("nav",{class:"menu-main"},[e("ul.nav.nav-tabs",u.menuMain())])])]),e(h,[e(p,{config:r.autoExpand},n||""),e(m,a||"")]),e("section",{class:"notification"},i.view(i.controller())),e(d,e("p",[e("span",e.trust(o.LANG.GLOBAL.FOOTER+" | ")),e("a",{href:"/admin",config:e.route},o.LANG.MENU.ADMIN)]))]},a}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/expandPad.js":5,"../widgets/notification.js":44,"lodash":52,"mithril":56}],26:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/expandPad.js":5,"../widgets/notification.js":44,"lodash":52,"mithril":53}],26:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("lodash"),t=require("js-cookie"),o=require("../configuration.js"),i=require("../auth.js"),n=require("../helpers/form.js"),s=require("../widgets/notification.js"),a=require("./layout.js"),u=require("./user.js"),l=require("../helpers/ready.js"),c={controller:function(){var t={};return document.title=o.SERVER.title,n.initFields(t,["login","password"]),t.submit=function(i){if(i.preventDefault(),!t.data.login()){var n=document.querySelector("input[name=login]");t.data.login(n.value)}if(!t.data.password()){var a=document.querySelector("input[name=password]");t.data.password(a.value)}e.request({method:"POST",url:o.URLS.LOGIN,data:t.data}).then(c.getLogged,function(e){s.error({body:r.result(o.LANG,e.error)})})},t}},d={form:function(r){var t=u.view.field.login(r);t.input.attrs.config=n.focusOnInit,t.input.attrs.maxlength=40,t.label.attrs.class="col-sm-4";var i=u.view.field.password(r),s=[i.input];if("internal"===o.SERVER.authMethod&&s.push(e("p.help-block",[e("a",{href:"/passrecover",config:e.route},o.LANG.USER.PASSWORD_LOST)])),"cas"!==o.SERVER.authMethod)return e("form.form-horizontal.col-sm-8.col-sm-offset-2.well",{id:"login-form",onsubmit:r.submit},[e("div",{id:"hide-when-ready",config:l.checkLoop},o.LANG.USER.PLEASE_WAIT),e("fieldset.show-when-ready.hidden",[e("legend",o.LANG.USER.MYPADS_ACCOUNT),e(".form-group",[t.label,e(".col-sm-7",t.input)]),e(".form-group",[i.label,e(".col-sm-7",s)]),e("input.btn.btn-success.pull-right",{form:"login-form",type:"submit",value:o.LANG.USER.LOGIN})])])},main:function(r){var t,n=[e("span",o.LANG.USER.FORM)],s=o.SERVER.loginMsg;void 0!==s&&(void 0!==s[o.USERLANG]&&""!==s[o.USERLANG]?t=e("article",{class:"alert bg-danger"},e.trust(s[o.USERLANG])):void 0!==s.en&&""!==s.en&&(t=e("article",{class:"alert bg-danger"},e.trust(s.en)))),o.SERVER.openRegistration&&"internal"===o.SERVER.authMethod&&n.push(e("a.small",{href:"/subscribe",config:e.route},o.LANG.USER.ORSUB));var a={class:"user"};"cas"===o.SERVER.authMethod&&void 0===i.userInfo()&&(a.config=c.casLogin);var u=[e("h2",n)];return void 0!==t&&u.push(t),u.push(d.form(r)),e("section",a,u)}};return c.view=function(e){return a.view(d.main(e),u.view.aside.common(e))},c.casLogin=function(t,i){if(!i){var n=window.location.search.substring(1).match(new RegExp(".*&ticket=([^&]*).*"));if(r.isNull(n)){var a=window.location,u=encodeURIComponent(a.origin+a.pathname+"?/login");window.location=o.SERVER.authCasSettings.serverUrl+"/login?service="+u}else e.request({method:"POST",url:o.URLS.CASLOGIN,data:{ticket:n[1]}}).then(c.getLogged,function(e){s.error({body:r.result(o.LANG,e.error)})})}},c.getLogged=function(n){i.userInfo(n.user),localStorage.setItem("token",n.token);var a=n.user.eplAuthorToken;if(a)t.set("token",a,{expires:60});else{var u=t("token");u&&t.set("token-"+n.user.login,u,{expires:365})}var l=i.userInfo().lang;l!==o.USERLANG&&o.updateLang(l),document.title=" - "+o.LANG.USER.AUTH.WELCOME+" "+n.user.login+o.SERVER.title,s.success({body:o.LANG.USER.AUTH.SUCCESS});var c=o.unauthUrl();r.isEmpty(c)?e.route("/"):window.location=c},c}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../helpers/ready.js":8,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"js-cookie":50,"lodash":52,"mithril":56}],27:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../helpers/ready.js":8,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"js-cookie":50,"lodash":52,"mithril":53}],27:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),o=require("lodash"),t=require("js-cookie"),r=require("../configuration.js"),i=require("../auth.js"),n=require("../model/group.js"),u=require("../widgets/notification.js");return{controller:function(){if(!i.isAuthenticated())return e.route("/login");e.request({method:"GET",url:r.URLS.LOGOUT,config:i.fn.xhrConfig}).then(function(){if(t.get("token")&&(t.set("token-"+i.userInfo().login,t.get("token"),{expires:365}),t.remove("token")),!r.SERVER.hideHelpBlocks&&i.userInfo().hideHelp&&document.getElementsByTagName("body")[0].classList.remove("hidehelpblocks"),i.userInfo(null),localStorage.removeItem("token"),n.init(),document.title=r.SERVER.title,"cas"===r.SERVER.authMethod){var o=r.SERVER.authCasSettings;window.location=o.logoutUrl||o.serverUrl+"/logout"}else u.success({body:r.LANG.USER.AUTH.SUCCESS_OUT}),e.route("/")},function(t){u.error({body:o.result(r.LANG,t.error)}),e.route("/")})},view:function(){}}}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"js-cookie":50,"lodash":52,"mithril":56}],28:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"js-cookie":50,"lodash":52,"mithril":53}],28:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),i=require("../auth.js"),a=require("./layout.js"),s=require("../helpers/form.js"),t=require("./group-form.js"),o=require("../configuration.js"),u=require("../model/group.js"),l=require("../widgets/notification.js"),n={controller:function(){if(!i.isAuthenticated())return o.unauthUrl(!0),r.route("/login");var a={groupParams:r.prop(!0)},t=r.route.param("pad"),n=r.route.param("group"),d=function(){if(a.addView=r.prop(!t),document.title=a.addView()?o.LANG.GROUP.PAD.ADD:o.LANG.GROUP.PAD.EDIT,document.title+=" - "+o.SERVER.title,a.fields=["name","visibility","password","readonly"],s.initFields(a,a.fields),a.group=u.groups()[n],!a.addView()){a.pad=u.pads()[t],e.map(e.keys(a.pad),function(e){a.data[e]=r.prop(a.pad[e])});var i=[a.data.visibility(),a.data.readonly()];a.groupParams=r.prop(e.every(i,e.isNull)),a.data.password=r.prop("")}};return e.isEmpty(u.groups())?u.fetch(d):d(),a.submit=function(s){s.preventDefault();var d=a.addView()?{method:"POST",url:o.URLS.PAD,successMsg:o.LANG.GROUP.INFO.PAD_ADD_SUCCESS}:{method:"PUT",url:o.URLS.PAD+"/"+t,successMsg:o.LANG.GROUP.INFO.PAD_EDIT_SUCCESS};a.groupParams()&&(a.data.visibility(null),a.data.password(null),a.data.readonly(null)),a.data.group=r.prop(n),r.request({method:d.method,url:d.url,data:e.assign(a.data,{auth_token:i.token()})}).then(function(e){var i=u.pads();if(i[e.key]=e.value,u.pads(i),a.addView()){var s=u.groups();s[n].pads.push(e.key),u.groups(s)}l.success({body:d.successMsg}),r.route("/mypads/group/"+n+"/view")},function(r){l.error({body:e.result(o.LANG,r.error)})})},a}},d={groupParams:function(e){var i=o.LANG.GROUP,a=r("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":i.INFO.GROUP_PARAMS});return{label:r("label",[r("input",{name:"groupParams",type:"checkbox",checked:e.groupParams(),onchange:r.withAttr("checked",e.groupParams)}),i.FIELD.GROUP_PARAMS,a]),icon:a}},form:function(i){var a=t.views.field.name(i);e.assign(a.input.attrs,{config:s.focusOnInit});var u="restricted"===i.group.visibility,l=t.views.field.visibility(i,u);e.assign(l.label.attrs,{style:"clear: left;"});var n=t.views.field.password(i),p=t.views.field.readonly(i),c=d.groupParams(i),m=[r(".form-group",[a.label,r(".col-sm-7",a.input)])];return o.SERVER.allPadsPublicsAuthentifiedOnly||m.push(r(".form-group",[r(".col-sm-7.col-sm-offset-4",[r(".checkbox",[c.label])])])),i.groupParams()||(o.SERVER.allPadsPublicsAuthentifiedOnly||m.push(r(".form-group",[l.label,r(".col-sm-7",l.select)])),"private"===i.data.visibility()&&m.push(r(".form-group",[n.label,r(".col-sm-7",n.input)])),i.addView()||m.push(r(".form-group",[r(".col-sm-7.col-sm-offset-4",[r(".checkbox",[p.label])])]))),r("form.form-horizontal",{id:"pad-form",onsubmit:i.submit},[r("fieldset",[r("legend",o.LANG.GROUP.PAD.PAD),r("div",m)]),r("input.btn.btn-success.pull-right",{form:"pad-form",type:"submit",value:o.LANG.ACTIONS.SAVE})])},main:function(e){return r("section",{class:"user group-form"},[r("h2",e.addView()?o.LANG.GROUP.PAD.ADD:o.LANG.GROUP.PAD.EDIT),d.form(e)])},aside:function(){var e=o.SERVER.allPadsPublicsAuthentifiedOnly?o.LANG.GROUP.ADD_HELP_PUBLIC_ACCESS:o.LANG.GROUP.ADD_HELP;return e+=o.LANG.GROUP.ADD_HELP_LABEL,r("section.user-aside",[r("h2",o.LANG.ACTIONS.HELP),r("article.well",r.trust(e))])}};return n.view=function(r){return a.view(d.main(r),d.aside(r))},n}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"./group-form.js":19,"./layout.js":25,"lodash":52,"mithril":56}],29:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"./group-form.js":19,"./layout.js":25,"lodash":52,"mithril":53}],29:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),o=require("../auth.js"),s=require("../configuration.js"),t=require("../widgets/notification.js"),u=require("../model/group.js");return function(a,i){var d=a._id,n=o.userInfo();e.includes(n.bookmarks.pads,d)?e.pull(n.bookmarks.pads,d):n.bookmarks.pads.push(d),void 0!==u.bookmarks().pads[d]?delete u.bookmarks().pads[d]:u.bookmarks().pads[d]=a,r.request({url:s.URLS.USERMARK,method:"POST",data:{type:"pads",key:d,auth_token:o.token()}}).then(function(){t.success({body:s.LANG.GROUP.MARK_SUCCESS}),i&&i()},function(r){return t.error({body:e.result(s.LANG,r.error)})})}}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":56}],30:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":53}],30:[function(require,module,exports){
 module.exports=function(){"use strict";var e=require("mithril"),o=require("lodash"),t=require("../auth.js"),n=require("../configuration.js"),r=require("../model/group.js"),u=require("../widgets/notification.js"),a=require("./layout.js"),i={};i.controller=function(){if(!t.isAuthenticated())return n.unauthUrl(!0),e.route("/login");document.title=n.LANG.GROUP.PAD.MOVE_TITLE+" - "+n.SERVER.title;var a={data:{newGroup:e.prop()}},i=e.route.param("group"),c=function(){a.selectedGroups=o(r.groups()).values().filter(function(e){return o.includes(e.admins,t.userInfo()._id)&&e._id!==i}).value(),a.noSelectedPads=e.prop(!0),a.group=r.groups()[i]};return o.isEmpty(r.groups())?r.fetch(c):c(),a.movePads=function(c){c.preventDefault();var s,l=o.clone(r.pads(),!0),p=o.reduce(r.pads(),function(e,o,t){return o.group===i&&document.querySelectorAll('input.pad-to-move[name="'+o._id+'"]:checked').length>0&&(o.group=a.data.newGroup(),l[t]=o,e.push(o)),e},[]);(s=function(c){var d;c&&(o.pull(r.groups()[i].pads,c.key),r.groups()[a.data.newGroup()].pads.push(c.key)),p.length?(d=p.pop(),e.request({method:"PUT",url:n.URLS.PAD+"/"+d._id,data:o.assign(d,{auth_token:t.token()})}).then(s,function(e){u.error({body:o.result(n.LANG,e.error)})})):(r.pads(l),u.success({body:n.LANG.GROUP.INFO.PAD_MOVE_SUCCESS}),e.route("/mypads/group/"+a.data.newGroup()+"/view"))})()},a};var c={groups:function(t){var r,u=e("label.col-sm-4",{for:"group"},n.LANG.GROUP.MYGROUPS),a=(r=o.map(t.selectedGroups,function(o){return e("option",{value:o._id},o.name)})).length>0?(r.splice(0,0,e("option")),e("select.form-control",{name:"group",required:!0,value:t.data.newGroup(),onchange:e.withAttr("value",t.data.newGroup)},r)):e("div",n.LANG.GROUP.INFO.PAD_MOVE_NOGROUP);return{label:u,icon:e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":n.LANG.GROUP.INFO.PAD_MOVE}),select:a}},pads:function(t){var n=[],u=e.route.param("group");return o.forEach(r.pads(),function(o){o.group===u&&n.push(e(".checkbox",[e("label",[e('input.pad-to-move[type="checkbox"]',{name:o._id,onchange:function(){t.noSelectedPads(0===document.querySelectorAll("input.pad-to-move:checked").length)}}),o.name])]))}),n},form:function(o){var t=c.groups(o),r=c.pads(o),u=[e(".form-group",[t.label,t.icon,e(".col-sm-7",t.select)])];return o.selectedGroups.length>0&&u.push([e("div",[e("button.btn.btn-info.btn-sm",{onclick:function(e){e.preventDefault();var t=document.querySelectorAll("input.pad-to-move");[].forEach.call(t,function(e){e.checked=!0}),o.noSelectedPads(!1)}},n.LANG.GROUP.PAD.SELECT_ALL),e("span"," "),e("button.btn.btn-info.btn-sm",{onclick:function(e){e.preventDefault();var t=document.querySelectorAll("input.pad-to-move");[].forEach.call(t,function(e){e.checked=!1}),o.noSelectedPads(!0)}},n.LANG.GROUP.PAD.DESELECT_ALL)]),e("div",{class:o.noSelectedPads()?"h3":"hidden"},[e("b",n.LANG.GROUP.PAD.SELECT_AT_LEAST_ONE_PAD)]),r,e("input.btn.btn-success.pull-right",{form:"padmove-form",type:"submit",disabled:o.noSelectedPads(),value:n.LANG.ACTIONS.SAVE})]),e("form.form-horizontal",{id:"padmove-form",onsubmit:o.movePads},u)},main:function(o){var t="/mypads/group/"+o.group._id;return e("section",{class:"padmove user group-form"},[e("h2",[e("span",n.LANG.GROUP.PAD.MOVE_TITLE),e("a",{href:t+"/view",config:e.route,title:n.LANG.GROUP.VIEW},o.group.name)]),c.form(o)])},aside:function(){return e("section.user-aside",[e("h2",n.LANG.ACTIONS.HELP),e("article.well",e.trust(n.LANG.GROUP.PAD.MOVE_HELP))])}};return i.view=function(e){return a.view(c.main(e),c.aside(e))},i}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"./layout.js":25,"lodash":52,"mithril":56}],31:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"./layout.js":25,"lodash":52,"mithril":53}],31:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),t=require("../auth.js"),o=require("../configuration.js"),u=require("../widgets/notification.js"),i={controller:function(){if(!t.isAuthenticated())return o.unauthUrl(!0),r.route("/login");var i=r.route.param("pad"),n=r.route.param("group");window.confirm(o.LANG.GROUP.INFO.CHAT_HISTORY_REMOVE_SURE)?r.request({method:"DELETE",url:o.URLS.PAD+"/chathistory/"+i,data:{auth_token:t.token()}}).then(function(e){console.log(e),u.success({body:o.LANG.GROUP.INFO.CHAT_HISTORY_REMOVE_SUCCESS}),r.route("/mypads/group/"+n+"/view")},function(r){u.error({body:e.result(o.LANG,r.error)})}):r.route("/mypads/group/"+n+"/view")},view:function(){}};return i}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":56}],32:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":53}],32:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),u=require("../auth.js"),o=require("../configuration.js"),t=require("../model/group.js"),i=require("../widgets/notification.js"),n={controller:function(){if(!u.isAuthenticated())return o.unauthUrl(!0),r.route("/login");var n=r.route.param("pad"),a=r.route.param("group");window.confirm(o.LANG.GROUP.INFO.PAD_REMOVE_SURE)?r.request({method:"DELETE",url:o.URLS.PAD+"/"+n,data:{auth_token:u.token()}}).then(function(u){var s=t.pads();delete s[u.key],t.pads(s);var d=t.groups();e.pull(d[a].pads,n),t.groups(d),i.success({body:o.LANG.GROUP.INFO.PAD_REMOVE_SUCCESS}),r.route("/mypads/group/"+a+"/view")},function(r){i.error({body:e.result(o.LANG,r.error)})}):r.route("/mypads/group/"+a+"/view")},view:function(){}};return n}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":56}],33:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"../widgets/notification.js":44,"lodash":52,"mithril":53}],33:[function(require,module,exports){
 module.exports=function(){"use strict";var o=require("../configuration.js");return function(t,i){var r=window.location,n=r.protocol+"//"+r.host+r.pathname+"?/mypads/group/"+t,a=i?"/pad/view/"+i:"/view";window.prompt(o.LANG.GROUP.SHARE_LINK,n+a)}}.call(this);
 
 },{"../configuration.js":3}],34:[function(require,module,exports){
 module.exports=function(){"use strict";var i=require("mithril"),e=require("lodash"),r=require("js-base64").Base64.encode,t=require("../configuration.js"),n=require("../auth.js"),a=require("./layout.js"),s=require("../model/group.js"),o=require("./pad-mark.js"),u=require("./pad-share.js"),p=require("../helpers/expandPad.js"),d=require("../helpers/ready.js"),l={controller:function(){var r={group:{},pad:{},sendPass:i.prop(!1),password:i.prop(""),showIframe:i.prop(!0)};r.isAuth=n.isAuthenticated(),r.isGuest=!r.isAuth,r.bookmarks=r.isAuth?n.userInfo().bookmarks.pads:[],r.gid=i.route.param("group"),r.pid=i.route.param("pad");var a=function(a){if(a)return i.route("/mypads");var o=function(){var a=r.isGuest?s.tmp():s;if(r.group=a.groups()[r.gid]||{},r.pad=a.pads()[r.pid],!r.pad)return i.route("/mypads");document.title=t.LANG.GROUP.PAD.PAD+" "+r.pad.name,document.title+=" - "+t.SERVER.title,r.isAdmin=!(!r.isAuth||!r.group.admins)&&e.includes(r.group.admins,n.userInfo()._id)};s.pads()[r.pid]?o():(r.isGuest=!0,s.fetchObject({group:r.gid,pad:r.pid},void 0,o))},o=function(){if(r.isAuth)return e.partial(s.fetch,a);var i={group:r.gid,pad:r.pid};return e.partial(s.fetchObject,i,void 0,a)}();return e.isEmpty(s.pads())?o():a(),r.submit=function(i){i.preventDefault(),s.fetchObject({group:r.gid,pad:r.pid},r.password(),function(i){if(i)return r.sendPass(!1);var e=r.isGuest?s.tmp():s;r.group=e.groups()[r.gid],r.pad=e.pads()[r.pid],r.sendPass(!0)})},r}},c={passForm:function(e){return i("form",{id:"password-form",config:d.inFrame,onsubmit:e.submit},[i("label.block",{for:"mypadspassword"},t.LANG.USER.PASSWORD),i("input.block",{type:"password",required:!0,placeholder:t.LANG.USER.UNDEF,value:e.password(),oninput:i.withAttr("value",e.password)}),i("input.ok.block",{form:"password-form",type:"submit",value:t.LANG.USER.OK})])},pad:function(e){var a=n.userInfo(),s=e.sendPass()?"&mypadspassword="+r(e.password()):"",o=n.isAuthenticated()?"&auth_token="+n.token():"",u="",d="";a&&((a.useLoginAndColorInPads||t.SERVER.useFirstLastNameInPads)&&a.color&&(d="&userColor="+a.color),t.SERVER.useFirstLastNameInPads?u="&userName="+(a.firstname?a.firstname:"")+" "+(a.lastname?a.lastname:""):a.useLoginAndColorInPads&&(u=a.padNickname?"&userName="+a.padNickname:"&userName="+a.login));var l=t.URLS.RAWBASE.replace("mypads/","")+"p/"+e.pad._id+"?"+s+o+d+u;return[i("p.text-right",[i("a.btn.btn-default.expand-toggle",{href:"#",title:t.LANG.GROUP.PAD.EXPAND,onclick:function(i){return i.preventDefault(),p.isExpanded()?p.reduceIframe():p.expandIframe(),!0}},[i("i.glyphicon.glyphicon-resize-full")]),i("a.btn.btn-default.new-window",{href:l,target:"_blank",title:t.LANG.GROUP.PAD.OPEN_TAB,onclick:function(){return p.reduceIframe(!1),e.showIframe(!1),!0}},[i("i.glyphicon.glyphicon-new-window")])]),function(){if(e.showIframe())return i("iframe",{src:l})}()]},main:function(r){var a=r.pad?"private"===r.pad.visibility:r.group.visibility&&"private"===r.group.visibility;if(!r.isAdmin&&a&&!r.sendPass())return c.passForm(r);var s="/mypads/group/"+r.gid,p=t.LANG.GROUP;return i("section",{class:"group"},[i(".btn-group.pull-right",[function(){var e=r.group&&r.group.visibility&&"restricted"!==r.group.visibility,n=r.pad.visibility&&"restricted"!==r.pad.visibility;if(e||n||t.SERVER.allPadsPublicsAuthentifiedOnly)return i("button.btn.btn-default",{title:t.LANG.GROUP.SHARE,onclick:u.bind(r,r.gid,r.pad._id)},[i("i.glyphicon glyphicon-link"),i("span"," "+t.LANG.GROUP.SHARE)])}(),function(){if(r.isAdmin)return i("a.btn.btn-default",{href:s+"/pad/edit/"+r.pad._id,config:i.route,title:t.LANG.MENU.CONFIG},[i("i.glyphicon glyphicon-wrench"),i("span"," "+t.LANG.MENU.CONFIG)])}(),function(){if(r.isAdmin)return i("a.btn.btn-danger",{href:s+"/pad/remove/"+r.pad._id,config:i.route,title:t.LANG.GROUP.REMOVE},[i("i.glyphicon glyphicon-trash"),i("span"," "+t.LANG.GROUP.REMOVE)])}()]),i("h2",[function(){if(n.isAuthenticated()){var t=e.includes(r.bookmarks,r.pad._id);return i("button.btn.btn-link.btn-lg",{title:t?p.UNMARK:p.BOOKMARK,onclick:function(){o(r.pad)}},[i("i",{class:"glyphicon glyphicon-star"+(t?"":"-empty"),title:t?p.UNMARK:p.BOOKMARK})])}}(),i("span",t.LANG.GROUP.PAD.PAD+" "+r.pad.name),function(){if(r.group&&r.group.name)return[i("br"),i("span.h3",[" (",t.LANG.GROUP.PAD.FROM_GROUP+" ",i("a",{href:s+"/view",config:i.route,title:t.LANG.GROUP.VIEW},r.group.name),")"])]}()]),i("section.pad",c.pad(r))])},aside:function(){return i("section.user-aside",[i("h2",t.LANG.ACTIONS.HELP),i("article.well",i.trust(t.LANG.GROUP.PAD.VIEW_HELP))])}};return l.view=function(i){return a.view(c.main(i),c.aside())},l}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/expandPad.js":5,"../helpers/ready.js":8,"../model/group.js":10,"./layout.js":25,"./pad-mark.js":29,"./pad-share.js":33,"js-base64":49,"lodash":52,"mithril":56}],35:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/expandPad.js":5,"../helpers/ready.js":8,"../model/group.js":10,"./layout.js":25,"./pad-mark.js":29,"./pad-share.js":33,"js-base64":49,"lodash":52,"mithril":53}],35:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("lodash"),t=require("../configuration.js"),o=require("../auth.js"),s=require("../helpers/form.js"),i=require("../widgets/notification.js"),n=require("./layout.js"),u=require("./user.js"),a={controller:function(){o.isAuthenticated()&&e.route("/logout"),document.title=t.LANG.USER.PASSRECOVER+" - "+t.SERVER.title;var n={token:e.route.param("token")},u=n.token?["password","passwordConfirm"]:["email"];s.initFields(n,u);var a=function(e){i.error({body:r.result(t.LANG,e.error)})};return n.submit=function(r){r.preventDefault(),e.request({method:"POST",url:t.URLS.PASSRECOVER,data:n.data}).then(function(){i.success({body:t.LANG.USER.INFO.PASSRECOVER_SUCCESS})},a)},n.changePass=function(r){r.preventDefault(),e.request({method:"PUT",url:t.URLS.PASSRECOVER+"/"+n.token,data:n.data}).then(function(){e.route("/login"),i.success({body:t.LANG.USER.INFO.CHANGEPASS_SUCCESS})},a)},n}},l={form:function(r){var o=u.view.field.email(r);return e("form",{id:"passrec-form",onsubmit:r.submit},[e("fieldset",[e(".form-group",[o.label,o.input])]),e("input.btn.btn-success.pull-right.col-sm-12",{form:"passrec-form",type:"submit",value:t.LANG.USER.OK})])},formChange:function(r){var o=u.view.field.password(r),s=u.view.field.passwordConfirm(r);return o.label.attrs.class="col-sm-4",s.label.attrs.class="col-sm-4",e("form.form-horizontal",{id:"passchange-form",onsubmit:r.changePass},[e("fieldset",[e(".form-group",[o.label,e(".col-sm-7",o.input)]),e(".form-group",[s.label,e(".col-sm-7",s.input)])]),e("input.btn.btn-success.pull-right",{form:"passchange-form",type:"submit",value:t.LANG.USER.OK})])},main:function(r){return e("section",{class:"user"},[e("h2",t.LANG.USER.PASSRECOVER),r.token?l.formChange(r):l.form(r)])}};return a.view=function(e){return n.view(l.main(e),u.view.aside.common(e))},a}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"lodash":52,"mithril":56}],36:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"lodash":52,"mithril":53}],36:[function(require,module,exports){
 module.exports=function(){var e=require("lodash"),o=require("mithril"),r=require("../configuration.js"),t=require("../helpers/form.js"),a=require("../model/group.js"),i=require("../widgets/notification.js"),n=require("../auth.js"),s=require("./layout.js"),l=require("./user.js"),u=require("../helpers/ready.js"),d={};d.controller=function(){var s={adminView:o.prop(!1)};if(s.profileView=o.prop("/myprofile"===o.route()),document.title=s.profileView()?r.LANG.USER.PROFILE:r.LANG.USER.SUBSCRIBE,document.title+=" - "+r.SERVER.title,s.profileView()&&!n.isAuthenticated())return r.unauthUrl(!0),o.route("/login");"internal"!==r.SERVER.authMethod&&s.profileView()?s.fields=["organization","lang","color","hideHelp"]:s.fields=["login","password","passwordConfirm","email","firstname","lastname","padNickname","organization","lang","color","hideHelp"],s.profileView()&&s.fields.push("passwordCurrent","useLoginAndColorInPads"),t.initFields(s,s.fields),s.profileView()?e.map(s.fields,function(r){e.startsWith(r,"password")||(s.data[r]=o.prop(n.userInfo()[r]))}):s.data.lang=o.prop(r.USERLANG);var l=function(o){return i.error({body:e.result(r.LANG,o.error)})};return s.submit={},s.submit.subscribe=function(e){e.preventDefault(),s.data.password()!==s.data.passwordConfirm()?(i.warning({body:r.LANG.USER.ERR.PASSWORD_MISMATCH}),document.querySelector('input[name="passwordConfirm"]').focus()):(s.data.login(s.data.login().trim()),o.request({method:"POST",url:r.URLS.USER,data:s.data}).then(function(e){if(!e.value.active){var t=r.LANG.USER.AUTH.SUBSCRIBE_CONFIRM_SUCCESS;return o.route("/"),i.success({body:t})}n.userInfo(e.value),i.success({body:r.LANG.USER.AUTH.SUBSCRIBE_SUCCESS});var a=n.userInfo().lang;a!==r.USERLANG&&r.updateLang(a),o.request({method:"POST",url:r.URLS.LOGIN,data:s.data}).then(function(e){localStorage.setItem("token",e.token),o.route("/")},l)},l))},s.submit.profileSave=function(t){t.preventDefault();o.request({method:"POST",url:r.URLS.CHECK,data:{login:n.userInfo().login,password:s.data.passwordCurrent,auth_token:n.token()}}).then(function(){var t;"internal"===r.SERVER.authMethod?(t=s.data.password())&&t===s.data.passwordConfirm()||s.data.password(s.data.passwordCurrent()):(s.data.login=n.userInfo().login,s.data.email=n.userInfo().email,s.data.firstname=n.userInfo().firstname,s.data.lastname=n.userInfo().lastname,s.data.padNickname=n.userInfo().padNickname,s.data.password=s.data.passwordCurrent),o.request({method:"PUT",url:r.URLS.USER+"/"+n.userInfo().login,data:e.assign(s.data,{auth_token:n.token()})}).then(function(e){r.SERVER.hideHelpBlocks||(e.value.hideHelp?document.getElementsByTagName("body")[0].classList.add("hidehelpblocks"):document.getElementsByTagName("body")[0].classList.remove("hidehelpblocks")),n.userInfo(e.value),i.success({body:r.LANG.USER.AUTH.PROFILE_SUCCESS})},l)},l)},s.removeAccount=function(){var e=window.prompt(r.LANG.USER.INFO.REMOVE_ACCOUNT_SURE);if(e){var t=n.userInfo().login;o.request({method:"POST",url:r.URLS.CHECK,data:{login:t,password:e,auth_token:n.token()}}).then(function(){o.request({method:"DELETE",url:r.URLS.USER+"/"+t,data:{auth_token:n.token()}}).then(function(){localStorage.removeItem("token"),n.userInfo(null),a.init(),document.title=r.SERVER.title,o.route("/"),i.success({body:r.LANG.USER.INFO.REMOVE_ACCOUNT_SUCCESS})},l)},l)}},s};var c={};return d.views=c,c.removeAccount=function(e){return[o("button.btn.btn-danger",{onclick:e.removeAccount},r.LANG.USER.REMOVE_ACCOUNT),o("i",{class:"glyphicon glyphicon-info-sign mp-tooltip mp-tooltip-left","data-msg":r.LANG.USER.INFO.REMOVE_ACCOUNT})]},c.form=function(a){var i,n=e.reduce(a.fields,function(e,o){return e[o]=l.view.field[o](a),e},{});if(a.adminView()&&(delete n.password.input.attrs.required,delete n.passwordConfirm.input.attrs.required),"internal"!==r.SERVER.authMethod&&a.profileView()?i=[o(".form-group",[n.lang.label,n.lang.icon,o(".col-sm-7",n.lang.select)])]:(n.email.label.attrs.class="col-sm-4",i=[o(".form-group",[n.email.label,o(".col-sm-7",n.email.input)]),o(".form-group",[n.password.label,o(".col-sm-7",n.password.input)]),o(".form-group",[n.passwordConfirm.label,o(".col-sm-7",n.passwordConfirm.input)]),o(".form-group",[n.lang.label,o(".col-sm-7",n.lang.select)])]),a.profileView()){var s=l.view.field.passwordCurrent(a);s.input.attrs.config=t.focusOnInit,i.splice(1,0,o(".form-group",[s.label,o(".col-sm-7",s.input)])),i.push(o(".form-group",[o(".col-sm-7.col-sm-offset-4",[o(".checkbox",[n.useLoginAndColorInPads.label])])]))}else if(!a.adminView()){var d=n.login;d.input.attrs.config=t.focusOnInit,d.input.attrs.maxlength=40,d.label.attrs.class="col-sm-4",i.splice(0,0,o(".form-group",[d.label,o(".col-sm-7",[d.input])]))}var m,p=r.LANG.USER,f=a.profileView()||a.adminView();return"internal"!==r.SERVER.authMethod&&a.profileView()?(n.organization.label.attrs.class="col-sm-4",n.color.label.attrs.class="col-sm-4",m=[o("legend.opt",r.LANG.USER.OPTIONAL_FIELDS),o(".form-group",[n.organization.label,o(".col-sm-7",n.organization.input)]),o(".form-group",[n.color.label,o(".col-sm-7",n.color.input)]),o(".form-group",{class:r.SERVER.hideHelpBlocks?"hidden":""},[o(".col-sm-7.col-sm-offset-4",[o(".checkbox",[n.hideHelp.label])])])]):(n.firstname.label.attrs.class="col-sm-4",n.lastname.label.attrs.class="col-sm-4",n.padNickname.label.attrs.class="col-sm-4",n.organization.label.attrs.class="col-sm-4",n.color.label.attrs.class="col-sm-4",m=[o("legend.opt",r.LANG.USER.OPTIONAL_FIELDS),o(".form-group",[n.firstname.label,o(".col-sm-7",n.firstname.input)]),o(".form-group",[n.lastname.label,o(".col-sm-7",n.lastname.input)]),o(".form-group",[n.padNickname.label,o(".col-sm-7",n.padNickname.input)]),o(".form-group",[n.organization.label,o(".col-sm-7",n.organization.input)]),o(".form-group",[n.color.label,o(".col-sm-7",n.color.input)]),o(".form-group",[n.hideHelp.label,o(".col-sm-7",n.hideHelp.input)])]),o("form.form-horizontal",{id:"subscribe-form",onsubmit:f?a.submit.profileSave:a.submit.subscribe},[o("div",{id:"hide-when-ready",config:u.checkLoop},r.LANG.USER.PLEASE_WAIT),o("fieldset.show-when-ready.hidden",[o("legend",r.LANG.USER.MANDATORY_FIELDS),o("div",i)]),o("fieldset.show-when-ready.hidden",m),o(".form-group.show-when-ready.hidden",[o(".col-sm-12",[o("input.btn.btn-success pull-right",{form:"subscribe-form",type:"submit",value:f?r.LANG.ACTIONS.SAVE:p.REGISTER}),a.profileView()?c.removeAccount(a):""])])])},c.main=function(e){var t,a=r.SERVER.loginMsg,i=[c.form(e)];return void 0!==a&&(void 0!==a[r.USERLANG]&&""!==a[r.USERLANG]?(t=o("article",{class:"alert bg-danger"},o.trust(a[r.USERLANG])),i.unshift(t)):void 0!==a.en&&""!==a.en&&(t=o("article",{class:"alert bg-danger"},o.trust(a.en)),i.unshift(t))),e.profileView()?i.splice(0,0,o("h2",r.LANG.USER.PROFILE+" : "+n.userInfo().login)):i.splice(0,0,o("h2",r.LANG.USER.SUBSCRIBE)),o("section",{class:"user"},i)},d.view=function(e){return s.view(c.main(e),e.profileView()?l.view.aside.profile(e):l.view.aside.common(e))},d}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../helpers/ready.js":8,"../model/group.js":10,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"lodash":52,"mithril":56}],37:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/form.js":7,"../helpers/ready.js":8,"../model/group.js":10,"../widgets/notification.js":44,"./layout.js":25,"./user.js":39,"lodash":52,"mithril":53}],37:[function(require,module,exports){
 module.exports=function(){var n=require("mithril"),e=require("../configuration.js"),t=require("./layout.js"),i={},r={group:function(){return n("div",[n("p",e.LANG.GROUP.HELP),n("p",e.LANG.GROUP.SORT.HELP),n.trust(e.LANG.GROUP.VIEW_HELP),n.trust(e.LANG.GROUP.ADD_HELP),n.trust(e.LANG.GROUP.ADD_HELP_LABEL)])},inviteUser:function(){return n.trust(e.LANG.GROUP.INVITE_USER.HELP)},pad:function(){return n("div",[n.trust(e.LANG.GROUP.PAD.VIEW_HELP),n("p",e.LANG.GROUP.INFO.GROUP_PARAMS)])},user:function(){return n("div",[n.trust(e.LANG.USER.HELP.PROFILE)])},main:function(){return n("section",[n("h2",e.LANG.ACTIONS.HELP),n("section.panel.panel-primary",[n(".panel-heading",n("h3.panel-title",e.LANG.GROUP.GROUPS)),n(".panel-body",[r.group()])]),n("section.panel.panel-info",[n(".panel-heading",n("h3.panel-title",e.LANG.GROUP.PAD.PADS)),n(".panel-body",[r.pad()])]),n("section.panel.panel-success",[n(".panel-heading",n("h3.panel-title",e.LANG.MENU.PROFILE)),n(".panel-body",[r.user()])]),n("section.panel.panel-warning",[n(".panel-heading",n("h3.panel-title",e.LANG.USERLIST.USERLIST)),n(".panel-body",[r.inviteUser()])])])}};return i.view=function(){return t.view(r.main())},i}.call(this);
 
-},{"../configuration.js":3,"./layout.js":25,"mithril":56}],38:[function(require,module,exports){
+},{"../configuration.js":3,"./layout.js":25,"mithril":53}],38:[function(require,module,exports){
 module.exports=function(){"use strict";var e=require("mithril"),t=require("lodash"),i=require("../configuration.js"),n=require("../auth.js"),r=require("../model/group.js"),o=require("./layout.js"),u=require("../widgets/notification.js"),s=require("../widgets/tag.js"),l=require("../helpers/form.js"),a=require("../helpers/cleanupXss.js"),c={invite:function(o,s){var l={invite:o.isInvite,gid:o.group._id,loginsOrEmails:o.tag.current,auth_token:n.token()};e.request({method:"POST",url:i.URLS.GROUP+"/invite",data:l}).then(function(e){var t,n=o.isInvite?"INVITE_USER":"ADMIN_SHARE";e.present.length>0&&(t=i.LANG.GROUP[n].SUCCESS+a.cleanup(e.present.join(", ")),u.success({body:t})),e.absent.length>0&&(t=i.LANG.GROUP[n].FAILURE+a.cleanup(e.absent.join(", ")),u.warning({body:t})),0===e.absent.length&&0===e.present.length&&u.success({body:i.LANG.NOTIFICATION.SUCCESS_GENERIC}),r.fetch(function(){s&&s(e)})},function(e){u.error({body:t.result(i.LANG,e.error)})})},controller:function(){if(!n.isAuthenticated())return i.unauthUrl(!0),e.route("/login");var o=n.userInfo(),u={};u.isInvite="invite"===e.route.param("action");var l=function(){var n=e.route.param("group");u.group=r.groups()[n];var l=r.users();l=t.reduce(l,function(e,t){return e.byId[t._id]=t,e.byLogin[t.login]=t,e.byEmail[t.email]=t,e},{byId:{},byLogin:{},byEmail:{}}),u.users=t.merge(l.byLogin,l.byEmail);var a=t(l.byId).pick(u.isInvite?u.group.users:u.group.admins).values().pluck("login").value();u.tag=new s.controller({name:"user-invite",label:i.LANG.GROUP.INVITE_USER.USERS_SELECTION,current:a,placeholder:i.LANG.GROUP.INVITE_USER.PLACEHOLDER,tags:t.pull(t.keys(u.users),o.login,o.email)})};return t.isEmpty(r.groups())?r.fetch(l):l(),u.userlistAdd=function(e){var i=o.userlists[e];u.tag.current=t.union(u.tag.current,t.pluck(i.users,"login"))},u.submit=function(t){t.preventDefault();c.invite(u,function(t){e.route("/mypads/group/"+t.value._id+"/view")})},u}},g={userlistField:function(r){return e("div",[e(".form-group",[e("label.col-sm-4",{for:"userlists"},i.LANG.MENU.USERLIST),e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":i.LANG.USERLIST.INFO.USER_INVITE}),e(".col-sm-7",e("select.form-control",{name:"userlists",onchange:e.withAttr("value",r.userlistAdd)},t.map(t.toPairs(n.userInfo().userlists),function(t){return e("option",{value:t[0]},t[1].name)}).concat(e("option",{selected:!0,disabled:!0,hidden:!0,value:""}))))])])},userField:function(t){var n=s.views.input(t);return n.attrs.config=l.focusOnInit,e("div.tag",[e(".form-group",[e("label.col-sm-4",{for:t.name},t.label),e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign tag","data-msg":i.LANG.GROUP.INVITE_USER.INPUT_HELP}),e(".col-sm-7",[e(".input-group",[n,e("span.input-group-btn",e("button.btn.btn-default",{type:"button",onclick:function(){t.add(document.getElementById(t.name+"-input"))}},i.LANG.USER.OK))]),s.views.datalist(t)])]),e(".form-group",[e("label.col-sm-4",i.LANG.GLOBAL.OR),e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign tag","data-msg":i.LANG.USERLIST.FIELD.USERSAREA_HELP}),e(".col-sm-7",[e("textarea.form-control",{name:"usersArea",placeholder:i.LANG.USERLIST.FIELD.USERSAREA_PLACEHOLDER}),e("button.btn.btn-default.pull-right",{type:"button",onclick:function(){t.addMultiple(document.querySelector("textarea[name=usersArea]"))}},i.LANG.USER.OK)])])])},form:function(t){var n=i.LANG.GROUP,r=[e("fieldset",[e("legend",n.INVITE_USERLIST),e("div",g.userlistField(t))]),e("fieldset",[e("legend",t.isInvite?n.INVITE_USER.IU:n.ADMIN_SHARE.AS),e("div",g.userField(t.tag))]),e("fieldset",[e("legend",i.LANG.GROUP.INVITE_USER.USERS_SELECTED),e("div",s.views.tagslist(t.tag))]),e("input.btn.btn-success.pull-right",{form:"group-form",type:"submit",value:i.LANG.ACTIONS.SAVE})];return i.SERVER.allPadsPublicsAuthentifiedOnly&&r.shift(),e("form.form-horizontal",{id:"group-form",onsubmit:t.submit},r)},main:function(t){return e("section",{class:"user group-form"},[e("h2",i.LANG.GROUP.GROUP+" "+t.group.name),g.form(t)])},aside:function(t){var n=i.LANG.GROUP;return e("section.user-aside",[e("h2",i.LANG.ACTIONS.HELP),e("article.well",[e("h3",t.isInvite?n.INVITE_USER.IU:n.ADMIN_SHARE.AS),e("section",e.trust(i.LANG.GROUP.INVITE_USER.HELP))])])}};return c.view=function(e){return o.view(g.main(e),g.aside(e))},c}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/cleanupXss.js":4,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"../widgets/tag.js":45,"./layout.js":25,"lodash":52,"mithril":56}],39:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/cleanupXss.js":4,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"../widgets/tag.js":45,"./layout.js":25,"lodash":52,"mithril":53}],39:[function(require,module,exports){
 module.exports=function(){var i=require("mithril"),e=require("lodash"),n=require("../configuration.js"),a=require("../helpers/form.js"),o={view:{}};return o.view.icon={},o.view.icon.optional=function(){return i("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":n.LANG.USER.INFO.OPTIONAL})},o.view.icon.firstname=o.view.icon.optional,o.view.icon.lastname=o.view.icon.optional,o.view.icon.organization=o.view.icon.optional,o.view.icon.login=function(i){return a.icon(i,"login",n.LANG.USER.INFO.LOGIN,n.LANG.USER.ERR.LOGIN)},o.view.icon.password=function(e,a){var o={password:n.LANG.USER.INFO.PASSWORD_BEGIN+n.SERVER.passwordMin+" "+n.LANG.GLOBAL.AND+" "+n.SERVER.passwordMax+n.LANG.USER.INFO.PASSWORD_END,passwordConfirm:n.LANG.USER.INFO.PASSWORD_CHECK,passwordCurrent:n.LANG.USER.INFO.PASSWORD_CURRENT},t=["glyphicon glyphicon-exclamation-sign"];return e.valid[a]()&&(t=["glyphicon glyphicon-info-sign"]),t.push("mp-tooltip"),i("i",{class:t.join(" "),"data-msg":o[a]})},o.view.icon.email=function(i){return a.icon(i,"email",n.LANG.USER.INFO.EMAIL,n.LANG.USER.ERR.EMAIL)},o.view.icon.color=function(i){return a.icon(i,"color",n.LANG.USER.INFO.COLOR,n.LANG.USER.ERR.COLOR)},o.view.icon.padNickname=function(i){return a.icon(i,"padNickname",n.LANG.USER.INFO.PAD_NICKNAME)},o.view.field={},o.view.field.login=function(i){var t=a.field(i,"login",n.LANG.USER.USERNAME,o.view.icon.login(i));return e.assign(t.input.attrs,{type:"text",placeholder:n.LANG.USER.USERNAME,required:!0}),t},o.view.field._pass=function(e,t,r,l){var s=n.SERVER.passwordMin,c=n.SERVER.passwordMax,d={type:"password",name:t,placeholder:n.LANG.USER.UNDEF,required:!e.profileView||!e.profileView(),oninput:a.handleField.bind(null,e,l)};"ldap"!==n.SERVER.authMethod&&(d.minlength=s,d.maxlength=c,d.pattern=".{"+s+","+c+"}");var N=o.view.icon.password(e,t);return{label:i("label.col-sm-4",{for:t},[r,N]),input:i("input.form-control",d),icon:N}},o.view.field.password=function(i){return o.view.field._pass(i,"password",n.LANG.USER.PASSWORD)},o.view.field.passwordConfirm=function(i){return o.view.field._pass(i,"passwordConfirm",n.LANG.USER.PASSCHECK,function(i){return i.data.password()===i.data.passwordConfirm()})},o.view.field.passwordCurrent=function(i){var a=o.view.field._pass(i,"passwordCurrent",n.LANG.USER.PASSCURRENT);return e.assign(a.label.attrs,{style:{fontWeight:"bold"}}),e.assign(a.input.attrs,{required:!0}),a},o.view.field.email=function(i){var t=a.field(i,"email",n.LANG.USER.EMAIL,o.view.icon.email(i));return e.assign(t.input.attrs,{type:"email",placeholder:n.LANG.USER.EMAIL_SAMPLE,required:!0,value:i.data.email()||""}),t},o.view.field.lang=function(a){var o=i("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":n.LANG.USER.INFO.LANG});return{label:i("label.col-sm-4",{for:"lang"},[n.LANG.USER.LANG,o]),select:i("select.form-control",{name:"lang",required:!0,value:a.data.lang(),onchange:i.withAttr("value",a.data.lang)},e.reduce(n.SERVER.languages,function(e,n,a){return e.push(i("option",{value:a},n)),e},[]))}},o.view.field.useLoginAndColorInPads=function(e){var a=n.LANG.USER.INFO.USELOGINANDCOLORINPADS,o=n.LANG.USER.USELOGINANDCOLORINPADS;return n.SERVER.useFirstLastNameInPads&&(a=n.LANG.USER.INFO.USECOLORINPADS,o=n.LANG.USER.USECOLORINPADS),{label:i("label",[i("input",{type:"checkbox",name:"useLoginAndColorInPads",checked:e.data.useLoginAndColorInPads(),onchange:i.withAttr("checked",e.data.useLoginAndColorInPads)}),o,i("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":a})])}},o.view.field.firstname=function(i){var t=a.field(i,"firstname",n.LANG.USER.FIRSTNAME,o.view.icon.firstname(i));return e.assign(t.input.attrs,{type:"text",placeholder:n.LANG.USER.FIRSTNAME}),t},o.view.field.lastname=function(i){var t=a.field(i,"lastname",n.LANG.USER.LASTNAME,o.view.icon.lastname(i));return e.assign(t.input.attrs,{type:"text",placeholder:n.LANG.USER.LASTNAME}),t},o.view.field.padNickname=function(i){var t=a.field(i,"padNickname",n.LANG.USER.PAD_NICKNAME,o.view.icon.padNickname(i));return e.assign(t.input.attrs,{type:"text",placeholder:n.LANG.USER.PAD_NICKNAME}),t},o.view.field.organization=function(i){var t=a.field(i,"organization",n.LANG.USER.ORGANIZATION,o.view.icon.organization(i));return e.assign(t.input.attrs,{type:"text",placeholder:n.LANG.USER.ORGANIZATION}),t},o.view.field.color=function(i){var t=a.field(i,"color",n.LANG.USER.COLOR,o.view.icon.color(i));return e.assign(t.input.attrs,{type:"color",placeholder:n.LANG.USER.COLOR_SAMPLE,maxlength:7,pattern:"#[0-9,a-f]{6}"}),t},o.view.field.hideHelp=function(e){var a=n.LANG.ADMIN.FIELD.HIDE_HELP_BLOCKS,o=n.LANG.ADMIN.INFO.HIDE_HELP_BLOCKS;return{label:i("label",[i("input",{type:"checkbox",name:"hideHelp",checked:e.data.hideHelp(),onchange:i.withAttr("checked",e.data.hideHelp)}),a,i("i",{class:"mp-tooltip glyphicon glyphicon-info-sign","data-msg":o})])}},o.view.aside={common:function(){return i("section.user-aside",[i("h2",n.SERVER.title),i("article.well",i.trust(n.LANG.GLOBAL.DESCRIPTION))])},profile:function(){return i("section.user-aside",[i("h2",n.LANG.ACTIONS.HELP),i("article.well",i.trust(n.LANG.USER.HELP.PROFILE))])}},o}.call(this);
 
-},{"../configuration.js":3,"../helpers/form.js":7,"lodash":52,"mithril":56}],40:[function(require,module,exports){
+},{"../configuration.js":3,"../helpers/form.js":7,"lodash":52,"mithril":53}],40:[function(require,module,exports){
 module.exports=function(){"use strict";var e=require("mithril"),t=require("lodash"),r=require("../configuration.js"),n=require("../auth.js"),i=require("./layout.js"),s=require("../widgets/notification.js"),u=require("../widgets/tag.js"),l=require("../helpers/form.js"),o=require("../model/group.js"),a=require("../helpers/cleanupXss.js"),S={controller:function(){if(!n.isAuthenticated())return r.unauthUrl(!0),e.route("/login");var i={};i.addView=e.prop("/myuserlists/add"===e.route()),i.fields=["name"],l.initFields(i,i.fields);var S=function(){var s=n.userInfo(),l=[];i.addView()||(i.key=e.route.param("key"),i.userlist=s.userlists[i.key],l=t.pluck(i.userlist.users,"login"),i.data.name(i.userlist.name));var o=t.reduce(s.userlists,function(e,r){return t.each(r.users,function(r){t.includes(e,r.login)||(e.push(r.login),e.push(r.email))}),e},[]);i.tag=new u.controller({name:"users",label:r.LANG.GROUP.INVITE_USER.USERS_SELECTION,current:l,placeholder:r.LANG.GROUP.INVITE_USER.PLACEHOLDER,tags:o}),document.title=i.addView()?r.LANG.USERLIST.ADD:r.LANG.USERLIST.EDIT,document.title+=" - "+r.SERVER.title};return t.isEmpty(o.groups())?o.fetch(S):S(),i.submit=function(u){u.preventDefault();var l={method:"POST",url:r.URLS.USERLIST,data:{name:i.data.name(),loginsOrEmails:i.tag.current,auth_token:n.token()}},o=r.LANG.USERLIST.INFO.ADD_SUCCESS;i.addView()||(l.method="PUT",l.url+="/"+i.key,l.data.ulistid=i.key,o=r.LANG.USERLIST.INFO.EDIT_SUCCESS),e.request(l).then(function(t){var i,u=n.userInfo();u.userlists=t.value,n.userInfo(u),s.success({body:o}),t.present.length>0&&(i=r.LANG.USERLIST.INFO.USER_SUCCESS+a.cleanup(t.present.join(", ")),s.success({body:i})),t.absent.length>0&&(i=r.LANG.USERLIST.INFO.USER_FAILURE+a.cleanup(t.absent.join(", ")),s.warning({body:i})),e.route("/myuserlists")},function(e){s.error({body:t.result(r.LANG,e.error)})})},i}},E={field:{}};return E.field.name=function(e){var n=l.field(e,"name",r.LANG.USERLIST.FIELD.NAME,l.icon(e,"name",r.LANG.USERLIST.INFO.NAME,r.LANG.GROUP.ERR.NAME));return t.assign(n.input.attrs,{placeholder:r.LANG.USERLIST.INFO.NAME,required:!0,maxlength:40,config:l.focusOnInit}),n},E.field.users=function(t){return e("div.tag",[e(".form-group",[e("label.col-sm-4",{for:t.name},[t.label,e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign tag","data-msg":r.LANG.USERLIST.FIELD.USERS_HELP})]),e(".col-sm-7",[e(".input-group",[u.views.input(t),e("span.input-group-btn",e("button.btn.btn-default",{type:"button",onclick:function(){t.add(document.getElementById(t.name+"-input"))}},r.LANG.USER.OK))]),u.views.datalist(t)])]),e(".form-group",[e("label.col-sm-4",[r.LANG.GLOBAL.OR,e("i",{class:"mp-tooltip glyphicon glyphicon-info-sign tag","data-msg":r.LANG.USERLIST.FIELD.USERSAREA_HELP})]),e(".col-sm-7",[e("textarea.form-control",{name:"usersArea",placeholder:r.LANG.USERLIST.FIELD.USERSAREA_PLACEHOLDER}),e("button.btn.btn-default.pull-right",{type:"button",onclick:function(){t.addMultiple(document.querySelector("textarea[name=usersArea]"))}},r.LANG.USER.OK)])])])},E.form=function(t){var n=E.field.name(t);n.label.attrs.class="col-sm-4";var i=[e(".form-group",[n.label,e(".col-sm-7",n.input)])];return e("form.form-horizontal",{id:"ulist-form",onsubmit:t.submit},[e("fieldset",[e("legend",r.LANG.USERLIST.USERLIST),e("div",i)]),e("fieldset",[e("legend",r.LANG.USERLIST.FIELD.USERS),e("div",E.field.users(t.tag))]),e("fieldset",[e("legend",r.LANG.GROUP.INVITE_USER.USERS_SELECTED),e("div",u.views.tagslist(t.tag))]),e("input.btn.btn-success.pull-right",{form:"ulist-form",type:"submit",value:r.LANG.ACTIONS.SAVE})])},E.main=function(t){return e("section",[e("h2",t.addView()?r.LANG.USERLIST.ADD:r.LANG.USERLIST.EDIT),E.form(t)])},E.aside=function(){return e("section.user-aside",[e("h2",r.LANG.ACTIONS.HELP),e("article.well",e.trust(r.LANG.USERLIST.FORM_HELP))])},S.view=function(e){return i.view(E.main(e),E.aside(e))},S}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../helpers/cleanupXss.js":4,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"../widgets/tag.js":45,"./layout.js":25,"lodash":52,"mithril":56}],41:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../helpers/cleanupXss.js":4,"../helpers/form.js":7,"../model/group.js":10,"../widgets/notification.js":44,"../widgets/tag.js":45,"./layout.js":25,"lodash":52,"mithril":53}],41:[function(require,module,exports){
 module.exports=function(){"use strict";var r=require("mithril"),e=require("lodash"),t=require("../auth.js"),u=require("../configuration.js"),i=require("../widgets/notification.js"),o={controller:function(){if(!t.isAuthenticated())return u.unauthUrl(!0),r.route("/login");var o=r.route.param("key");window.confirm(u.LANG.USERLIST.INFO.REMOVE_SURE)?r.request({method:"DELETE",url:u.URLS.USERLIST+"/"+o,data:{auth_token:t.token()}}).then(function(){var e=t.userInfo();delete e.userlists[o],t.userInfo(e),i.success({body:u.LANG.USERLIST.INFO.REMOVE_SUCCESS}),r.route("/myuserlists")},function(r){i.error({body:e.result(u.LANG,r.error)})}):r.route("/myuserlists")},view:function(){}};return o}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":56}],42:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../widgets/notification.js":44,"lodash":52,"mithril":53}],42:[function(require,module,exports){
 module.exports=function(){"use strict";var t=require("mithril"),e=require("lodash"),r=require("../configuration.js"),i=require("../auth.js"),n=require("./layout.js"),u=require("../model/group.js"),s={controller:function(){if(!i.isAuthenticated())return r.unauthUrl(!0),t.route("/login");document.title=r.LANG.MENU.USERLIST+" - "+r.SERVER.title;var n={},s=function(){n.userlists=i.userInfo().userlists};return e.isEmpty(u.groups())?u.fetch(s):s(),n}},o={userlist:function(i,n,u){var s="/myuserlists/"+u,o=[t("a.btn.btn-default.btn-xs",{href:s+"/edit",config:t.route,title:r.LANG.GROUP.EDIT},[t("i.glyphicon.glyphicon-pencil")]),t("a.btn.btn-default.btn-xs",{href:s+"/remove",config:t.route,title:r.LANG.GROUP.REMOVE},[t("i.glyphicon.glyphicon-trash.text-danger")])];return t("tr",[t("th",t("a",{href:s+"/edit",config:t.route,title:r.LANG.GROUP.EDIT},n.name)),t("td",e.size(n.uids)),t("td.text-right",o)])},main:function(i){var n=e.reduce(i.userlists,function(t,e,r){return t.push(o.userlist(i,e,r)),t},[]);return t("section",[t("h2",[t("span",r.LANG.MENU.USERLIST),t("a.btn.btn-warning.pull-right",{href:"/myuserlists/add",config:t.route},[t("span",r.LANG.USERLIST.ADD)])]),t("section.panel.panel-default",t("table.table.table-stripped",[t("thead",t("tr",[t("th",{scope:"col"}),t("th",{scope:"col"},r.LANG.USERLIST.FIELD.USERS),t("th",{scope:"col"})])),t("tbody",n)]))])},aside:function(){return t("section.user-aside",[t("h2",r.LANG.ACTIONS.HELP),t("article.well",t.trust(r.LANG.USERLIST.HELP))])}};return s.view=function(t){return n.view(o.main(t),o.aside(t))},s}.call(this);
 
-},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"./layout.js":25,"lodash":52,"mithril":56}],43:[function(require,module,exports){
+},{"../auth.js":2,"../configuration.js":3,"../model/group.js":10,"./layout.js":25,"lodash":52,"mithril":53}],43:[function(require,module,exports){
 module.exports=function(){var e=require("mithril"),r=require("./modules/home.js"),s=require("./modules/login.js"),u=require("./modules/logout.js"),o=require("./modules/passrecover.js"),m=require("./modules/accountconfirm.js"),d=require("./modules/subscribe.js"),i=require("./modules/bookmark.js"),a=require("./modules/userlist.js"),p=require("./modules/userlist-form.js"),l=require("./modules/userlist-remove.js"),t=require("./modules/group.js"),g=require("./modules/group-view.js"),n=require("./modules/group-form.js"),y=require("./modules/group-remove.js"),q=require("./modules/pad-form.js"),j=require("./modules/pad-remove.js"),v=require("./modules/pad-remove-chat-history.js"),c=require("./modules/pad-view.js"),k=require("./modules/pad-move.js"),f=require("./modules/user-invitation.js"),h=require("./modules/admin.js"),b=require("./modules/admin-logout.js"),w=require("./modules/admin-users.js"),x=require("./modules/admin-users-create.js"),B=require("./modules/admin-users-form.js"),E=require("./modules/admin-users-remove.js"),I=require("./modules/tutorial.js"),z={model:{}};z.model.routes={"/":r,"/login":s,"/logout":u,"/passrecover":o,"/passrecover/:token":o,"/accountconfirm/:token":m,"/subscribe":d,"/myprofile":d,"/mybookmarks":i,"/myuserlists":a,"/myuserlists/add":p,"/myuserlists/:key/edit":p,"/myuserlists/:key/remove":l,"/mypads":t,"/mypads/group":t,"/mypads/group/list":t,"/mypads/group/add":n,"/mypads/group/:key/view":g,"/mypads/group/:key/edit":n,"/mypads/group/:key/remove":y,"/mypads/group/:group/pad/add":q,"/mypads/group/:group/pad/move":k,"/mypads/group/:group/pad/edit/:pad":q,"/mypads/group/:group/pad/remove/:pad":j,"/mypads/group/:group/pad/remove/chat/history/:pad":v,"/mypads/group/:group/pad/view/:pad":c,"/mypads/group/:group/user/:action":f,"/admin":h,"/admin/logout":b,"/admin/users":w,"/admin/users/create":x,"/admin/users/:login/edit":B,"/admin/users/:login/remove":E,"/tutorial":I};var A=document.getElementById("mypads");return z.init=function(){e.route(A,"/",z.model.routes)},z}.call(this);
 
-},{"./modules/accountconfirm.js":11,"./modules/admin-logout.js":12,"./modules/admin-users-create.js":13,"./modules/admin-users-form.js":14,"./modules/admin-users-remove.js":15,"./modules/admin-users.js":16,"./modules/admin.js":17,"./modules/bookmark.js":18,"./modules/group-form.js":19,"./modules/group-remove.js":21,"./modules/group-view.js":22,"./modules/group.js":23,"./modules/home.js":24,"./modules/login.js":26,"./modules/logout.js":27,"./modules/pad-form.js":28,"./modules/pad-move.js":30,"./modules/pad-remove-chat-history.js":31,"./modules/pad-remove.js":32,"./modules/pad-view.js":34,"./modules/passrecover.js":35,"./modules/subscribe.js":36,"./modules/tutorial.js":37,"./modules/user-invitation.js":38,"./modules/userlist-form.js":40,"./modules/userlist-remove.js":41,"./modules/userlist.js":42,"mithril":56}],44:[function(require,module,exports){
+},{"./modules/accountconfirm.js":11,"./modules/admin-logout.js":12,"./modules/admin-users-create.js":13,"./modules/admin-users-form.js":14,"./modules/admin-users-remove.js":15,"./modules/admin-users.js":16,"./modules/admin.js":17,"./modules/bookmark.js":18,"./modules/group-form.js":19,"./modules/group-remove.js":21,"./modules/group-view.js":22,"./modules/group.js":23,"./modules/home.js":24,"./modules/login.js":26,"./modules/logout.js":27,"./modules/pad-form.js":28,"./modules/pad-move.js":30,"./modules/pad-remove-chat-history.js":31,"./modules/pad-remove.js":32,"./modules/pad-view.js":34,"./modules/passrecover.js":35,"./modules/subscribe.js":36,"./modules/tutorial.js":37,"./modules/user-invitation.js":38,"./modules/userlist-form.js":40,"./modules/userlist-remove.js":41,"./modules/userlist.js":42,"mithril":53}],44:[function(require,module,exports){
 module.exports=function(){"use strict";var e=require("mithril"),t=require("../configuration.js"),o={model:{items:{},counter:0},controller:function(){var t={toClose:{},close:function(e,i){i&&"timeout"!==i&&window.clearTimeout(t.toClose[e]),delete t.toClose[e],delete o.model.items[e]},delayClose:function(o,i){i&&!t.toClose[o]&&(t.toClose[o]=window.setTimeout(function(){e.startComputation(),t.close(o,"timeout"),e.endComputation()},1e3*i))}};return t},view:function(t){var i=Object.keys(o.model.items).sort();return e("div",i.map(function(i){var n=o.model.items[i];t.delayClose(i,n.timeout);var l=t.close.bind(t,i,n.timeout);return e("div",{class:n.cls?n.cls:"",onclick:n.click?n.click:l},[e("header",[n.icon?e("i",{class:"glyphicon glyphicon-"+n.icon}):"",e("span"," "+n.title)]),e("i",{class:"close glyphicon glyphicon-remove-circle",onclick:l}),e("p",e.trust(n.body))])}))},send:function(t,i){void 0===t.timeout&&(t.timeout=10),o.model.counter+=1,o.model.items[o.model.counter]=t,e.redraw(),i&&i()},success:function(e,i){e.title=e.title||t.LANG.NOTIFICATION.SUCCESS,e.cls="alert alert-success",e.icon="ok",o.send(e,i)},info:function(e,i){e.title=e.title||t.LANG.NOTIFICATION.INFO,e.cls="alert alert-info",e.icon="info-sign",o.send(e,i)},warning:function(e,i){e.title=t.LANG.NOTIFICATION.WARNING,e.cls="alert alert-warning",e.icon="warning-sign",e.timeout=15,o.send(e,i)},error:function(e,i){e.title=t.LANG.NOTIFICATION.ERROR,e.cls="alert alert-danger",e.icon="exclamation-sign",e.timeout=15,o.send(e,i)},errorUnexpected:function(e,i){e.body="<em>"+e.body+"</em><br>"+t.LANG.NOTIFICATION.ERROR_UNEXPECTED,o.error(e,i)}};return o}.call(this);
 
-},{"../configuration.js":3,"mithril":56}],45:[function(require,module,exports){
+},{"../configuration.js":3,"mithril":53}],45:[function(require,module,exports){
 module.exports=function(){"use strict";var t=require("mithril"),n=require("lodash"),e=require("../configuration.js"),i={controller:function(t){var i=t;return i.label=i.label||e.LANG.TAG.TAGS,i.placeholder=i.placeholder||e.LANG.TAG.PLACEHOLDER,i.name=i.name||"tags",i.tags=n.difference(i.tags,i.current),i.add=function(t){var e=t.value;0!==e.length&&(n.includes(i.current,e)||i.current.push(e),n.pull(i.tags,e),t.value="")},i.addMultiple=function(t){var e=t.value;0!==e.length&&(e=n.compact(e.split("\n")),i.current=n.union(i.current,e),i.tags=n.difference(i.tags,e),t.value="")},i},views:{}};return i.views.icon=function(){return t("i",{class:"mp-tooltip glyphicon glyphicon-info-sign tag","data-msg":e.LANG.TAG.HELP})},i.views.input=function(n){return t("input.form-control",{id:n.name+"-input",name:n.name,type:"text",list:n.name,placeholder:n.placeholder,onkeydown:function(t){13===t.keyCode&&(t.preventDefault(),n.add(t.target))},onchange:function(t){n.add(t.target)}})},i.views.datalist=function(e){return t("datalist",{id:e.name},n.map(e.tags,function(n){return t("option",{value:n})}))},i.views.tagslist=function(e){return t("ul.list-inline help-block",n.map(e.current,function(i){return t("li",[t("span.label.label-default",i),t("i",{role:"button",class:"small glyphicon glyphicon-remove text-danger",onclick:function(t){var i=t.target.parentElement.textContent;n.pull(e.current,i),e.tags.push(i)}})])}))},i.view=function(n){return t("div.form-group",[t("label.col-sm-4",{for:n.name},[n.label,i.views.icon()]),t(".col-sm-7",[t(".input-group.input-group-sm",[i.views.input(n),t("span.input-group-btn",t("button.btn.btn-default",{type:"button",onclick:function(){n.add(document.getElementById(n.name+"-input"))}},e.LANG.USER.OK))]),i.views.datalist(n),i.views.tagslist(n)])])},i}.call(this);
 
-},{"../configuration.js":3,"lodash":52,"mithril":56}],46:[function(require,module,exports){
+},{"../configuration.js":3,"lodash":52,"mithril":53}],46:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -20066,1986 +20066,2302 @@ module.exports = beautify;
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],53:[function(require,module,exports){
-"use strict"
+/* global Promise */
 
-var Vnode = require("../render/vnode")
+;(function (global, factory) { // eslint-disable-line
+	"use strict"
+	/* eslint-disable no-undef */
+	var m = factory(global)
+	/*	Set dependencies when no window for isomorphic compatibility */
+	if(typeof window === "undefined") {
+		m.deps({
+			document: typeof document !== "undefined" ? document : {},
+			location: typeof location !== "undefined" ? location : {},
+			clearTimeout: clearTimeout,
+			setTimeout: setTimeout
+		})
+	}
+	if (typeof module === "object" && module != null && module.exports) {
+		module.exports = m
+	} else if (typeof define === "function" && define.amd) {
+		define(function () { return m })
+	} else {
+		global.m = m
+	}
+	/* eslint-enable no-undef */
+})(typeof window !== "undefined" ? window : this, function factory(global, undefined) { // eslint-disable-line
+	"use strict"
 
-module.exports = function(render, schedule, console) {
-	var subscriptions = []
-	var pending = false
-	var offset = -1
-
-	function sync() {
-		for (offset = 0; offset < subscriptions.length; offset += 2) {
-			try { render(subscriptions[offset], Vnode(subscriptions[offset + 1]), redraw) }
-			catch (e) { console.error(e) }
-		}
-		offset = -1
+	m.version = function () {
+		return "v0.2.8"
 	}
 
-	function redraw() {
-		if (!pending) {
-			pending = true
-			schedule(function() {
-				pending = false
-				sync()
+	var hasOwn = {}.hasOwnProperty
+	var type = {}.toString
+
+	function isFunction(object) {
+		return typeof object === "function"
+	}
+
+	function isObject(object) {
+		return type.call(object) === "[object Object]"
+	}
+
+	function isString(object) {
+		return type.call(object) === "[object String]"
+	}
+
+	var isArray = Array.isArray || function (object) {
+		return type.call(object) === "[object Array]"
+	}
+
+	function noop() {}
+
+	var voidElements = {
+		AREA: 1,
+		BASE: 1,
+		BR: 1,
+		COL: 1,
+		COMMAND: 1,
+		EMBED: 1,
+		HR: 1,
+		IMG: 1,
+		INPUT: 1,
+		KEYGEN: 1,
+		LINK: 1,
+		META: 1,
+		PARAM: 1,
+		SOURCE: 1,
+		TRACK: 1,
+		WBR: 1
+	}
+
+	// caching commonly used variables
+	var $document, $location, $requestAnimationFrame, $cancelAnimationFrame
+
+	// self invoking function needed because of the way mocks work
+	function initialize(mock) {
+		$document = mock.document
+		$location = mock.location
+		$cancelAnimationFrame = mock.cancelAnimationFrame || mock.clearTimeout
+		$requestAnimationFrame = mock.requestAnimationFrame || mock.setTimeout
+	}
+
+	// testing API
+	m.deps = function (mock) {
+		initialize(global = mock || window)
+		return global
+	}
+
+	m.deps.factory = m.factory = factory
+
+	m.deps(global)
+
+	/**
+	 * @typedef {String} Tag
+	 * A string that looks like -> div.classname#id[param=one][param2=two]
+	 * Which describes a DOM node
+	 */
+
+	function parseTagAttrs(cell, tag) {
+		var classes = []
+		/* eslint-disable max-len */
+		var parser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g
+		/* eslint-enable max-len */
+		var match
+
+		while ((match = parser.exec(tag))) {
+			if (match[1] === "" && match[2]) {
+				cell.tag = match[2]
+			} else if (match[1] === "#") {
+				cell.attrs.id = match[2]
+			} else if (match[1] === ".") {
+				classes.push(match[2])
+			} else if (match[3].charAt(0) === "[") { // #1195
+				var attrValue = match[6]
+				if (attrValue) attrValue = attrValue.replace(/\\(["'])/g, "$1")
+				if (match[4] === "class") classes.push(attrValue)
+				else cell.attrs[match[4]] = attrValue || true
+			}
+		}
+
+		return classes
+	}
+
+	function getVirtualChildren(args, hasAttrs) {
+		var children = hasAttrs ? args.slice(1) : args
+
+		if (children.length === 1 && isArray(children[0])) {
+			return children[0]
+		} else {
+			return children
+		}
+	}
+
+	function assignAttrs(target, attrs, classes) {
+		var classAttr = "class" in attrs ? "class" : "className"
+
+		for (var attrName in attrs) {
+			if (hasOwn.call(attrs, attrName)) {
+				if (attrName === classAttr &&
+						attrs[attrName] != null &&
+						attrs[attrName] !== "") {
+					classes.push(attrs[attrName])
+					// create key in correct iteration order
+					target[attrName] = ""
+				} else {
+					target[attrName] = attrs[attrName]
+				}
+			}
+		}
+
+		if (classes.length) target[classAttr] = classes.join(" ")
+	}
+
+	/**
+	 *
+	 * @param {Tag} The DOM node tag
+	 * @param {Object=[]} optional key-value pairs to be mapped to DOM attrs
+	 * @param {...mNode=[]} Zero or more Mithril child nodes. Can be an array,
+	 *                      or splat (optional)
+	 */
+	function m(tag, pairs) {
+		var args = []
+
+		for (var i = 1, length = arguments.length; i < length; i++) {
+			args[i - 1] = arguments[i]
+		}
+
+		if (tag && isFunction(tag.view)) return parameterize(tag, args)
+
+		if (!isString(tag)) {
+			throw new Error("selector in m(selector, attrs, children) should " +
+				"be a string")
+		}
+
+		var hasAttrs = pairs != null && isObject(pairs) &&
+			!("tag" in pairs || "view" in pairs || "subtree" in pairs)
+
+		var attrs = hasAttrs ? pairs : {}
+		var cell = {
+			tag: "div",
+			attrs: {},
+			children: getVirtualChildren(args, hasAttrs)
+		}
+
+		assignAttrs(cell.attrs, attrs, parseTagAttrs(cell, tag))
+		return cell
+	}
+
+	function forEach(list, f) {
+		for (var i = 0; i < list.length && !f(list[i], i++);) {
+			// function called in condition
+		}
+	}
+
+	function forKeys(list, f) {
+		forEach(list, function (attrs, i) {
+			return (attrs = attrs && attrs.attrs) &&
+				attrs.key != null &&
+				f(attrs, i)
+		})
+	}
+	// This function was causing deopts in Chrome.
+	function dataToString(data) {
+		// data.toString() might throw or return null if data is the return
+		// value of Console.log in some versions of Firefox (behavior depends on
+		// version)
+		try {
+			if (typeof data !== "boolean" &&
+					data != null &&
+					data.toString() != null) return data
+		} catch (e) {
+			// silently ignore errors
+		}
+		return ""
+	}
+
+	// This function was causing deopts in Chrome.
+	function injectTextNode(parentElement, first, index, data) {
+		try {
+			insertNode(parentElement, first, index)
+			first.nodeValue = data
+		} catch (e) {
+			// IE erroneously throws error when appending an empty text node
+			// after a null
+		}
+	}
+
+	function flatten(list) {
+		// recursively flatten array
+		for (var i = 0; i < list.length; i++) {
+			if (isArray(list[i])) {
+				list = list.concat.apply([], list)
+				// check current index again and flatten until there are no more
+				// nested arrays at that index
+				i--
+			}
+		}
+		return list
+	}
+
+	function insertNode(parentElement, node, index) {
+		parentElement.insertBefore(node,
+			parentElement.childNodes[index] || null)
+	}
+
+	var DELETION = 1
+	var INSERTION = 2
+	var MOVE = 3
+
+	function handleKeysDiffer(data, existing, cached, parentElement) {
+		forKeys(data, function (key, i) {
+			existing[key = key.key] = existing[key] ? {
+				action: MOVE,
+				index: i,
+				from: existing[key].index,
+				element: cached.nodes[existing[key].index] ||
+					$document.createElement("div")
+			} : {action: INSERTION, index: i}
+		})
+
+		var actions = []
+		for (var prop in existing) {
+			if (hasOwn.call(existing, prop)) {
+				actions.push(existing[prop])
+			}
+		}
+
+		var changes = actions.sort(sortChanges)
+		var newCached = new Array(cached.length)
+
+		newCached.nodes = cached.nodes.slice()
+
+		forEach(changes, function (change) {
+			var index = change.index
+			if (change.action === DELETION) {
+				clear(cached[index].nodes, cached[index])
+				newCached.splice(index, 1)
+			}
+			if (change.action === INSERTION) {
+				var dummy = $document.createElement("div")
+				dummy.key = data[index].attrs.key
+				insertNode(parentElement, dummy, index)
+				newCached.splice(index, 0, {
+					attrs: {key: data[index].attrs.key},
+					nodes: [dummy]
+				})
+				newCached.nodes[index] = dummy
+			}
+
+			if (change.action === MOVE) {
+				var changeElement = change.element
+				var maybeChanged = parentElement.childNodes[index]
+				if (maybeChanged !== changeElement && changeElement !== null) {
+					parentElement.insertBefore(changeElement,
+						maybeChanged || null)
+				}
+				newCached[index] = cached[change.from]
+				newCached.nodes[index] = changeElement
+			}
+		})
+
+		return newCached
+	}
+
+	function diffKeys(data, cached, existing, parentElement) {
+		var keysDiffer = data.length !== cached.length
+
+		if (!keysDiffer) {
+			forKeys(data, function (attrs, i) {
+				var cachedCell = cached[i]
+				return keysDiffer = cachedCell &&
+					cachedCell.attrs &&
+					cachedCell.attrs.key !== attrs.key
+			})
+		}
+
+		if (keysDiffer) {
+			return handleKeysDiffer(data, existing, cached, parentElement)
+		} else {
+			return cached
+		}
+	}
+
+	function diffArray(data, cached, nodes) {
+		// diff the array itself
+
+		// update the list of DOM nodes by collecting the nodes from each item
+		forEach(data, function (_, i) {
+			if (cached[i] != null) nodes.push.apply(nodes, cached[i].nodes)
+		})
+		// remove items from the end of the array if the new array is shorter
+		// than the old one. if errors ever happen here, the issue is most
+		// likely a bug in the construction of the `cached` data structure
+		// somewhere earlier in the program
+		forEach(cached.nodes, function (node, i) {
+			if (node.parentNode != null && nodes.indexOf(node) < 0) {
+				clear([node], [cached[i]])
+			}
+		})
+
+		if (data.length < cached.length) cached.length = data.length
+		cached.nodes = nodes
+	}
+
+	function buildArrayKeys(data) {
+		var guid = 0
+		forKeys(data, function () {
+			forEach(data, function (attrs) {
+				if ((attrs = attrs && attrs.attrs) && attrs.key == null) {
+					attrs.key = "__mithril__" + guid++
+				}
+			})
+			return 1
+		})
+	}
+
+	function isDifferentEnough(data, cached, dataAttrKeys) {
+		if (data.tag !== cached.tag) return true
+
+		if (dataAttrKeys.sort().join() !==
+				Object.keys(cached.attrs).sort().join()) {
+			return true
+		}
+
+		if (data.attrs.id !== cached.attrs.id) {
+			return true
+		}
+
+		if (data.attrs.key !== cached.attrs.key) {
+			return true
+		}
+
+		if (m.redraw.strategy() === "all") {
+			return !cached.configContext || cached.configContext.retain !== true
+		}
+
+		if (m.redraw.strategy() === "diff") {
+			return cached.configContext && cached.configContext.retain === false
+		}
+
+		return false
+	}
+
+	function maybeRecreateObject(data, cached, dataAttrKeys) {
+		// if an element is different enough from the one in cache, recreate it
+		if (isDifferentEnough(data, cached, dataAttrKeys)) {
+			if (cached.nodes.length) clear(cached.nodes)
+
+			if (cached.configContext &&
+					isFunction(cached.configContext.onunload)) {
+				cached.configContext.onunload()
+			}
+
+			if (cached.controllers) {
+				forEach(cached.controllers, function (controller) {
+					if (controller.onunload) {
+						controller.onunload({preventDefault: noop})
+					}
+				})
+			}
+		}
+	}
+
+	function getObjectNamespace(data, namespace) {
+		if (data.attrs.xmlns) return data.attrs.xmlns
+		if (data.tag === "svg") return "http://www.w3.org/2000/svg"
+		if (data.tag === "math") return "http://www.w3.org/1998/Math/MathML"
+		return namespace
+	}
+
+	var pendingRequests = 0
+	m.startComputation = function () { pendingRequests++ }
+	m.endComputation = function () {
+		if (pendingRequests > 1) {
+			pendingRequests--
+		} else {
+			pendingRequests = 0
+			m.redraw()
+		}
+	}
+
+	function unloadCachedControllers(cached, views, controllers) {
+		if (controllers.length) {
+			cached.views = views
+			cached.controllers = controllers
+			forEach(controllers, function (controller) {
+				if (controller.onunload && controller.onunload.$old) {
+					controller.onunload = controller.onunload.$old
+				}
+
+				if (pendingRequests && controller.onunload) {
+					var onunload = controller.onunload
+					controller.onunload = function (){}
+					controller.onunload.$old = onunload
+				}
 			})
 		}
 	}
 
-	redraw.sync = sync
+	function scheduleConfigsToBeCalled(configs, data, node, isNew, cached) {
+		// schedule configs to be called. They are called after `build` finishes
+		// running
+		if (isFunction(data.attrs.config)) {
+			var context = cached.configContext = cached.configContext || {}
 
-	function mount(root, component) {
-		if (component != null && component.view == null && typeof component !== "function") {
-			throw new TypeError("m.mount expects a component, not a vnode.")
-		}
-
-		var index = subscriptions.indexOf(root)
-		if (index >= 0) {
-			subscriptions.splice(index, 2)
-			if (index <= offset) offset -= 2
-			render(root, [])
-		}
-
-		if (component != null) {
-			subscriptions.push(root, component)
-			render(root, Vnode(component), redraw)
+			// bind
+			configs.push(function () {
+				return data.attrs.config.call(data, node, !isNew, context,
+					cached)
+			})
 		}
 	}
 
-	return {mount: mount, redraw: redraw}
-}
+	function buildUpdatedNode(
+		cached,
+		data,
+		editable,
+		hasKeys,
+		namespace,
+		views,
+		configs,
+		controllers
+	) {
+		var node = cached.nodes[0]
 
-},{"../render/vnode":70}],54:[function(require,module,exports){
-"use strict"
+		if (hasKeys) {
+			setAttributes(node, data.tag, data.attrs, cached.attrs, namespace)
+		}
 
-var Vnode = require("../render/vnode")
-var m = require("../render/hyperscript")
+		cached.children = build(
+			node,
+			data.tag,
+			undefined,
+			undefined,
+			data.children,
+			cached.children,
+			false,
+			0,
+			data.attrs.contenteditable ? node : editable,
+			namespace,
+			configs
+		)
 
-var buildPathname = require("../pathname/build")
-var parsePathname = require("../pathname/parse")
-var compileTemplate = require("../pathname/compileTemplate")
-var censor = require("../util/censor")
+		cached.nodes.intact = true
 
-function decodeURIComponentSave(component) {
-	try {
-		return decodeURIComponent(component)
-	} catch(e) {
-		return component
-	}
-}
+		if (controllers.length) {
+			cached.views = views
+			cached.controllers = controllers
+		}
 
-module.exports = function($window, mountRedraw) {
-	var callAsync = $window == null
-		// In case Mithril.js' loaded globally without the DOM, let's not break
-		? null
-		: typeof $window.setImmediate === "function" ? $window.setImmediate : $window.setTimeout
-	var p = Promise.resolve()
-
-	var scheduled = false
-
-	var ready = false
-	var hasBeenResolved = false
-
-	var dom, compiled, fallbackRoute
-
-	var currentResolver, component, attrs, currentPath, lastUpdate
-
-	var RouterRoot = {
-		onremove: function() {
-			ready = hasBeenResolved = false
-			$window.removeEventListener("popstate", fireAsync, false)
-		},
-		view: function() {
-			// The route has already been resolved.
-			// Therefore, the following early return is not needed.
-			// if (!hasBeenResolved) return
-
-			var vnode = Vnode(component, attrs.key, attrs)
-			if (currentResolver) return currentResolver.render(vnode)
-			// Wrap in a fragment to preserve existing key semantics
-			return [vnode]
-		},
+		return node
 	}
 
-	var SKIP = route.SKIP = {}
-
-	function resolveRoute() {
-		scheduled = false
-		// Consider the pathname holistically. The prefix might even be invalid,
-		// but that's not our problem.
-		var prefix = $window.location.hash
-		if (route.prefix[0] !== "#") {
-			prefix = $window.location.search + prefix
-			if (route.prefix[0] !== "?") {
-				prefix = $window.location.pathname + prefix
-				if (prefix[0] !== "/") prefix = "/" + prefix
+	function handleNonexistentNodes(data, parentElement, index) {
+		var nodes
+		if (data.$trusted) {
+			nodes = injectHTML(parentElement, index, data)
+		} else {
+			nodes = [$document.createTextNode(data)]
+			if (!(parentElement.nodeName in voidElements)) {
+				insertNode(parentElement, nodes[0], index)
 			}
 		}
-		// This seemingly useless `.concat()` speeds up the tests quite a bit,
-		// since the representation is consistently a relatively poorly
-		// optimized cons string.
-		var path = prefix.concat()
-			.replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponentSave)
-			.slice(route.prefix.length)
-		var data = parsePathname(path)
 
-		Object.assign(data.params, $window.history.state)
+		var cached
 
-		function reject(e) {
-			console.error(e)
-			route.set(fallbackRoute, null, {replace: true})
+		if (typeof data === "string" ||
+				typeof data === "number" ||
+				typeof data === "boolean") {
+			cached = new data.constructor(data)
+		} else {
+			cached = data
 		}
 
-		loop(0)
-		function loop(i) {
-			for (; i < compiled.length; i++) {
-				if (compiled[i].check(data)) {
-					var payload = compiled[i].component
-					var matchedRoute = compiled[i].route
-					var localComp = payload
-					var update = lastUpdate = function(comp) {
-						if (update !== lastUpdate) return
-						if (comp === SKIP) return loop(i + 1)
-						component = comp != null && (typeof comp.view === "function" || typeof comp === "function")? comp : "div"
-						attrs = data.params, currentPath = path, lastUpdate = null
-						currentResolver = payload.render ? payload : null
-						if (hasBeenResolved) mountRedraw.redraw()
-						else {
-							hasBeenResolved = true
-							mountRedraw.mount(dom, RouterRoot)
-						}
-					}
-					// There's no understating how much I *wish* I could
-					// use `async`/`await` here...
-					if (payload.view || typeof payload === "function") {
-						payload = {}
-						update(localComp)
-					}
-					else if (payload.onmatch) {
-						p.then(function () {
-							return payload.onmatch(data.params, path, matchedRoute)
-						}).then(update, path === fallbackRoute ? null : reject)
-					}
-					else update(/* "div" */)
-					return
-				}
-			}
-
-			if (path === fallbackRoute) {
-				throw new Error("Could not resolve default route " + fallbackRoute + ".")
-			}
-			route.set(fallbackRoute, null, {replace: true})
-		}
+		cached.nodes = nodes
+		return cached
 	}
 
-	function fireAsync() {
-		if (!scheduled) {
-			scheduled = true
-			// TODO: just do `mountRedraw.redraw()` here and elide the timer
-			// dependency. Note that this will muck with tests a *lot*, so it's
-			// not as easy of a change as it sounds.
-			callAsync(resolveRoute)
-		}
-	}
-
-	function route(root, defaultRoute, routes) {
-		if (!root) throw new TypeError("DOM element being rendered to does not exist.")
-
-		compiled = Object.keys(routes).map(function(route) {
-			if (route[0] !== "/") throw new SyntaxError("Routes must start with a '/'.")
-			if ((/:([^\/\.-]+)(\.{3})?:/).test(route)) {
-				throw new SyntaxError("Route parameter names must be separated with either '/', '.', or '-'.")
-			}
-			return {
-				route: route,
-				component: routes[route],
-				check: compileTemplate(route),
-			}
-		})
-		fallbackRoute = defaultRoute
-		if (defaultRoute != null) {
-			var defaultData = parsePathname(defaultRoute)
-
-			if (!compiled.some(function (i) { return i.check(defaultData) })) {
-				throw new ReferenceError("Default route doesn't match any known routes.")
-			}
-		}
-		dom = root
-
-		$window.addEventListener("popstate", fireAsync, false)
-
-		ready = true
-
-		// The RouterRoot component is mounted when the route is first resolved.
-		resolveRoute()
-	}
-	route.set = function(path, data, options) {
-		if (lastUpdate != null) {
-			options = options || {}
-			options.replace = true
-		}
-		lastUpdate = null
-
-		path = buildPathname(path, data)
-		if (ready) {
-			fireAsync()
-			var state = options ? options.state : null
-			var title = options ? options.title : null
-			if (options && options.replace) $window.history.replaceState(state, title, route.prefix + path)
-			else $window.history.pushState(state, title, route.prefix + path)
-		}
-		else {
-			$window.location.href = route.prefix + path
-		}
-	}
-	route.get = function() {return currentPath}
-	route.prefix = "#!"
-	route.Link = {
-		view: function(vnode) {
-			// Omit the used parameters from the rendered element - they are
-			// internal. Also, censor the various lifecycle methods.
-			//
-			// We don't strip the other parameters because for convenience we
-			// let them be specified in the selector as well.
-			var child = m(
-				vnode.attrs.selector || "a",
-				censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
-				vnode.children
-			)
-			var options, onclick, href
-
-			// Let's provide a *right* way to disable a route link, rather than
-			// letting people screw up accessibility on accident.
-			//
-			// The attribute is coerced so users don't get surprised over
-			// `disabled: 0` resulting in a button that's somehow routable
-			// despite being visibly disabled.
-			if (child.attrs.disabled = Boolean(child.attrs.disabled)) {
-				child.attrs.href = null
-				child.attrs["aria-disabled"] = "true"
-				// If you *really* do want add `onclick` on a disabled link, use
-				// an `oncreate` hook to add it.
+	function reattachNodes(
+		data,
+		cached,
+		parentElement,
+		editable,
+		index,
+		parentTag
+	) {
+		var nodes = cached.nodes
+		if (!editable || editable !== $document.activeElement ||
+				data !== cached) {
+			if (data.$trusted) {
+				clear(nodes, cached)
+				nodes = injectHTML(parentElement, index, data)
+			} else if (parentTag === "textarea") {
+				// <textarea> uses `value` instead of `nodeValue`.
+				parentElement.value = data
+			} else if (editable) {
+				// contenteditable nodes use `innerHTML` instead of `nodeValue`.
+				editable.innerHTML = data
+				nodes = [].slice.call(editable.childNodes)
 			} else {
-				options = vnode.attrs.options
-				onclick = vnode.attrs.onclick
-				// Easier to build it now to keep it isomorphic.
-				href = buildPathname(child.attrs.href, vnode.attrs.params)
-				child.attrs.href = route.prefix + href
-				child.attrs.onclick = function(e) {
-					var result
-					if (typeof onclick === "function") {
-						result = onclick.call(e.currentTarget, e)
-					} else if (onclick == null || typeof onclick !== "object") {
-						// do nothing
-					} else if (typeof onclick.handleEvent === "function") {
-						onclick.handleEvent(e)
-					}
+				// was a trusted string
+				if (nodes[0].nodeType === 1 || nodes.length > 1 ||
+						(nodes[0].nodeValue.trim &&
+							!nodes[0].nodeValue.trim())) {
+					clear(cached.nodes, cached)
+					nodes = [$document.createTextNode(data)]
+				}
 
-					// Adapted from React Router's implementation:
-					// https://github.com/ReactTraining/react-router/blob/520a0acd48ae1b066eb0b07d6d4d1790a1d02482/packages/react-router-dom/modules/Link.js
-					//
-					// Try to be flexible and intuitive in how we handle links.
-					// Fun fact: links aren't as obvious to get right as you
-					// would expect. There's a lot more valid ways to click a
-					// link than this, and one might want to not simply click a
-					// link, but right click or command-click it to copy the
-					// link target, etc. Nope, this isn't just for blind people.
-					if (
-						// Skip if `onclick` prevented default
-						result !== false && !e.defaultPrevented &&
-						// Ignore everything but left clicks
-						(e.button === 0 || e.which === 0 || e.which === 1) &&
-						// Let the browser handle `target=_blank`, etc.
-						(!e.currentTarget.target || e.currentTarget.target === "_self") &&
-						// No modifier keys
-						!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey
-					) {
-						e.preventDefault()
-						e.redraw = false
-						route.set(href, null, options)
-					}
+				injectTextNode(parentElement, nodes[0], index, data)
+			}
+		}
+		cached = new data.constructor(data)
+		cached.nodes = nodes
+		cached.$trusted = data.$trusted
+		return cached
+	}
+
+	function handleTextNode(
+		cached,
+		data,
+		index,
+		parentElement,
+		shouldReattach,
+		editable,
+		parentTag
+	) {
+		if (!cached.nodes.length) {
+			return handleNonexistentNodes(data, parentElement, index)
+		} else if (cached.valueOf() !== data.valueOf() || shouldReattach) {
+			return reattachNodes(data, cached, parentElement, editable, index,
+				parentTag)
+		} else {
+			return (cached.nodes.intact = true, cached)
+		}
+	}
+
+	function getSubArrayCount(item) {
+		if (item.$trusted) {
+			// fix offset of next element if item was a trusted string w/ more
+			// than one html element
+			return item.nodes.length
+		} else if (isArray(item)) {
+			return item.length
+		}
+		return 1
+	}
+
+	function buildArray(
+		data,
+		cached,
+		parentElement,
+		index,
+		parentTag,
+		shouldReattach,
+		editable,
+		namespace,
+		configs
+	) {
+		data = flatten(data)
+		var nodes = []
+		var intact = cached.length === data.length
+		var subArrayCount = 0
+
+		// keys algorithm: sort elements without recreating them if keys are
+		// present
+		//
+		// 1) create a map of all existing keys, and mark all for deletion
+		// 2) add new keys to map and mark them for addition
+		// 3) if key exists in new list, change action from deletion to a move
+		// 4) for each key, handle its corresponding action as marked in
+		//    previous steps
+
+		var existing = {}
+		var shouldMaintainIdentities = false
+
+		forKeys(cached, function (attrs, i) {
+			shouldMaintainIdentities = true
+			existing[cached[i].attrs.key] = {action: DELETION, index: i}
+		})
+
+		buildArrayKeys(data)
+		if (shouldMaintainIdentities) {
+			cached = diffKeys(data, cached, existing, parentElement)
+		}
+		// end key algorithm
+
+		var cacheCount = 0
+		// faster explicitly written
+		for (var i = 0, len = data.length; i < len; i++) {
+			// diff each item in the array
+			var item = build(
+				parentElement,
+				parentTag,
+				cached,
+				index,
+				data[i],
+				cached[cacheCount],
+				shouldReattach,
+				index + subArrayCount || subArrayCount,
+				editable,
+				namespace,
+				configs)
+
+			if (item !== undefined) {
+				intact = intact && item.nodes.intact
+				subArrayCount += getSubArrayCount(item)
+				cached[cacheCount++] = item
+			}
+		}
+
+		if (!intact) diffArray(data, cached, nodes)
+		return cached
+	}
+
+	function makeCache(data, cached, index, parentIndex, parentCache) {
+		if (cached != null) {
+			if (type.call(cached) === type.call(data)) return cached
+
+			if (parentCache && parentCache.nodes) {
+				var offset = index - parentIndex
+				var end = offset + (isArray(data) ? data : cached.nodes).length
+				clear(
+					parentCache.nodes.slice(offset, end),
+					parentCache.slice(offset, end))
+			} else if (cached.nodes) {
+				clear(cached.nodes, cached)
+			}
+		}
+
+		cached = new data.constructor()
+		// if constructor creates a virtual dom element, use a blank object as
+		// the base cached node instead of copying the virtual el (#277)
+		if (cached.tag) cached = {}
+		cached.nodes = []
+		return cached
+	}
+
+	function constructNode(data, namespace) {
+		if (data.attrs.is) {
+			if (namespace == null) {
+				return $document.createElement(data.tag, data.attrs.is)
+			} else {
+				return $document.createElementNS(namespace, data.tag,
+					data.attrs.is)
+			}
+		} else if (namespace == null) {
+			return $document.createElement(data.tag)
+		} else {
+			return $document.createElementNS(namespace, data.tag)
+		}
+	}
+
+	function constructAttrs(data, node, namespace, hasKeys) {
+		if (hasKeys) {
+			return setAttributes(node, data.tag, data.attrs, {}, namespace)
+		} else {
+			return data.attrs
+		}
+	}
+
+	function constructChildren(
+		data,
+		node,
+		cached,
+		editable,
+		namespace,
+		configs
+	) {
+		if (data.children != null && data.children.length > 0) {
+			return build(
+				node,
+				data.tag,
+				undefined,
+				undefined,
+				data.children,
+				cached.children,
+				true,
+				0,
+				data.attrs.contenteditable ? node : editable,
+				namespace,
+				configs)
+		} else {
+			return data.children
+		}
+	}
+
+	function reconstructCached(
+		data,
+		attrs,
+		children,
+		node,
+		namespace,
+		views,
+		controllers
+	) {
+		var cached = {
+			tag: data.tag,
+			attrs: attrs,
+			children: children,
+			nodes: [node]
+		}
+
+		unloadCachedControllers(cached, views, controllers)
+
+		if (cached.children && !cached.children.nodes) {
+			cached.children.nodes = []
+		}
+
+		return cached
+	}
+
+	function getController(views, view, cachedControllers, controller) {
+		var controllerIndex
+
+		if (m.redraw.strategy() === "diff" && views) {
+			controllerIndex = views.indexOf(view)
+		} else {
+			controllerIndex = -1
+		}
+
+		if (controllerIndex > -1) {
+			return cachedControllers[controllerIndex]
+		} else if (isFunction(controller)) {
+			return new controller()
+		} else {
+			return {}
+		}
+	}
+
+	var unloaders = []
+
+	function updateLists(views, controllers, view, controller) {
+		if (controller.onunload != null &&
+				unloaders.map(function (u) { return u.handler })
+					.indexOf(controller.onunload) < 0) {
+			unloaders.push({
+				controller: controller,
+				handler: controller.onunload
+			})
+		}
+
+		views.push(view)
+		controllers.push(controller)
+	}
+
+	var forcing = false
+	function checkView(
+		data,
+		view,
+		cached,
+		cachedControllers,
+		controllers,
+		views
+	) {
+		var controller = getController(
+			cached.views,
+			view,
+			cachedControllers,
+			data.controller)
+
+		var key = data && data.attrs && data.attrs.key
+
+		if (pendingRequests === 0 ||
+				forcing ||
+				cachedControllers &&
+					cachedControllers.indexOf(controller) > -1) {
+			data = data.view(controller)
+		} else {
+			data = {tag: "placeholder"}
+		}
+
+		if (data.subtree === "retain") return data
+		data.attrs = data.attrs || {}
+		data.attrs.key = key
+		updateLists(views, controllers, view, controller)
+		return data
+	}
+
+	function markViews(data, cached, views, controllers) {
+		var cachedControllers = cached && cached.controllers
+
+		while (data.view != null) {
+			data = checkView(
+				data,
+				data.view.$original || data.view,
+				cached,
+				cachedControllers,
+				controllers,
+				views)
+		}
+
+		return data
+	}
+
+	function buildObject( // eslint-disable-line max-statements
+		data,
+		cached,
+		editable,
+		parentElement,
+		index,
+		shouldReattach,
+		namespace,
+		configs
+	) {
+		var views = []
+		var controllers = []
+
+		data = markViews(data, cached, views, controllers)
+
+		if (data.subtree === "retain") return cached
+
+		if (!data.tag && controllers.length) {
+			throw new Error("Component template must return a virtual " +
+				"element, not an array, string, etc.")
+		}
+
+		data.attrs = data.attrs || {}
+		cached.attrs = cached.attrs || {}
+
+		var dataAttrKeys = Object.keys(data.attrs)
+		var hasKeys = dataAttrKeys.length > ("key" in data.attrs ? 1 : 0)
+
+		maybeRecreateObject(data, cached, dataAttrKeys)
+
+		if (!isString(data.tag)) return
+
+		var isNew = cached.nodes.length === 0
+
+		namespace = getObjectNamespace(data, namespace)
+
+		var node
+		if (isNew) {
+			node = constructNode(data, namespace)
+			// set attributes first, then create children
+			var attrs = constructAttrs(data, node, namespace, hasKeys)
+
+			// add the node to its parent before attaching children to it
+			insertNode(parentElement, node, index)
+
+			var children = constructChildren(data, node, cached, editable,
+				namespace, configs)
+
+			cached = reconstructCached(
+				data,
+				attrs,
+				children,
+				node,
+				namespace,
+				views,
+				controllers)
+		} else {
+			node = buildUpdatedNode(
+				cached,
+				data,
+				editable,
+				hasKeys,
+				namespace,
+				views,
+				configs,
+				controllers)
+		}
+
+		// edge case: setting value on <select> doesn't work before children
+		// exist, so set it again after children have been created/updated
+		if (data.tag === "select" && "value" in data.attrs) {
+			setAttributes(node, data.tag, {value: data.attrs.value}, {},
+				namespace)
+		}
+
+		if (!isNew && shouldReattach === true && node != null) {
+			insertNode(parentElement, node, index)
+		}
+
+		// The configs are called after `build` finishes running
+		scheduleConfigsToBeCalled(configs, data, node, isNew, cached)
+
+		return cached
+	}
+
+	function build(
+		parentElement,
+		parentTag,
+		parentCache,
+		parentIndex,
+		data,
+		cached,
+		shouldReattach,
+		index,
+		editable,
+		namespace,
+		configs
+	) {
+		/*
+		 * `build` is a recursive function that manages creation/diffing/removal
+		 * of DOM elements based on comparison between `data` and `cached` the
+		 * diff algorithm can be summarized as this:
+		 *
+		 * 1 - compare `data` and `cached`
+		 * 2 - if they are different, copy `data` to `cached` and update the DOM
+		 *     based on what the difference is
+		 * 3 - recursively apply this algorithm for every array and for the
+		 *     children of every virtual element
+		 *
+		 * The `cached` data structure is essentially the same as the previous
+		 * redraw's `data` data structure, with a few additions:
+		 * - `cached` always has a property called `nodes`, which is a list of
+		 *    DOM elements that correspond to the data represented by the
+		 *    respective virtual element
+		 * - in order to support attaching `nodes` as a property of `cached`,
+		 *    `cached` is *always* a non-primitive object, i.e. if the data was
+		 *    a string, then cached is a String instance. If data was `null` or
+		 *    `undefined`, cached is `new String("")`
+		 * - `cached also has a `configContext` property, which is the state
+		 *    storage object exposed by config(element, isInitialized, context)
+		 * - when `cached` is an Object, it represents a virtual element; when
+		 *    it's an Array, it represents a list of elements; when it's a
+		 *    String, Number or Boolean, it represents a text node
+		 *
+		 * `parentElement` is a DOM element used for W3C DOM API calls
+		 * `parentTag` is only used for handling a corner case for textarea
+		 * values
+		 * `parentCache` is used to remove nodes in some multi-node cases
+		 * `parentIndex` and `index` are used to figure out the offset of nodes.
+		 * They're artifacts from before arrays started being flattened and are
+		 * likely refactorable
+		 * `data` and `cached` are, respectively, the new and old nodes being
+		 * diffed
+		 * `shouldReattach` is a flag indicating whether a parent node was
+		 * recreated (if so, and if this node is reused, then this node must
+		 * reattach itself to the new parent)
+		 * `editable` is a flag that indicates whether an ancestor is
+		 * contenteditable
+		 * `namespace` indicates the closest HTML namespace as it cascades down
+		 * from an ancestor
+		 * `configs` is a list of config functions to run after the topmost
+		 * `build` call finishes running
+		 *
+		 * there's logic that relies on the assumption that null and undefined
+		 * data are equivalent to empty strings
+		 * - this prevents lifecycle surprises from procedural helpers that mix
+		 *   implicit and explicit return statements (e.g.
+		 *   function foo() {if (cond) return m("div")}
+		 * - it simplifies diffing code
+		 */
+		data = dataToString(data)
+		if (data.subtree === "retain") return cached
+		cached = makeCache(data, cached, index, parentIndex, parentCache)
+
+		if (isArray(data)) {
+			return buildArray(
+				data,
+				cached,
+				parentElement,
+				index,
+				parentTag,
+				shouldReattach,
+				editable,
+				namespace,
+				configs)
+		} else if (data != null && isObject(data)) {
+			return buildObject(
+				data,
+				cached,
+				editable,
+				parentElement,
+				index,
+				shouldReattach,
+				namespace,
+				configs)
+		} else if (!isFunction(data)) {
+			return handleTextNode(
+				cached,
+				data,
+				index,
+				parentElement,
+				shouldReattach,
+				editable,
+				parentTag)
+		} else {
+			return cached
+		}
+	}
+
+	function sortChanges(a, b) {
+		return a.action - b.action || a.index - b.index
+	}
+
+	function copyStyleAttrs(node, dataAttr, cachedAttr) {
+		if (cachedAttr === dataAttr) {
+			node.style = ""
+			cachedAttr = {}
+		}
+		for (var rule in dataAttr) {
+			if (hasOwn.call(dataAttr, rule)) {
+				if (cachedAttr == null || cachedAttr[rule] !== dataAttr[rule]) {
+					node.style[rule] = dataAttr[rule]
 				}
 			}
-			return child
-		},
-	}
-	route.param = function(key) {
-		return attrs && key != null ? attrs[key] : attrs
-	}
-
-	return route
-}
-
-},{"../pathname/build":58,"../pathname/compileTemplate":59,"../pathname/parse":60,"../render/hyperscript":66,"../render/vnode":70,"../util/censor":74}],55:[function(require,module,exports){
-"use strict"
-
-var hyperscript = require("./render/hyperscript")
-
-hyperscript.trust = require("./render/trust")
-hyperscript.fragment = require("./render/fragment")
-
-module.exports = hyperscript
-
-},{"./render/fragment":65,"./render/hyperscript":66,"./render/trust":69}],56:[function(require,module,exports){
-"use strict"
-
-var hyperscript = require("./hyperscript")
-var request = require("./request")
-var mountRedraw = require("./mount-redraw")
-var domFor = require("./render/domFor")
-
-var m = function m() { return hyperscript.apply(this, arguments) }
-m.m = hyperscript
-m.trust = hyperscript.trust
-m.fragment = hyperscript.fragment
-m.Fragment = "["
-m.mount = mountRedraw.mount
-m.route = require("./route")
-m.render = require("./render")
-m.redraw = mountRedraw.redraw
-m.request = request.request
-m.parseQueryString = require("./querystring/parse")
-m.buildQueryString = require("./querystring/build")
-m.parsePathname = require("./pathname/parse")
-m.buildPathname = require("./pathname/build")
-m.vnode = require("./render/vnode")
-m.censor = require("./util/censor")
-m.domFor = domFor.domFor
-
-module.exports = m
-
-},{"./hyperscript":55,"./mount-redraw":57,"./pathname/build":58,"./pathname/parse":60,"./querystring/build":61,"./querystring/parse":62,"./render":63,"./render/domFor":64,"./render/vnode":70,"./request":71,"./route":73,"./util/censor":74}],57:[function(require,module,exports){
-"use strict"
-
-var render = require("./render")
-
-module.exports = require("./api/mount-redraw")(render, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null)
-
-},{"./api/mount-redraw":53,"./render":63}],58:[function(require,module,exports){
-"use strict"
-
-var buildQueryString = require("../querystring/build")
-
-// Returns `path` from `template` + `params`
-module.exports = function(template, params) {
-	if ((/:([^\/\.-]+)(\.{3})?:/).test(template)) {
-		throw new SyntaxError("Template parameter names must be separated by either a '/', '-', or '.'.")
-	}
-	if (params == null) return template
-	var queryIndex = template.indexOf("?")
-	var hashIndex = template.indexOf("#")
-	var queryEnd = hashIndex < 0 ? template.length : hashIndex
-	var pathEnd = queryIndex < 0 ? queryEnd : queryIndex
-	var path = template.slice(0, pathEnd)
-	var query = {}
-
-	Object.assign(query, params)
-
-	var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m, key, variadic) {
-		delete query[key]
-		// If no such parameter exists, don't interpolate it.
-		if (params[key] == null) return m
-		// Escape normal parameters, but not variadic ones.
-		return variadic ? params[key] : encodeURIComponent(String(params[key]))
-	})
-
-	// In case the template substitution adds new query/hash parameters.
-	var newQueryIndex = resolved.indexOf("?")
-	var newHashIndex = resolved.indexOf("#")
-	var newQueryEnd = newHashIndex < 0 ? resolved.length : newHashIndex
-	var newPathEnd = newQueryIndex < 0 ? newQueryEnd : newQueryIndex
-	var result = resolved.slice(0, newPathEnd)
-
-	if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd)
-	if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd)
-	var querystring = buildQueryString(query)
-	if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring
-	if (hashIndex >= 0) result += template.slice(hashIndex)
-	if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex)
-	return result
-}
-
-},{"../querystring/build":61}],59:[function(require,module,exports){
-"use strict"
-
-var parsePathname = require("./parse")
-
-// Compiles a template into a function that takes a resolved path (without query
-// strings) and returns an object containing the template parameters with their
-// parsed values. This expects the input of the compiled template to be the
-// output of `parsePathname`. Note that it does *not* remove query parameters
-// specified in the template.
-module.exports = function(template) {
-	var templateData = parsePathname(template)
-	var templateKeys = Object.keys(templateData.params)
-	var keys = []
-	var regexp = new RegExp("^" + templateData.path.replace(
-		// I escape literal text so people can use things like `:file.:ext` or
-		// `:lang-:locale` in routes. This is all merged into one pass so I
-		// don't also accidentally escape `-` and make it harder to detect it to
-		// ban it from template parameters.
-		/:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-		function(m, key, extra) {
-			if (key == null) return "\\" + m
-			keys.push({k: key, r: extra === "..."})
-			if (extra === "...") return "(.*)"
-			if (extra === ".") return "([^/]+)\\."
-			return "([^/]+)" + (extra || "")
 		}
-	) + "\\/?$")
-	return function(data) {
-		// First, check the params. Usually, there isn't any, and it's just
-		// checking a static set.
-		for (var i = 0; i < templateKeys.length; i++) {
-			if (templateData.params[templateKeys[i]] !== data.params[templateKeys[i]]) return false
-		}
-		// If no interpolations exist, let's skip all the ceremony
-		if (!keys.length) return regexp.test(data.path)
-		var values = regexp.exec(data.path)
-		if (values == null) return false
-		for (var i = 0; i < keys.length; i++) {
-			data.params[keys[i].k] = keys[i].r ? values[i + 1] : decodeURIComponent(values[i + 1])
-		}
-		return true
-	}
-}
 
-},{"./parse":60}],60:[function(require,module,exports){
-"use strict"
-
-var parseQueryString = require("../querystring/parse")
-
-// Returns `{path, params}` from `url`
-module.exports = function(url) {
-	var queryIndex = url.indexOf("?")
-	var hashIndex = url.indexOf("#")
-	var queryEnd = hashIndex < 0 ? url.length : hashIndex
-	var pathEnd = queryIndex < 0 ? queryEnd : queryIndex
-	var path = url.slice(0, pathEnd).replace(/\/{2,}/g, "/")
-
-	if (!path) path = "/"
-	else {
-		if (path[0] !== "/") path = "/" + path
-	}
-	return {
-		path: path,
-		params: queryIndex < 0
-			? {}
-			: parseQueryString(url.slice(queryIndex + 1, queryEnd)),
-	}
-}
-
-},{"../querystring/parse":62}],61:[function(require,module,exports){
-"use strict"
-
-module.exports = function(object) {
-	if (Object.prototype.toString.call(object) !== "[object Object]") return ""
-
-	var args = []
-	for (var key in object) {
-		destructure(key, object[key])
-	}
-
-	return args.join("&")
-
-	function destructure(key, value) {
-		if (Array.isArray(value)) {
-			for (var i = 0; i < value.length; i++) {
-				destructure(key + "[" + i + "]", value[i])
+		for (rule in cachedAttr) {
+			if (hasOwn.call(cachedAttr, rule)) {
+				if (!hasOwn.call(dataAttr, rule)) node.style[rule] = ""
 			}
 		}
-		else if (Object.prototype.toString.call(value) === "[object Object]") {
-			for (var i in value) {
-				destructure(key + "[" + i + "]", value[i])
+	}
+
+	var shouldUseSetAttribute = {
+		list: 1,
+		style: 1,
+		form: 1,
+		type: 1,
+		width: 1,
+		height: 1
+	}
+
+	function setSingleAttr(
+		node,
+		attrName,
+		dataAttr,
+		cachedAttr,
+		tag,
+		namespace
+	) {
+		if (attrName === "config" || attrName === "key") {
+			// `config` isn't a real attribute, so ignore it
+			return true
+		} else if (isFunction(dataAttr) && attrName.slice(0, 2) === "on") {
+			// hook event handlers to the auto-redrawing system
+			node[attrName] = autoredraw(dataAttr, node)
+		} else if (attrName === "style" && dataAttr != null &&
+				isObject(dataAttr)) {
+			// handle `style: {...}`
+			copyStyleAttrs(node, dataAttr, cachedAttr)
+		} else if (namespace != null) {
+			// handle SVG
+			if (attrName === "href") {
+				node.setAttributeNS("http://www.w3.org/1999/xlink",
+					"href", dataAttr)
+			} else {
+				node.setAttribute(
+					attrName === "className" ? "class" : attrName,
+					dataAttr)
 			}
-		}
-		else args.push(encodeURIComponent(key) + (value != null && value !== "" ? "=" + encodeURIComponent(value) : ""))
-	}
-}
-
-},{}],62:[function(require,module,exports){
-"use strict"
-
-function decodeURIComponentSave(str) {
-	try {
-		return decodeURIComponent(str)
-	} catch(err) {
-		return str
-	}
-}
-
-module.exports = function(string) {
-	if (string === "" || string == null) return {}
-	if (string.charAt(0) === "?") string = string.slice(1)
-
-	var entries = string.split("&"), counters = {}, data = {}
-	for (var i = 0; i < entries.length; i++) {
-		var entry = entries[i].split("=")
-		var key = decodeURIComponentSave(entry[0])
-		var value = entry.length === 2 ? decodeURIComponentSave(entry[1]) : ""
-
-		if (value === "true") value = true
-		else if (value === "false") value = false
-
-		var levels = key.split(/\]\[?|\[/)
-		var cursor = data
-		if (key.indexOf("[") > -1) levels.pop()
-		for (var j = 0; j < levels.length; j++) {
-			var level = levels[j], nextLevel = levels[j + 1]
-			var isNumber = nextLevel == "" || !isNaN(parseInt(nextLevel, 10))
-			if (level === "") {
-				var key = levels.slice(0, j).join()
-				if (counters[key] == null) {
-					counters[key] = Array.isArray(cursor) ? cursor.length : 0
+		} else if (attrName in node && !shouldUseSetAttribute[attrName]) {
+			// handle cases that are properties (but ignore cases where we
+			// should use setAttribute instead)
+			//
+			// - list and form are typically used as strings, but are DOM
+			//   element references in js
+			//
+			// - when using CSS selectors (e.g. `m("[style='']")`), style is
+			//   used as a string, but it's an object in js
+			//
+			// #348 don't set the value if not needed - otherwise, cursor
+			// placement breaks in Chrome
+			// #1252 likewise when `contenteditable` is set on an element.
+			try {
+				if (
+					tag !== "input" && !node.isContentEditable ||
+					node[attrName] != dataAttr // eslint-disable-line eqeqeq
+				) {
+					node[attrName] = dataAttr
 				}
-				level = counters[key]++
+			} catch (e) {
+				node.setAttribute(attrName, dataAttr)
 			}
-			// Disallow direct prototype pollution
-			else if (level === "__proto__") break
-			if (j === levels.length - 1) cursor[level] = value
-			else {
-				// Read own properties exclusively to disallow indirect
-				// prototype pollution
-				var desc = Object.getOwnPropertyDescriptor(cursor, level)
-				if (desc != null) desc = desc.value
-				if (desc == null) cursor[level] = desc = isNumber ? [] : {}
-				cursor = desc
+		} else {
+			try {
+				node.setAttribute(attrName, dataAttr)
+			} catch (e) {
+				// IE8 doesn't allow change input attributes and throws
+				// an exception. Unfortunately it cannot be handled, because
+				// error code is not informative.
 			}
 		}
 	}
-	return data
-}
 
-},{}],63:[function(require,module,exports){
-"use strict"
-
-module.exports = require("./render/render")(typeof window !== "undefined" ? window : null)
-
-},{"./render/render":68}],64:[function(require,module,exports){
-"use strict"
-
-var delayedRemoval = new WeakMap
-
-function *domFor(vnode) {
-	// To avoid unintended mangling of the internal bundler,
-	// parameter destructuring is not used here.
-	var dom = vnode.dom
-	var domSize = vnode.domSize
-	var generation = delayedRemoval.get(dom)
-	if (dom != null) do {
-		var nextSibling = dom.nextSibling
-
-		if (delayedRemoval.get(dom) === generation) {
-			yield dom
-			domSize--
-		}
-
-		dom = nextSibling
-	}
-	while (domSize)
-}
-
-module.exports = {
-	delayedRemoval: delayedRemoval,
-	domFor: domFor,
-}
-
-},{}],65:[function(require,module,exports){
-"use strict"
-
-var Vnode = require("../render/vnode")
-var hyperscriptVnode = require("./hyperscriptVnode")
-
-module.exports = function() {
-	var vnode = hyperscriptVnode.apply(0, arguments)
-
-	vnode.tag = "["
-	vnode.children = Vnode.normalizeChildren(vnode.children)
-	return vnode
-}
-
-},{"../render/vnode":70,"./hyperscriptVnode":67}],66:[function(require,module,exports){
-"use strict"
-
-var Vnode = require("../render/vnode")
-var hyperscriptVnode = require("./hyperscriptVnode")
-var hasOwn = require("../util/hasOwn")
-
-var selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g
-var selectorCache = Object.create(null)
-
-function isEmpty(object) {
-	for (var key in object) if (hasOwn.call(object, key)) return false
-	return true
-}
-
-function compileSelector(selector) {
-	var match, tag = "div", classes = [], attrs = {}
-	while (match = selectorParser.exec(selector)) {
-		var type = match[1], value = match[2]
-		if (type === "" && value !== "") tag = value
-		else if (type === "#") attrs.id = value
-		else if (type === ".") classes.push(value)
-		else if (match[3][0] === "[") {
-			var attrValue = match[6]
-			if (attrValue) attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(/\\\\/g, "\\")
-			if (match[4] === "class") classes.push(attrValue)
-			else attrs[match[4]] = attrValue === "" ? attrValue : attrValue || true
+	function trySetAttr(
+		node,
+		attrName,
+		dataAttr,
+		cachedAttr,
+		cachedAttrs,
+		tag,
+		namespace
+	) {
+		if (!(attrName in cachedAttrs) ||
+				(cachedAttr !== dataAttr) ||
+				typeof dataAttr === "object" ||
+				($document.activeElement === node)) {
+			cachedAttrs[attrName] = dataAttr
+			try {
+				return setSingleAttr(
+					node,
+					attrName,
+					dataAttr,
+					cachedAttr,
+					tag,
+					namespace)
+			} catch (e) {
+				// swallow IE's invalid argument errors to mimic HTML's
+				// fallback-to-doing-nothing-on-invalid-attributes behavior
+				if (e.message.indexOf("Invalid argument") < 0) throw e
+			}
+		} else if (attrName === "value" && tag === "input" &&
+								/* eslint-disable eqeqeq */
+								node.value != dataAttr) {
+								// #348 dataAttr may not be a string,
+								// so use loose comparison
+								/* eslint-enable eqeqeq */
+			node.value = dataAttr
 		}
 	}
-	if (classes.length > 0) attrs.className = classes.join(" ")
-	if (isEmpty(attrs)) attrs = null
-	return selectorCache[selector] = {tag: tag, attrs: attrs}
-}
 
-function execSelector(state, vnode) {
-	var attrs = vnode.attrs
-	var hasClass = hasOwn.call(attrs, "class")
-	var className = hasClass ? attrs.class : attrs.className
-
-	vnode.tag = state.tag
-
-	if (state.attrs != null) {
-		attrs = Object.assign({}, state.attrs, attrs)
-
-		if (className != null || state.attrs.className != null) attrs.className =
-			className != null
-				? state.attrs.className != null
-					? String(state.attrs.className) + " " + String(className)
-					: className
-				: state.attrs.className != null
-					? state.attrs.className
-					: null
-	} else {
-		if (className != null) attrs.className = className
+	function setAttributes(node, tag, dataAttrs, cachedAttrs, namespace) {
+		for (var attrName in dataAttrs) {
+			if (hasOwn.call(dataAttrs, attrName)) {
+				if (trySetAttr(
+						node,
+						attrName,
+						dataAttrs[attrName],
+						cachedAttrs[attrName],
+						cachedAttrs,
+						tag,
+						namespace)) {
+					continue
+				}
+			}
+		}
+		return cachedAttrs
 	}
 
-	if (hasClass) attrs.class = null
-
-	// workaround for #2622 (reorder keys in attrs to set "type" first)
-	// The DOM does things to inputs based on the "type", so it needs set first.
-	// See: https://github.com/MithrilJS/mithril.js/issues/2622
-	if (state.tag === "input" && hasOwn.call(attrs, "type")) {
-		attrs = Object.assign({type: attrs.type}, attrs)
+	function clear(nodes, cached) {
+		for (var i = nodes.length - 1; i > -1; i--) {
+			if (nodes[i] && nodes[i].parentNode) {
+				try {
+					nodes[i].parentNode.removeChild(nodes[i])
+				} catch (e) {
+					/* eslint-disable max-len */
+					// ignore if this fails due to order of events (see
+					// http://stackoverflow.com/questions/21926083/failed-to-execute-removechild-on-node)
+					/* eslint-enable max-len */
+				}
+				cached = [].concat(cached)
+				if (cached[i]) unload(cached[i])
+			}
+		}
+		// release memory if nodes is an array. This check should fail if nodes
+		// is a NodeList (see loop above)
+		if (nodes.length) {
+			nodes.length = 0
+		}
 	}
 
-	// This reduces the complexity of the evaluation of "is" within the render function.
-	vnode.is = attrs.is
-
-	vnode.attrs = attrs
-
-	return vnode
-}
-
-function hyperscript(selector) {
-	if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") {
-		throw Error("The selector must be either a string or a component.");
+	function unload(cached) {
+		if (cached.configContext && isFunction(cached.configContext.onunload)) {
+			cached.configContext.onunload()
+			cached.configContext.onunload = null
+		}
+		if (cached.controllers) {
+			forEach(cached.controllers, function (controller) {
+				if (isFunction(controller.onunload)) {
+					controller.onunload({preventDefault: noop})
+				}
+			})
+		}
+		if (cached.children) {
+			if (isArray(cached.children)) forEach(cached.children, unload)
+			else if (cached.children.tag) unload(cached.children)
+		}
 	}
 
-	var vnode = hyperscriptVnode.apply(1, arguments)
-
-	if (typeof selector === "string") {
-		vnode.children = Vnode.normalizeChildren(vnode.children)
-		if (selector !== "[") return execSelector(selectorCache[selector] || compileSelector(selector), vnode)
-	}
-
-	vnode.tag = selector
-	return vnode
-}
-
-module.exports = hyperscript
-
-},{"../render/vnode":70,"../util/hasOwn":75,"./hyperscriptVnode":67}],67:[function(require,module,exports){
-"use strict"
-
-var Vnode = require("../render/vnode")
-
-// Call via `hyperscriptVnode.apply(startOffset, arguments)`
-//
-// The reason I do it this way, forwarding the arguments and passing the start
-// offset in `this`, is so I don't have to create a temporary array in a
-// performance-critical path.
-//
-// In native ES6, I'd instead add a final `...args` parameter to the
-// `hyperscript` and `fragment` factories and define this as
-// `hyperscriptVnode(...args)`, since modern engines do optimize that away. But
-// ES5 (what Mithril.js requires thanks to IE support) doesn't give me that luxury,
-// and engines aren't nearly intelligent enough to do either of these:
-//
-// 1. Elide the allocation for `[].slice.call(arguments, 1)` when it's passed to
-//    another function only to be indexed.
-// 2. Elide an `arguments` allocation when it's passed to any function other
-//    than `Function.prototype.apply` or `Reflect.apply`.
-//
-// In ES6, it'd probably look closer to this (I'd need to profile it, though):
-// module.exports = function(attrs, ...children) {
-//     if (attrs == null || typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)) {
-//         if (children.length === 1 && Array.isArray(children[0])) children = children[0]
-//     } else {
-//         children = children.length === 0 && Array.isArray(attrs) ? attrs : [attrs, ...children]
-//         attrs = undefined
-//     }
-//
-//     if (attrs == null) attrs = {}
-//     return Vnode("", attrs.key, attrs, children)
-// }
-module.exports = function() {
-	var attrs = arguments[this], start = this + 1, children
-
-	if (attrs == null) {
-		attrs = {}
-	} else if (typeof attrs !== "object" || attrs.tag != null || Array.isArray(attrs)) {
-		attrs = {}
-		start = this
-	}
-
-	if (arguments.length === start + 1) {
-		children = arguments[start]
-		if (!Array.isArray(children)) children = [children]
-	} else {
-		children = []
-		while (start < arguments.length) children.push(arguments[start++])
-	}
-
-	return Vnode("", attrs.key, attrs, children)
-}
-
-},{"../render/vnode":70}],68:[function(require,module,exports){
-"use strict"
-
-var Vnode = require("../render/vnode")
-var df = require("../render/domFor")
-var delayedRemoval = df.delayedRemoval
-var domFor = df.domFor
-
-module.exports = function() {
-	var nameSpace = {
-		svg: "http://www.w3.org/2000/svg",
-		math: "http://www.w3.org/1998/Math/MathML"
-	}
-
-	var currentRedraw
-	var currentRender
-
-	function getDocument(dom) {
-		return dom.ownerDocument;
-	}
-
-	function getNameSpace(vnode) {
-		return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag]
-	}
-
-	//sanity check to discourage people from doing `vnode.state = ...`
-	function checkState(vnode, original) {
-		if (vnode.state !== original) throw new Error("'vnode.state' must not be modified.")
-	}
-
-	//Note: the hook is passed as the `this` argument to allow proxying the
-	//arguments without requiring a full array allocation to do so. It also
-	//takes advantage of the fact the current `vnode` is the first argument in
-	//all lifecycle methods.
-	function callHook(vnode) {
-		var original = vnode.state
+	function appendTextFragment(parentElement, data) {
 		try {
-			return this.apply(original, arguments)
-		} finally {
-			checkState(vnode, original)
-		}
-	}
-
-	// IE11 (at least) throws an UnspecifiedError when accessing document.activeElement when
-	// inside an iframe. Catch and swallow this error, and heavy-handidly return null.
-	function activeElement(dom) {
-		try {
-			return getDocument(dom).activeElement
+			parentElement.appendChild(
+				$document.createRange().createContextualFragment(data))
 		} catch (e) {
-			return null
+			parentElement.insertAdjacentHTML("beforeend", data)
+			replaceScriptNodes(parentElement)
 		}
 	}
-	//create
-	function createNodes(parent, vnodes, start, end, hooks, nextSibling, ns) {
-		for (var i = start; i < end; i++) {
-			var vnode = vnodes[i]
-			if (vnode != null) {
-				createNode(parent, vnode, hooks, ns, nextSibling)
-			}
-		}
-	}
-	function createNode(parent, vnode, hooks, ns, nextSibling) {
-		var tag = vnode.tag
-		if (typeof tag === "string") {
-			vnode.state = {}
-			if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks)
-			switch (tag) {
-				case "#": createText(parent, vnode, nextSibling); break
-				case "<": createHTML(parent, vnode, ns, nextSibling); break
-				case "[": createFragment(parent, vnode, hooks, ns, nextSibling); break
-				default: createElement(parent, vnode, hooks, ns, nextSibling)
-			}
-		}
-		else createComponent(parent, vnode, hooks, ns, nextSibling)
-	}
-	function createText(parent, vnode, nextSibling) {
-		vnode.dom = getDocument(parent).createTextNode(vnode.children)
-		insertDOM(parent, vnode.dom, nextSibling)
-	}
-	var possibleParents = {caption: "table", thead: "table", tbody: "table", tfoot: "table", tr: "tbody", th: "tr", td: "tr", colgroup: "table", col: "colgroup"}
-	function createHTML(parent, vnode, ns, nextSibling) {
-		var match = vnode.children.match(/^\s*?<(\w+)/im) || []
-		// not using the proper parent makes the child element(s) vanish.
-		//     var div = document.createElement("div")
-		//     div.innerHTML = "<td>i</td><td>j</td>"
-		//     console.log(div.innerHTML)
-		// --> "ij", no <td> in sight.
-		var temp = getDocument(parent).createElement(possibleParents[match[1]] || "div")
-		if (ns === "http://www.w3.org/2000/svg") {
-			temp.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\">" + vnode.children + "</svg>"
-			temp = temp.firstChild
+
+	// Replace script tags inside given DOM element with executable ones.
+	// Will also check children recursively and replace any found script
+	// tags in same manner.
+	function replaceScriptNodes(node) {
+		if (node.tagName === "SCRIPT") {
+			node.parentNode.replaceChild(buildExecutableNode(node), node)
 		} else {
-			temp.innerHTML = vnode.children
-		}
-		vnode.dom = temp.firstChild
-		vnode.domSize = temp.childNodes.length
-		// Capture nodes to remove, so we don't confuse them.
-		var fragment = getDocument(parent).createDocumentFragment()
-		var child
-		while (child = temp.firstChild) {
-			fragment.appendChild(child)
-		}
-		insertDOM(parent, fragment, nextSibling)
-	}
-	function createFragment(parent, vnode, hooks, ns, nextSibling) {
-		var fragment = getDocument(parent).createDocumentFragment()
-		if (vnode.children != null) {
-			var children = vnode.children
-			createNodes(fragment, children, 0, children.length, hooks, null, ns)
-		}
-		vnode.dom = fragment.firstChild
-		vnode.domSize = fragment.childNodes.length
-		insertDOM(parent, fragment, nextSibling)
-	}
-	function createElement(parent, vnode, hooks, ns, nextSibling) {
-		var tag = vnode.tag
-		var attrs = vnode.attrs
-		var is = vnode.is
-
-		ns = getNameSpace(vnode) || ns
-
-		var element = ns ?
-			is ? getDocument(parent).createElementNS(ns, tag, {is: is}) : getDocument(parent).createElementNS(ns, tag) :
-			is ? getDocument(parent).createElement(tag, {is: is}) : getDocument(parent).createElement(tag)
-		vnode.dom = element
-
-		if (attrs != null) {
-			setAttrs(vnode, attrs, ns)
-		}
-
-		insertDOM(parent, element, nextSibling)
-
-		if (!maybeSetContentEditable(vnode)) {
-			if (vnode.children != null) {
-				var children = vnode.children
-				createNodes(element, children, 0, children.length, hooks, null, ns)
-				if (vnode.tag === "select" && attrs != null) setLateSelectAttrs(vnode, attrs)
-			}
-		}
-	}
-	function initComponent(vnode, hooks) {
-		var sentinel
-		if (typeof vnode.tag.view === "function") {
-			vnode.state = Object.create(vnode.tag)
-			sentinel = vnode.state.view
-			if (sentinel.$$reentrantLock$$ != null) return
-			sentinel.$$reentrantLock$$ = true
-		} else {
-			vnode.state = void 0
-			sentinel = vnode.tag
-			if (sentinel.$$reentrantLock$$ != null) return
-			sentinel.$$reentrantLock$$ = true
-			vnode.state = (vnode.tag.prototype != null && typeof vnode.tag.prototype.view === "function") ? new vnode.tag(vnode) : vnode.tag(vnode)
-		}
-		initLifecycle(vnode.state, vnode, hooks)
-		if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks)
-		vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode))
-		if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument")
-		sentinel.$$reentrantLock$$ = null
-	}
-	function createComponent(parent, vnode, hooks, ns, nextSibling) {
-		initComponent(vnode, hooks)
-		if (vnode.instance != null) {
-			createNode(parent, vnode.instance, hooks, ns, nextSibling)
-			vnode.dom = vnode.instance.dom
-			vnode.domSize = vnode.dom != null ? vnode.instance.domSize : 0
-		}
-		else {
-			vnode.domSize = 0
-		}
-	}
-
-	//update
-	/**
-	 * @param {Element|Fragment} parent - the parent element
-	 * @param {Vnode[] | null} old - the list of vnodes of the last `render()` call for
-	 *                               this part of the tree
-	 * @param {Vnode[] | null} vnodes - as above, but for the current `render()` call.
-	 * @param {Function[]} hooks - an accumulator of post-render hooks (oncreate/onupdate)
-	 * @param {Element | null} nextSibling - the next DOM node if we're dealing with a
-	 *                                       fragment that is not the last item in its
-	 *                                       parent
-	 * @param {'svg' | 'math' | String | null} ns) - the current XML namespace, if any
-	 * @returns void
-	 */
-	// This function diffs and patches lists of vnodes, both keyed and unkeyed.
-	//
-	// We will:
-	//
-	// 1. describe its general structure
-	// 2. focus on the diff algorithm optimizations
-	// 3. discuss DOM node operations.
-
-	// ## Overview:
-	//
-	// The updateNodes() function:
-	// - deals with trivial cases
-	// - determines whether the lists are keyed or unkeyed based on the first non-null node
-	//   of each list.
-	// - diffs them and patches the DOM if needed (that's the brunt of the code)
-	// - manages the leftovers: after diffing, are there:
-	//   - old nodes left to remove?
-	// 	 - new nodes to insert?
-	// 	 deal with them!
-	//
-	// The lists are only iterated over once, with an exception for the nodes in `old` that
-	// are visited in the fourth part of the diff and in the `removeNodes` loop.
-
-	// ## Diffing
-	//
-	// Reading https://github.com/localvoid/ivi/blob/ddc09d06abaef45248e6133f7040d00d3c6be853/packages/ivi/src/vdom/implementation.ts#L617-L837
-	// may be good for context on longest increasing subsequence-based logic for moving nodes.
-	//
-	// In order to diff keyed lists, one has to
-	//
-	// 1) match nodes in both lists, per key, and update them accordingly
-	// 2) create the nodes present in the new list, but absent in the old one
-	// 3) remove the nodes present in the old list, but absent in the new one
-	// 4) figure out what nodes in 1) to move in order to minimize the DOM operations.
-	//
-	// To achieve 1) one can create a dictionary of keys => index (for the old list), then iterate
-	// over the new list and for each new vnode, find the corresponding vnode in the old list using
-	// the map.
-	// 2) is achieved in the same step: if a new node has no corresponding entry in the map, it is new
-	// and must be created.
-	// For the removals, we actually remove the nodes that have been updated from the old list.
-	// The nodes that remain in that list after 1) and 2) have been performed can be safely removed.
-	// The fourth step is a bit more complex and relies on the longest increasing subsequence (LIS)
-	// algorithm.
-	//
-	// the longest increasing subsequence is the list of nodes that can remain in place. Imagine going
-	// from `1,2,3,4,5` to `4,5,1,2,3` where the numbers are not necessarily the keys, but the indices
-	// corresponding to the keyed nodes in the old list (keyed nodes `e,d,c,b,a` => `b,a,e,d,c` would
-	//  match the above lists, for example).
-	//
-	// In there are two increasing subsequences: `4,5` and `1,2,3`, the latter being the longest. We
-	// can update those nodes without moving them, and only call `insertNode` on `4` and `5`.
-	//
-	// @localvoid adapted the algo to also support node deletions and insertions (the `lis` is actually
-	// the longest increasing subsequence *of old nodes still present in the new list*).
-	//
-	// It is a general algorithm that is fireproof in all circumstances, but it requires the allocation
-	// and the construction of a `key => oldIndex` map, and three arrays (one with `newIndex => oldIndex`,
-	// the `LIS` and a temporary one to create the LIS).
-	//
-	// So we cheat where we can: if the tails of the lists are identical, they are guaranteed to be part of
-	// the LIS and can be updated without moving them.
-	//
-	// If two nodes are swapped, they are guaranteed not to be part of the LIS, and must be moved (with
-	// the exception of the last node if the list is fully reversed).
-	//
-	// ## Finding the next sibling.
-	//
-	// `updateNode()` and `createNode()` expect a nextSibling parameter to perform DOM operations.
-	// When the list is being traversed top-down, at any index, the DOM nodes up to the previous
-	// vnode reflect the content of the new list, whereas the rest of the DOM nodes reflect the old
-	// list. The next sibling must be looked for in the old list using `getNextSibling(... oldStart + 1 ...)`.
-	//
-	// In the other scenarios (swaps, upwards traversal, map-based diff),
-	// the new vnodes list is traversed upwards. The DOM nodes at the bottom of the list reflect the
-	// bottom part of the new vnodes list, and we can use the `v.dom`  value of the previous node
-	// as the next sibling (cached in the `nextSibling` variable).
-
-
-	// ## DOM node moves
-	//
-	// In most scenarios `updateNode()` and `createNode()` perform the DOM operations. However,
-	// this is not the case if the node moved (second and fourth part of the diff algo). We move
-	// the old DOM nodes before updateNode runs because it enables us to use the cached `nextSibling`
-	// variable rather than fetching it using `getNextSibling()`.
-
-	function updateNodes(parent, old, vnodes, hooks, nextSibling, ns) {
-		if (old === vnodes || old == null && vnodes == null) return
-		else if (old == null || old.length === 0) createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns)
-		else if (vnodes == null || vnodes.length === 0) removeNodes(parent, old, 0, old.length)
-		else {
-			var isOldKeyed = old[0] != null && old[0].key != null
-			var isKeyed = vnodes[0] != null && vnodes[0].key != null
-			var start = 0, oldStart = 0
-			if (!isOldKeyed) while (oldStart < old.length && old[oldStart] == null) oldStart++
-			if (!isKeyed) while (start < vnodes.length && vnodes[start] == null) start++
-			if (isOldKeyed !== isKeyed) {
-				removeNodes(parent, old, oldStart, old.length)
-				createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns)
-			} else if (!isKeyed) {
-				// Don't index past the end of either list (causes deopts).
-				var commonLength = old.length < vnodes.length ? old.length : vnodes.length
-				// Rewind if necessary to the first non-null index on either side.
-				// We could alternatively either explicitly create or remove nodes when `start !== oldStart`
-				// but that would be optimizing for sparse lists which are more rare than dense ones.
-				start = start < oldStart ? start : oldStart
-				for (; start < commonLength; start++) {
-					o = old[start]
-					v = vnodes[start]
-					if (o === v || o == null && v == null) continue
-					else if (o == null) createNode(parent, v, hooks, ns, getNextSibling(old, start + 1, nextSibling))
-					else if (v == null) removeNode(parent, o)
-					else updateNode(parent, o, v, hooks, getNextSibling(old, start + 1, nextSibling), ns)
-				}
-				if (old.length > commonLength) removeNodes(parent, old, start, old.length)
-				if (vnodes.length > commonLength) createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns)
-			} else {
-				// keyed diff
-				var oldEnd = old.length - 1, end = vnodes.length - 1, map, o, v, oe, ve, topSibling
-
-				// bottom-up
-				while (oldEnd >= oldStart && end >= start) {
-					oe = old[oldEnd]
-					ve = vnodes[end]
-					if (oe.key !== ve.key) break
-					if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
-					if (ve.dom != null) nextSibling = ve.dom
-					oldEnd--, end--
-				}
-				// top-down
-				while (oldEnd >= oldStart && end >= start) {
-					o = old[oldStart]
-					v = vnodes[start]
-					if (o.key !== v.key) break
-					oldStart++, start++
-					if (o !== v) updateNode(parent, o, v, hooks, getNextSibling(old, oldStart, nextSibling), ns)
-				}
-				// swaps and list reversals
-				while (oldEnd >= oldStart && end >= start) {
-					if (start === end) break
-					if (o.key !== ve.key || oe.key !== v.key) break
-					topSibling = getNextSibling(old, oldStart, nextSibling)
-					moveDOM(parent, oe, topSibling)
-					if (oe !== v) updateNode(parent, oe, v, hooks, topSibling, ns)
-					if (++start <= --end) moveDOM(parent, o, nextSibling)
-					if (o !== ve) updateNode(parent, o, ve, hooks, nextSibling, ns)
-					if (ve.dom != null) nextSibling = ve.dom
-					oldStart++; oldEnd--
-					oe = old[oldEnd]
-					ve = vnodes[end]
-					o = old[oldStart]
-					v = vnodes[start]
-				}
-				// bottom up once again
-				while (oldEnd >= oldStart && end >= start) {
-					if (oe.key !== ve.key) break
-					if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
-					if (ve.dom != null) nextSibling = ve.dom
-					oldEnd--, end--
-					oe = old[oldEnd]
-					ve = vnodes[end]
-				}
-				if (start > end) removeNodes(parent, old, oldStart, oldEnd + 1)
-				else if (oldStart > oldEnd) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns)
-				else {
-					// inspired by ivi https://github.com/ivijs/ivi/ by Boris Kaul
-					var originalNextSibling = nextSibling, vnodesLength = end - start + 1, oldIndices = new Array(vnodesLength), li=0, i=0, pos = 2147483647, matched = 0, map, lisIndices
-					for (i = 0; i < vnodesLength; i++) oldIndices[i] = -1
-					for (i = end; i >= start; i--) {
-						if (map == null) map = getKeyMap(old, oldStart, oldEnd + 1)
-						ve = vnodes[i]
-						var oldIndex = map[ve.key]
-						if (oldIndex != null) {
-							pos = (oldIndex < pos) ? oldIndex : -1 // becomes -1 if nodes were re-ordered
-							oldIndices[i-start] = oldIndex
-							oe = old[oldIndex]
-							old[oldIndex] = null
-							if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
-							if (ve.dom != null) nextSibling = ve.dom
-							matched++
-						}
-					}
-					nextSibling = originalNextSibling
-					if (matched !== oldEnd - oldStart + 1) removeNodes(parent, old, oldStart, oldEnd + 1)
-					if (matched === 0) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns)
-					else {
-						if (pos === -1) {
-							// the indices of the indices of the items that are part of the
-							// longest increasing subsequence in the oldIndices list
-							lisIndices = makeLisIndices(oldIndices)
-							li = lisIndices.length - 1
-							for (i = end; i >= start; i--) {
-								v = vnodes[i]
-								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
-								else {
-									if (lisIndices[li] === i - start) li--
-									else moveDOM(parent, v, nextSibling)
-								}
-								if (v.dom != null) nextSibling = vnodes[i].dom
-							}
-						} else {
-							for (i = end; i >= start; i--) {
-								v = vnodes[i]
-								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
-								if (v.dom != null) nextSibling = vnodes[i].dom
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	function updateNode(parent, old, vnode, hooks, nextSibling, ns) {
-		var oldTag = old.tag, tag = vnode.tag
-		if (oldTag === tag && old.is === vnode.is) {
-			vnode.state = old.state
-			vnode.events = old.events
-			if (shouldNotUpdate(vnode, old)) return
-			if (typeof oldTag === "string") {
-				if (vnode.attrs != null) {
-					updateLifecycle(vnode.attrs, vnode, hooks)
-				}
-				switch (oldTag) {
-					case "#": updateText(old, vnode); break
-					case "<": updateHTML(parent, old, vnode, ns, nextSibling); break
-					case "[": updateFragment(parent, old, vnode, hooks, nextSibling, ns); break
-					default: updateElement(old, vnode, hooks, ns)
-				}
-			}
-			else updateComponent(parent, old, vnode, hooks, nextSibling, ns)
-		}
-		else {
-			removeNode(parent, old)
-			createNode(parent, vnode, hooks, ns, nextSibling)
-		}
-	}
-	function updateText(old, vnode) {
-		if (old.children.toString() !== vnode.children.toString()) {
-			old.dom.nodeValue = vnode.children
-		}
-		vnode.dom = old.dom
-	}
-	function updateHTML(parent, old, vnode, ns, nextSibling) {
-		if (old.children !== vnode.children) {
-			removeDOM(parent, old)
-			createHTML(parent, vnode, ns, nextSibling)
-		}
-		else {
-			vnode.dom = old.dom
-			vnode.domSize = old.domSize
-		}
-	}
-	function updateFragment(parent, old, vnode, hooks, nextSibling, ns) {
-		updateNodes(parent, old.children, vnode.children, hooks, nextSibling, ns)
-		var domSize = 0, children = vnode.children
-		vnode.dom = null
-		if (children != null) {
-			for (var i = 0; i < children.length; i++) {
-				var child = children[i]
-				if (child != null && child.dom != null) {
-					if (vnode.dom == null) vnode.dom = child.dom
-					domSize += child.domSize || 1
-				}
-			}
-			if (domSize !== 1) vnode.domSize = domSize
-		}
-	}
-	function updateElement(old, vnode, hooks, ns) {
-		var element = vnode.dom = old.dom
-		ns = getNameSpace(vnode) || ns
-
-		updateAttrs(vnode, old.attrs, vnode.attrs, ns)
-		if (!maybeSetContentEditable(vnode)) {
-			updateNodes(element, old.children, vnode.children, hooks, null, ns)
-		}
-	}
-	function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
-		vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode))
-		if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument")
-		updateLifecycle(vnode.state, vnode, hooks)
-		if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks)
-		if (vnode.instance != null) {
-			if (old.instance == null) createNode(parent, vnode.instance, hooks, ns, nextSibling)
-			else updateNode(parent, old.instance, vnode.instance, hooks, nextSibling, ns)
-			vnode.dom = vnode.instance.dom
-			vnode.domSize = vnode.instance.domSize
-		}
-		else if (old.instance != null) {
-			removeNode(parent, old.instance)
-			vnode.dom = undefined
-			vnode.domSize = 0
-		}
-		else {
-			vnode.dom = old.dom
-			vnode.domSize = old.domSize
-		}
-	}
-	function getKeyMap(vnodes, start, end) {
-		var map = Object.create(null)
-		for (; start < end; start++) {
-			var vnode = vnodes[start]
-			if (vnode != null) {
-				var key = vnode.key
-				if (key != null) map[key] = start
-			}
-		}
-		return map
-	}
-	// Lifted from ivi https://github.com/ivijs/ivi/
-	// takes a list of unique numbers (-1 is special and can
-	// occur multiple times) and returns an array with the indices
-	// of the items that are part of the longest increasing
-	// subsequence
-	var lisTemp = []
-	function makeLisIndices(a) {
-		var result = [0]
-		var u = 0, v = 0, i = 0
-		var il = lisTemp.length = a.length
-		for (var i = 0; i < il; i++) lisTemp[i] = a[i]
-		for (var i = 0; i < il; ++i) {
-			if (a[i] === -1) continue
-			var j = result[result.length - 1]
-			if (a[j] < a[i]) {
-				lisTemp[i] = j
-				result.push(i)
-				continue
-			}
-			u = 0
-			v = result.length - 1
-			while (u < v) {
-				// Fast integer average without overflow.
-				// eslint-disable-next-line no-bitwise
-				var c = (u >>> 1) + (v >>> 1) + (u & v & 1)
-				if (a[result[c]] < a[i]) {
-					u = c + 1
-				}
-				else {
-					v = c
-				}
-			}
-			if (a[i] < a[result[u]]) {
-				if (u > 0) lisTemp[i] = result[u - 1]
-				result[u] = i
-			}
-		}
-		u = result.length
-		v = result[u - 1]
-		while (u-- > 0) {
-			result[u] = v
-			v = lisTemp[v]
-		}
-		lisTemp.length = 0
-		return result
-	}
-
-	function getNextSibling(vnodes, i, nextSibling) {
-		for (; i < vnodes.length; i++) {
-			if (vnodes[i] != null && vnodes[i].dom != null) return vnodes[i].dom
-		}
-		return nextSibling
-	}
-
-	// This handles fragments with zombie children (removed from vdom, but persisted in DOM through onbeforeremove)
-	function moveDOM(parent, vnode, nextSibling) {
-		if (vnode.dom != null) {
-			var target
-			if (vnode.domSize == null) {
-				// don't allocate for the common case
-				target = vnode.dom
-			} else {
-				target = getDocument(parent).createDocumentFragment()
-				for (var dom of domFor(vnode)) target.appendChild(dom)
-			}
-			insertDOM(parent, target, nextSibling)
-		}
-	}
-
-	function insertDOM(parent, dom, nextSibling) {
-		if (nextSibling != null) parent.insertBefore(dom, nextSibling)
-		else parent.appendChild(dom)
-	}
-
-	function maybeSetContentEditable(vnode) {
-		if (vnode.attrs == null || (
-			vnode.attrs.contenteditable == null && // attribute
-			vnode.attrs.contentEditable == null // property
-		)) return false
-		var children = vnode.children
-		if (children != null && children.length === 1 && children[0].tag === "<") {
-			var content = children[0].children
-			if (vnode.dom.innerHTML !== content) vnode.dom.innerHTML = content
-		}
-		else if (children != null && children.length !== 0) throw new Error("Child node of a contenteditable must be trusted.")
-		return true
-	}
-
-	//remove
-	function removeNodes(parent, vnodes, start, end) {
-		for (var i = start; i < end; i++) {
-			var vnode = vnodes[i]
-			if (vnode != null) removeNode(parent, vnode)
-		}
-	}
-	function tryBlockRemove(parent, vnode, source, counter) {
-		var original = vnode.state
-		var result = callHook.call(source.onbeforeremove, vnode)
-		if (result == null) return
-
-		var generation = currentRender
-		for (var dom of domFor(vnode)) delayedRemoval.set(dom, generation)
-		counter.v++
-
-		Promise.resolve(result).finally(function () {
-			checkState(vnode, original)
-			tryResumeRemove(parent, vnode, counter)
-		})
-	}
-	function tryResumeRemove(parent, vnode, counter) {
-		if (--counter.v === 0) {
-			onremove(vnode)
-			removeDOM(parent, vnode)
-		}
-	}
-	function removeNode(parent, vnode) {
-		var counter = {v: 1}
-		if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeremove === "function") tryBlockRemove(parent, vnode, vnode.state, counter)
-		if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") tryBlockRemove(parent, vnode, vnode.attrs, counter)
-		tryResumeRemove(parent, vnode, counter)
-	}
-	function removeDOM(parent, vnode) {
-		if (vnode.dom == null) return
-		if (vnode.domSize == null) {
-			parent.removeChild(vnode.dom)
-		} else {
-			for (var dom of domFor(vnode)) parent.removeChild(dom)
-		}
-	}
-
-	function onremove(vnode) {
-		if (typeof vnode.tag !== "string" && typeof vnode.state.onremove === "function") callHook.call(vnode.state.onremove, vnode)
-		if (vnode.attrs && typeof vnode.attrs.onremove === "function") callHook.call(vnode.attrs.onremove, vnode)
-		if (typeof vnode.tag !== "string") {
-			if (vnode.instance != null) onremove(vnode.instance)
-		} else {
-			if (vnode.events != null) vnode.events._ = null
-			var children = vnode.children
-			if (Array.isArray(children)) {
+			var children = node.childNodes
+			if (children && children.length) {
 				for (var i = 0; i < children.length; i++) {
-					var child = children[i]
-					if (child != null) onremove(child)
+					replaceScriptNodes(children[i])
 				}
 			}
 		}
+
+		return node
 	}
 
-	//attrs
-	function setAttrs(vnode, attrs, ns) {
-		for (var key in attrs) {
-			setAttr(vnode, key, null, attrs[key], ns)
+	// Replace script element with one whose contents are executable.
+	function buildExecutableNode(node){
+		var scriptEl = document.createElement("script")
+		var attrs = node.attributes
+
+		for (var i = 0; i < attrs.length; i++) {
+			scriptEl.setAttribute(attrs[i].name, attrs[i].value)
 		}
+
+		scriptEl.text = node.innerHTML
+		return scriptEl
 	}
-	function setAttr(vnode, key, old, value, ns) {
-		if (key === "key" || value == null || isLifecycleMethod(key) || (old === value && !isFormAttribute(vnode, key)) && typeof value !== "object") return
-		if (key[0] === "o" && key[1] === "n") return updateEvent(vnode, key, value)
-		if (key.slice(0, 6) === "xlink:") vnode.dom.setAttributeNS("http://www.w3.org/1999/xlink", key.slice(6), value)
-		else if (key === "style") updateStyle(vnode.dom, old, value)
-		else if (hasPropertyKey(vnode, key, ns)) {
-			if (key === "value") {
-				// Only do the coercion if we're actually going to check the value.
-				/* eslint-disable no-implicit-coercion */
-				//setting input[value] to same value by typing on focused element moves cursor to end in Chrome
-				//setting input[type=file][value] to same value causes an error to be generated if it's non-empty
-				//minlength/maxlength validation isn't performed on script-set values(#2256)
-				if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value) return
-				//setting select[value] to same value while having select open blinks select dropdown in Chrome
-				if (vnode.tag === "select" && old !== null && vnode.dom.value === "" + value) return
-				//setting option[value] to same value while having select open blinks select dropdown in Chrome
-				if (vnode.tag === "option" && old !== null && vnode.dom.value === "" + value) return
-				//setting input[type=file][value] to different value is an error if it's non-empty
-				// Not ideal, but it at least works around the most common source of uncaught exceptions for now.
-				if (vnode.tag === "input" && vnode.attrs.type === "file" && "" + value !== "") { console.error("`value` is read-only on file inputs!"); return }
-				/* eslint-enable no-implicit-coercion */
-			}
-			// If you assign an input type that is not supported by IE 11 with an assignment expression, an error will occur.
-			if (vnode.tag === "input" && key === "type") vnode.dom.setAttribute(key, value)
-			else vnode.dom[key] = value
-		} else {
-			if (typeof value === "boolean") {
-				if (value) vnode.dom.setAttribute(key, "")
-				else vnode.dom.removeAttribute(key)
-			}
-			else vnode.dom.setAttribute(key === "className" ? "class" : key, value)
-		}
-	}
-	function removeAttr(vnode, key, old, ns) {
-		if (key === "key" || old == null || isLifecycleMethod(key)) return
-		if (key[0] === "o" && key[1] === "n") updateEvent(vnode, key, undefined)
-		else if (key === "style") updateStyle(vnode.dom, old, null)
-		else if (
-			hasPropertyKey(vnode, key, ns)
-			&& key !== "className"
-			&& key !== "title" // creates "null" as title
-			&& !(key === "value" && (
-				vnode.tag === "option"
-				|| vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement(vnode.dom)
-			))
-			&& !(vnode.tag === "input" && key === "type")
-		) {
-			vnode.dom[key] = null
-		} else {
-			var nsLastIndex = key.indexOf(":")
-			if (nsLastIndex !== -1) key = key.slice(nsLastIndex + 1)
-			if (old !== false) vnode.dom.removeAttribute(key === "className" ? "class" : key)
-		}
-	}
-	function setLateSelectAttrs(vnode, attrs) {
-		if ("value" in attrs) {
-			if(attrs.value === null) {
-				if (vnode.dom.selectedIndex !== -1) vnode.dom.value = null
+
+	function injectHTML(parentElement, index, data) {
+		var nextSibling = parentElement.childNodes[index]
+		if (nextSibling) {
+			var isElement = nextSibling.nodeType !== 1
+			var placeholder = $document.createElement("span")
+			if (isElement) {
+				parentElement.insertBefore(placeholder, nextSibling || null)
+				placeholder.insertAdjacentHTML("beforebegin", data)
+				parentElement.removeChild(placeholder)
 			} else {
-				var normalized = "" + attrs.value // eslint-disable-line no-implicit-coercion
-				if (vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1) {
-					vnode.dom.value = normalized
-				}
-			}
-		}
-		if ("selectedIndex" in attrs) setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, undefined)
-	}
-	function updateAttrs(vnode, old, attrs, ns) {
-		// Some attributes may NOT be case-sensitive (e.g. data-***),
-		// so removal should be done first to prevent accidental removal for newly setting values.
-		var val
-		if (old != null) {
-			if (old === attrs) {
-				console.warn("Don't reuse attrs object, use new object for every redraw, this will throw in next major")
-			}
-			for (var key in old) {
-				if (((val = old[key]) != null) && (attrs == null || attrs[key] == null)) {
-					removeAttr(vnode, key, val, ns)
-				}
-			}
-		}
-		if (attrs != null) {
-			for (var key in attrs) {
-				setAttr(vnode, key, old && old[key], attrs[key], ns)
-			}
-		}
-	}
-	function isFormAttribute(vnode, attr) {
-		return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && (vnode.dom === activeElement(vnode.dom) || vnode.tag === "option" && vnode.dom.parentNode === activeElement(vnode.dom))
-	}
-	function isLifecycleMethod(attr) {
-		return attr === "oninit" || attr === "oncreate" || attr === "onupdate" || attr === "onremove" || attr === "onbeforeremove" || attr === "onbeforeupdate"
-	}
-	function hasPropertyKey(vnode, key, ns) {
-		// Filter out namespaced keys
-		return ns === undefined && (
-			// If it's a custom element, just keep it.
-			vnode.tag.indexOf("-") > -1 || vnode.is ||
-			// If it's a normal element, let's try to avoid a few browser bugs.
-			key !== "href" && key !== "list" && key !== "form" && key !== "width" && key !== "height"// && key !== "type"
-			// Defer the property check until *after* we check everything.
-		) && key in vnode.dom
-	}
-
-	//style
-	function updateStyle(element, old, style) {
-		if (old === style) {
-			// Styles are equivalent, do nothing.
-		} else if (style == null) {
-			// New style is missing, just clear it.
-			element.style = ""
-		} else if (typeof style !== "object") {
-			// New style is a string, let engine deal with patching.
-			element.style = style
-		} else if (old == null || typeof old !== "object") {
-			// `old` is missing or a string, `style` is an object.
-			element.style = ""
-			// Add new style properties
-			for (var key in style) {
-				var value = style[key]
-				if (value != null) {
-					if (key.includes("-")) element.style.setProperty(key, String(value))
-					else element.style[key] = String(value)
-				}
+				nextSibling.insertAdjacentHTML("beforebegin", data)
 			}
 		} else {
-			// Both old & new are (different) objects.
-			// Remove style properties that no longer exist
-			// Style properties may have two cases(dash-case and camelCase),
-			// so removal should be done first to prevent accidental removal for newly setting values.
-			for (var key in old) {
-				if (old[key] != null && style[key] == null) {
-					if (key.includes("-")) element.style.removeProperty(key)
-					else element.style[key] = ""
-				}
-			}
-			// Update style properties that have changed
-			for (var key in style) {
-				var value = style[key]
-				if (value != null && (value = String(value)) !== String(old[key])) {
-					if (key.includes("-")) element.style.setProperty(key, value)
-					else element.style[key] = value
-				}
+			appendTextFragment(parentElement, data)
+		}
+
+		var nodes = []
+
+		while (parentElement.childNodes[index] !== nextSibling) {
+			nodes.push(parentElement.childNodes[index])
+			index++
+		}
+
+		return nodes
+	}
+
+	function autoredraw(callback, object) {
+		return function (e) {
+			e = e || event
+			m.redraw.strategy("diff")
+			m.startComputation()
+			try {
+				return callback.call(object, e)
+			} finally {
+				endFirstComputation()
 			}
 		}
 	}
 
-	// Here's an explanation of how this works:
-	// 1. The event names are always (by design) prefixed by `on`.
-	// 2. The EventListener interface accepts either a function or an object
-	//    with a `handleEvent` method.
-	// 3. The object does not inherit from `Object.prototype`, to avoid
-	//    any potential interference with that (e.g. setters).
-	// 4. The event name is remapped to the handler before calling it.
-	// 5. In function-based event handlers, `ev.target === this`. We replicate
-	//    that below.
-	// 6. In function-based event handlers, `return false` prevents the default
-	//    action and stops event propagation. We replicate that below.
-	function EventDict() {
-		// Save this, so the current redraw is correctly tracked.
-		this._ = currentRedraw
-	}
-	EventDict.prototype = Object.create(null)
-	EventDict.prototype.handleEvent = function (ev) {
-		var handler = this["on" + ev.type]
-		var result
-		if (typeof handler === "function") result = handler.call(ev.currentTarget, ev)
-		else if (typeof handler.handleEvent === "function") handler.handleEvent(ev)
-		var self = this
-		if (self._ != null) {
-			if (ev.redraw !== false) (0, self._)()
-			if (result != null && typeof result.then === "function") {
-				Promise.resolve(result).then(function () {
-					if (self._ != null && ev.redraw !== false) (0, self._)()
-				})
-			}
-		}
-		if (result === false) {
-			ev.preventDefault()
-			ev.stopPropagation()
-		}
-	}
-
-	//event
-	function updateEvent(vnode, key, value) {
-		if (vnode.events != null) {
-			vnode.events._ = currentRedraw
-			if (vnode.events[key] === value) return
-			if (value != null && (typeof value === "function" || typeof value === "object")) {
-				if (vnode.events[key] == null) vnode.dom.addEventListener(key.slice(2), vnode.events, false)
-				vnode.events[key] = value
+	var html
+	var documentNode = {
+		appendChild: function (node) {
+			if (html === undefined) html = $document.createElement("html")
+			if ($document.documentElement &&
+					$document.documentElement !== node) {
+				$document.replaceChild(node, $document.documentElement)
 			} else {
-				if (vnode.events[key] != null) vnode.dom.removeEventListener(key.slice(2), vnode.events, false)
-				vnode.events[key] = undefined
+				$document.appendChild(node)
 			}
-		} else if (value != null && (typeof value === "function" || typeof value === "object")) {
-			vnode.events = new EventDict()
-			vnode.dom.addEventListener(key.slice(2), vnode.events, false)
-			vnode.events[key] = value
+
+			this.childNodes = $document.childNodes
+		},
+
+		insertBefore: function (node) {
+			this.appendChild(node)
+		},
+
+		childNodes: []
+	}
+
+	var nodeCache = []
+	var cellCache = {}
+
+	m.render = function (root, cell, forceRecreation) {
+		if (!root) {
+			throw new Error("Ensure the DOM element being passed to " +
+				"m.route/m.mount/m.render is not undefined.")
+		}
+		var configs = []
+		var id = getCellCacheKey(root)
+		var isDocumentRoot = root === $document
+		var node
+
+		if (isDocumentRoot || root === $document.documentElement) {
+			node = documentNode
+		} else {
+			node = root
+		}
+
+		if (isDocumentRoot && cell.tag !== "html") {
+			cell = {tag: "html", attrs: {}, children: cell}
+		}
+
+		if (cellCache[id] === undefined) clear(node.childNodes)
+		if (forceRecreation === true) reset(root)
+
+		cellCache[id] = build(
+			node,
+			null,
+			undefined,
+			undefined,
+			cell,
+			cellCache[id],
+			false,
+			0,
+			null,
+			undefined,
+			configs)
+
+		forEach(configs, function (config) { config() })
+	}
+
+	function getCellCacheKey(element) {
+		var index = nodeCache.indexOf(element)
+		return index < 0 ? nodeCache.push(element) - 1 : index
+	}
+
+	m.trust = function (value) {
+		value = new String(value) // eslint-disable-line no-new-wrappers
+		value.$trusted = true
+		return value
+	}
+
+	function gettersetter(store) {
+		function prop() {
+			if (arguments.length) store = arguments[0]
+			return store
+		}
+
+		prop.toJSON = function () {
+			if (store && isFunction(store.toJSON)) return store.toJSON()
+			return store
+		}
+
+		return prop
+	}
+
+	m.prop = function (store) {
+		if ((store != null && (isObject(store) || isFunction(store)) ||
+					((typeof Promise !== "undefined") &&
+						(store instanceof Promise))) &&
+				isFunction(store.then)) {
+			return propify(store)
+		}
+
+		return gettersetter(store)
+	}
+
+	var roots = []
+	var components = []
+	var controllers = []
+	var lastRedrawId = null
+	var lastRedrawCallTime = 0
+	var computePreRedrawHook = null
+	var computePostRedrawHook = null
+	var topComponent
+	var FRAME_BUDGET = 16 // 60 frames per second = 1 call per 16 ms
+
+	function parameterize(component, args) {
+		function controller() {
+			/* eslint-disable no-invalid-this */
+			return (component.controller || noop).apply(this, args) || this
+			/* eslint-enable no-invalid-this */
+		}
+
+		if (component.controller) {
+			controller.prototype = component.controller.prototype
+		}
+
+		function view(ctrl) {
+			var currentArgs = [ctrl].concat(args)
+			for (var i = 1; i < arguments.length; i++) {
+				currentArgs.push(arguments[i])
+			}
+
+			return component.view.apply(component, currentArgs)
+		}
+
+		view.$original = component.view
+		var output = {controller: controller, view: view}
+		if (args[0] && args[0].key != null) output.attrs = {key: args[0].key}
+		return output
+	}
+
+	m.component = function (component) {
+		var args = new Array(arguments.length - 1)
+
+		for (var i = 1; i < arguments.length; i++) {
+			args[i - 1] = arguments[i]
+		}
+
+		return parameterize(component, args)
+	}
+
+	var currentRoute, previousRoute
+
+	function checkPrevented(component, root, index, isPrevented) {
+		if (!isPrevented) {
+			m.redraw.strategy("all")
+			m.startComputation()
+			roots[index] = root
+			var currentComponent
+
+			if (component) {
+				currentComponent = topComponent = component
+			} else {
+				currentComponent = topComponent = component = {controller: noop}
+			}
+
+			var controller = new (component.controller || noop)()
+
+			// controllers may call m.mount recursively (via m.route redirects,
+			// for example)
+			// this conditional ensures only the last recursive m.mount call is
+			// applied
+			if (currentComponent === topComponent) {
+				controllers[index] = controller
+				components[index] = component
+			}
+			endFirstComputation()
+			if (component === null) {
+				removeRootElement(root, index)
+			}
+			return controllers[index]
+		} else {
+			if (component == null) {
+				removeRootElement(root, index)
+			}
+
+			if (previousRoute) {
+				currentRoute = previousRoute
+			}
 		}
 	}
 
-	//lifecycle
-	function initLifecycle(source, vnode, hooks) {
-		if (typeof source.oninit === "function") callHook.call(source.oninit, vnode)
-		if (typeof source.oncreate === "function") hooks.push(callHook.bind(source.oncreate, vnode))
-	}
-	function updateLifecycle(source, vnode, hooks) {
-		if (typeof source.onupdate === "function") hooks.push(callHook.bind(source.onupdate, vnode))
-	}
-	function shouldNotUpdate(vnode, old) {
-		do {
-			if (vnode.attrs != null && typeof vnode.attrs.onbeforeupdate === "function") {
-				var force = callHook.call(vnode.attrs.onbeforeupdate, vnode, old)
-				if (force !== undefined && !force) break
-			}
-			if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeupdate === "function") {
-				var force = callHook.call(vnode.state.onbeforeupdate, vnode, old)
-				if (force !== undefined && !force) break
-			}
-			return false
-		} while (false); // eslint-disable-line no-constant-condition
-		vnode.dom = old.dom
-		vnode.domSize = old.domSize
-		vnode.instance = old.instance
-		// One would think having the actual latest attributes would be ideal,
-		// but it doesn't let us properly diff based on our current internal
-		// representation. We have to save not only the old DOM info, but also
-		// the attributes used to create it, as we diff *that*, not against the
-		// DOM directly (with a few exceptions in `setAttr`). And, of course, we
-		// need to save the children and text as they are conceptually not
-		// unlike special "attributes" internally.
-		vnode.attrs = old.attrs
-		vnode.children = old.children
-		vnode.text = old.text
-		return true
-	}
-
-	var currentDOM
-
-	return function(dom, vnodes, redraw) {
-		if (!dom) throw new TypeError("DOM element being rendered to does not exist.")
-		if (currentDOM != null && dom.contains(currentDOM)) {
-			throw new TypeError("Node is currently being rendered to and thus is locked.")
+	m.mount = m.module = function (root, component) {
+		if (!root) {
+			throw new Error("Ensure the DOM element being passed to " +
+				"m.route/m.mount/m.render is not undefined.")
 		}
-		var prevRedraw = currentRedraw
-		var prevDOM = currentDOM
-		var hooks = []
-		var active = activeElement(dom)
-		var namespace = dom.namespaceURI
 
-		currentDOM = dom
-		currentRedraw = typeof redraw === "function" ? redraw : undefined
-		currentRender = {}
-		try {
-			// First time rendering into a node clears it out
-			if (dom.vnodes == null) dom.textContent = ""
-			vnodes = Vnode.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes])
-			updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? undefined : namespace)
-			dom.vnodes = vnodes
-			// `document.activeElement` can return null: https://html.spec.whatwg.org/multipage/interaction.html#dom-document-activeelement
-			if (active != null && activeElement(dom) !== active && typeof active.focus === "function") active.focus()
-			for (var i = 0; i < hooks.length; i++) hooks[i]()
-		} finally {
-			currentRedraw = prevRedraw
-			currentDOM = prevDOM
-		}
-	}
-}
+		var index = roots.indexOf(root)
+		if (index < 0) index = roots.length
 
-},{"../render/domFor":64,"../render/vnode":70}],69:[function(require,module,exports){
-"use strict"
-
-var Vnode = require("../render/vnode")
-
-module.exports = function(html) {
-	if (html == null) html = ""
-	return Vnode("<", undefined, undefined, html, undefined, undefined)
-}
-
-},{"../render/vnode":70}],70:[function(require,module,exports){
-"use strict"
-
-function Vnode(tag, key, attrs, children, text, dom) {
-	return {tag: tag, key: key, attrs: attrs, children: children, text: text, dom: dom, is: undefined, domSize: undefined, state: undefined, events: undefined, instance: undefined}
-}
-Vnode.normalize = function(node) {
-	if (Array.isArray(node)) return Vnode("[", undefined, undefined, Vnode.normalizeChildren(node), undefined, undefined)
-	if (node == null || typeof node === "boolean") return null
-	if (typeof node === "object") return node
-	return Vnode("#", undefined, undefined, String(node), undefined, undefined)
-}
-Vnode.normalizeChildren = function(input) {
-	var children = []
-	if (input.length) {
-		var isKeyed = input[0] != null && input[0].key != null
-		// Note: this is a *very* perf-sensitive check.
-		// Fun fact: merging the loop like this is somehow faster than splitting
-		// it, noticeably so.
-		for (var i = 1; i < input.length; i++) {
-			if ((input[i] != null && input[i].key != null) !== isKeyed) {
-				throw new TypeError(
-					isKeyed && (input[i] != null || typeof input[i] === "boolean")
-						? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole."
-						: "In fragments, vnodes must either all have keys or none have keys."
-				)
+		var isPrevented = false
+		var event = {
+			preventDefault: function () {
+				isPrevented = true
+				computePreRedrawHook = computePostRedrawHook = null
 			}
 		}
-		for (var i = 0; i < input.length; i++) {
-			children[i] = Vnode.normalize(input[i])
-		}
-	}
-	return children
-}
 
-module.exports = Vnode
-
-},{}],71:[function(require,module,exports){
-"use strict"
-
-var mountRedraw = require("./mount-redraw")
-
-module.exports = require("./request/request")(typeof window !== "undefined" ? window : null, mountRedraw.redraw)
-
-},{"./mount-redraw":57,"./request/request":72}],72:[function(require,module,exports){
-"use strict"
-
-var buildPathname = require("../pathname/build")
-var hasOwn = require("../util/hasOwn")
-
-module.exports = function($window, oncompletion) {
-	function PromiseProxy(executor) {
-		return new Promise(executor)
-	}
-
-	function makeRequest(url, args) {
-		return new Promise(function(resolve, reject) {
-			url = buildPathname(url, args.params)
-			var method = args.method != null ? args.method.toUpperCase() : "GET"
-			var body = args.body
-			var assumeJSON = (args.serialize == null || args.serialize === JSON.serialize) && !(body instanceof $window.FormData || body instanceof $window.URLSearchParams)
-			var responseType = args.responseType || (typeof args.extract === "function" ? "" : "json")
-
-			var xhr = new $window.XMLHttpRequest(), aborted = false, isTimeout = false
-			var original = xhr, replacedAbort
-			var abort = xhr.abort
-
-			xhr.abort = function() {
-				aborted = true
-				abort.call(this)
-			}
-
-			xhr.open(method, url, args.async !== false, typeof args.user === "string" ? args.user : undefined, typeof args.password === "string" ? args.password : undefined)
-
-			if (assumeJSON && body != null && !hasHeader(args, "content-type")) {
-				xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8")
-			}
-			if (typeof args.deserialize !== "function" && !hasHeader(args, "accept")) {
-				xhr.setRequestHeader("Accept", "application/json, text/*")
-			}
-			if (args.withCredentials) xhr.withCredentials = args.withCredentials
-			if (args.timeout) xhr.timeout = args.timeout
-			xhr.responseType = responseType
-
-			for (var key in args.headers) {
-				if (hasOwn.call(args.headers, key)) {
-					xhr.setRequestHeader(key, args.headers[key])
-				}
-			}
-
-			xhr.onreadystatechange = function(ev) {
-				// Don't throw errors on xhr.abort().
-				if (aborted) return
-
-				if (ev.target.readyState === 4) {
-					try {
-						var success = (ev.target.status >= 200 && ev.target.status < 300) || ev.target.status === 304 || (/^file:\/\//i).test(url)
-						// When the response type isn't "" or "text",
-						// `xhr.responseText` is the wrong thing to use.
-						// Browsers do the right thing and throw here, and we
-						// should honor that and do the right thing by
-						// preferring `xhr.response` where possible/practical.
-						var response = ev.target.response, message
-
-						if (responseType === "json") {
-							// For IE and Edge, which don't implement
-							// `responseType: "json"`.
-							if (!ev.target.responseType && typeof args.extract !== "function") {
-								// Handle no-content which will not parse.
-								try { response = JSON.parse(ev.target.responseText) }
-								catch (e) { response = null }
-							}
-						} else if (!responseType || responseType === "text") {
-							// Only use this default if it's text. If a parsed
-							// document is needed on old IE and friends (all
-							// unsupported), the user should use a custom
-							// `config` instead. They're already using this at
-							// their own risk.
-							if (response == null) response = ev.target.responseText
-						}
-
-						if (typeof args.extract === "function") {
-							response = args.extract(ev.target, args)
-							success = true
-						} else if (typeof args.deserialize === "function") {
-							response = args.deserialize(response)
-						}
-
-						if (success) {
-							if (typeof args.type === "function") {
-								if (Array.isArray(response)) {
-									for (var i = 0; i < response.length; i++) {
-										response[i] = new args.type(response[i])
-									}
-								}
-								else response = new args.type(response)
-							}
-							resolve(response)
-						}
-						else {
-							var completeErrorResponse = function() {
-								try { message = ev.target.responseText }
-								catch (e) { message = response }
-								var error = new Error(message)
-								error.code = ev.target.status
-								error.response = response
-								reject(error)
-							}
-
-							if (xhr.status === 0) {
-								// Use setTimeout to push this code block onto the event queue
-								// This allows `xhr.ontimeout` to run in the case that there is a timeout
-								// Without this setTimeout, `xhr.ontimeout` doesn't have a chance to reject
-								// as `xhr.onreadystatechange` will run before it
-								setTimeout(function() {
-									if (isTimeout) return
-									completeErrorResponse()
-								})
-							} else completeErrorResponse()
-						}
-					}
-					catch (e) {
-						reject(e)
-					}
-				}
-			}
-
-			xhr.ontimeout = function (ev) {
-				isTimeout = true
-				var error = new Error("Request timed out")
-				error.code = ev.target.status
-				reject(error)
-			}
-
-			if (typeof args.config === "function") {
-				xhr = args.config(xhr, args, url) || xhr
-
-				// Propagate the `abort` to any replacement XHR as well.
-				if (xhr !== original) {
-					replacedAbort = xhr.abort
-					xhr.abort = function() {
-						aborted = true
-						replacedAbort.call(this)
-					}
-				}
-			}
-
-			if (body == null) xhr.send()
-			else if (typeof args.serialize === "function") xhr.send(args.serialize(body))
-			else if (body instanceof $window.FormData || body instanceof $window.URLSearchParams) xhr.send(body)
-			else xhr.send(JSON.stringify(body))
+		forEach(unloaders, function (unloader) {
+			unloader.handler.call(unloader.controller, event)
+			unloader.controller.onunload = null
 		})
-	}
 
-	// In case the global Promise is some userland library's where they rely on
-	// `foo instanceof this.constructor`, `this.constructor.resolve(value)`, or
-	// similar. Let's *not* break them.
-	PromiseProxy.prototype = Promise.prototype
-	PromiseProxy.__proto__ = Promise // eslint-disable-line no-proto
-
-	function hasHeader(args, name) {
-		for (var key in args.headers) {
-			if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) return true
+		if (isPrevented) {
+			forEach(unloaders, function (unloader) {
+				unloader.controller.onunload = unloader.handler
+			})
+		} else {
+			unloaders = []
 		}
-		return false
+
+		if (controllers[index] && isFunction(controllers[index].onunload)) {
+			controllers[index].onunload(event)
+		}
+
+		return checkPrevented(component, root, index, isPrevented)
 	}
 
-	return {
-		request: function(url, args) {
-			if (typeof url !== "string") { args = url; url = url.url }
-			else if (args == null) args = {}
-			var promise = makeRequest(url, args)
-			if (args.background === true) return promise
-			var count = 0
-			function complete() {
-				if (--count === 0 && typeof oncompletion === "function") oncompletion()
-			}
+	function removeRootElement(root, index) {
+		roots.splice(index, 1)
+		controllers.splice(index, 1)
+		components.splice(index, 1)
+		reset(root)
+		nodeCache.splice(getCellCacheKey(root), 1)
+		unloaders = []
+	}
 
-			return wrap(promise)
+	var redrawing = false
+	m.redraw = function (force) {
+		if (redrawing) return
+		redrawing = true
+		if (force) forcing = true
 
-			function wrap(promise) {
-				var then = promise.then
-				// Set the constructor, so engines know to not await or resolve
-				// this as a native promise. At the time of writing, this is
-				// only necessary for V8, but their behavior is the correct
-				// behavior per spec. See this spec issue for more details:
-				// https://github.com/tc39/ecma262/issues/1577. Also, see the
-				// corresponding comment in `request/tests/test-request.js` for
-				// a bit more background on the issue at hand.
-				promise.constructor = PromiseProxy
-				promise.then = function() {
-					count++
-					var next = then.apply(promise, arguments)
-					next.then(complete, function(e) {
-						complete()
-						if (count === 0) throw e
-					})
-					return wrap(next)
+		try {
+			// lastRedrawId is a positive number if a second redraw is requested
+			// before the next animation frame
+			// lastRedrawId is null if it's the first redraw and not an event
+			// handler
+			if (lastRedrawId && !force) {
+				// when setTimeout: only reschedule redraw if time between now
+				// and previous redraw is bigger than a frame, otherwise keep
+				// currently scheduled timeout
+				// when rAF: always reschedule redraw
+				if ($requestAnimationFrame === global.requestAnimationFrame ||
+						new Date() - lastRedrawCallTime > FRAME_BUDGET) {
+					if (lastRedrawId > 0) $cancelAnimationFrame(lastRedrawId)
+					lastRedrawId = $requestAnimationFrame(redraw, FRAME_BUDGET)
 				}
-				return promise
+			} else {
+				redraw()
+				lastRedrawId = $requestAnimationFrame(function () {
+					lastRedrawId = null
+				}, FRAME_BUDGET)
 			}
-		}
-	}
-}
-
-},{"../pathname/build":58,"../util/hasOwn":75}],73:[function(require,module,exports){
-"use strict"
-
-var mountRedraw = require("./mount-redraw")
-
-module.exports = require("./api/router")(typeof window !== "undefined" ? window : null, mountRedraw)
-
-},{"./api/router":54,"./mount-redraw":57}],74:[function(require,module,exports){
-"use strict"
-
-// Note: this is mildly perf-sensitive.
-//
-// It does *not* use `delete` - dynamic `delete`s usually cause objects to bail
-// out into dictionary mode and just generally cause a bunch of optimization
-// issues within engines.
-//
-// Ideally, I would've preferred to do this, if it weren't for the optimization
-// issues:
-//
-// ```js
-// const hasOwn = require("./hasOwn")
-// const magic = [
-//     "key", "oninit", "oncreate", "onbeforeupdate", "onupdate",
-//     "onbeforeremove", "onremove",
-// ]
-// module.exports = (attrs, extras) => {
-//     const result = Object.assign(Object.create(null), attrs)
-//     for (const key of magic) delete result[key]
-//     if (extras != null) for (const key of extras) delete result[key]
-//     return result
-// }
-// ```
-
-var hasOwn = require("./hasOwn")
-// Words in RegExp literals are sometimes mangled incorrectly by the internal bundler, so use RegExp().
-var magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$")
-
-module.exports = function(attrs, extras) {
-	var result = {}
-
-	if (extras != null) {
-		for (var key in attrs) {
-			if (hasOwn.call(attrs, key) && !magic.test(key) && extras.indexOf(key) < 0) {
-				result[key] = attrs[key]
-			}
-		}
-	} else {
-		for (var key in attrs) {
-			if (hasOwn.call(attrs, key) && !magic.test(key)) {
-				result[key] = attrs[key]
-			}
+		} finally {
+			redrawing = forcing = false
 		}
 	}
 
-	return result
-}
+	m.redraw.strategy = m.prop()
+	function redraw() {
+		if (computePreRedrawHook) {
+			computePreRedrawHook()
+			computePreRedrawHook = null
+		}
+		forEach(roots, function (root, i) {
+			var component = components[i]
+			if (controllers[i]) {
+				var args = [controllers[i]]
+				m.render(root,
+					component.view ? component.view(controllers[i], args) : "")
+			}
+		})
+		// after rendering within a routed context, we need to scroll back to
+		// the top, and fetch the document title for history.pushState
+		if (computePostRedrawHook) {
+			computePostRedrawHook()
+			computePostRedrawHook = null
+		}
+		lastRedrawId = null
+		lastRedrawCallTime = new Date()
+		m.redraw.strategy("diff")
+	}
 
-},{"./hasOwn":75}],75:[function(require,module,exports){
-// This exists so I'm only saving it once.
-"use strict"
+	function endFirstComputation() {
+		if (m.redraw.strategy() === "none") {
+			pendingRequests--
+			m.redraw.strategy("diff")
+		} else {
+			m.endComputation()
+		}
+	}
 
-module.exports = {}.hasOwnProperty
+	m.withAttr = function (prop, withAttrCallback, callbackThis) {
+		return function (e) {
+			e = e || window.event
+			/* eslint-disable no-invalid-this */
+			var currentTarget = e.currentTarget || this
+			var _this = callbackThis || this
+			/* eslint-enable no-invalid-this */
+			var target = prop in currentTarget ?
+				currentTarget[prop] :
+				currentTarget.getAttribute(prop)
+			withAttrCallback.call(_this, target)
+		}
+	}
 
-},{}],76:[function(require,module,exports){
+	// routing
+	var modes = {pathname: "", hash: "#", search: "?"}
+	var redirect = noop
+	var isDefaultRoute = false
+	var routeParams
+
+	m.route = function (root, arg1, arg2, vdom) { // eslint-disable-line
+		// m.route()
+		if (arguments.length === 0) return currentRoute
+		// m.route(el, defaultRoute, routes)
+		if (arguments.length === 3 && isString(arg1)) {
+			redirect = function (source) {
+				var path = currentRoute = normalizeRoute(source)
+				if (!routeByValue(root, arg2, path)) {
+					if (isDefaultRoute) {
+						throw new Error("Ensure the default route matches " +
+							"one of the routes defined in m.route")
+					}
+
+					isDefaultRoute = true
+					m.route(arg1, true)
+					isDefaultRoute = false
+				}
+			}
+
+			var listener = m.route.mode === "hash" ?
+				"onhashchange" :
+				"onpopstate"
+
+			global[listener] = function () {
+				var path = $location[m.route.mode]
+				if (m.route.mode === "pathname") path += $location.search
+				if (currentRoute !== normalizeRoute(path)) redirect(path)
+			}
+
+			computePreRedrawHook = setScroll
+			global[listener]()
+
+			return
+		}
+
+		// config: m.route
+		if (root.addEventListener || root.attachEvent) {
+			var base = m.route.mode !== "pathname" ? $location.pathname : ""
+			root.href = base + modes[m.route.mode] + vdom.attrs.href
+			if (root.addEventListener) {
+				root.removeEventListener("click", routeUnobtrusive)
+				root.addEventListener("click", routeUnobtrusive)
+			} else {
+				root.detachEvent("onclick", routeUnobtrusive)
+				root.attachEvent("onclick", routeUnobtrusive)
+			}
+
+			return
+		}
+		// m.route(route, params, shouldReplaceHistoryEntry)
+		if (isString(root)) {
+			previousRoute = currentRoute
+			currentRoute = root
+
+			var args = arg1 || {}
+			var queryIndex = currentRoute.indexOf("?")
+			var params
+
+			if (queryIndex > -1) {
+				params = parseQueryString(currentRoute.slice(queryIndex + 1))
+			} else {
+				params = {}
+			}
+
+			for (var i in args) {
+				if (hasOwn.call(args, i)) {
+					params[i] = args[i]
+				}
+			}
+
+			var querystring = buildQueryString(params)
+			var currentPath
+
+			if (queryIndex > -1) {
+				currentPath = currentRoute.slice(0, queryIndex)
+			} else {
+				currentPath = currentRoute
+			}
+
+			if (querystring) {
+				currentRoute = currentPath +
+					(currentPath.indexOf("?") === -1 ? "?" : "&") +
+					querystring
+			}
+
+			var replaceHistory =
+				(arguments.length === 3 ? arg2 : arg1) === true ||
+				previousRoute === currentRoute
+
+			if (global.history.pushState) {
+				var method = replaceHistory ? "replaceState" : "pushState"
+				computePreRedrawHook = setScroll
+				computePostRedrawHook = function () {
+					try {
+						global.history[method](null, $document.title,
+							modes[m.route.mode] + currentRoute)
+					} catch (err) {
+						// In the event of a pushState or replaceState failure,
+						// fallback to a standard redirect. This is specifically
+						// to address a Safari security error when attempting to
+						// call pushState more than 100 times.
+						$location[m.route.mode] = currentRoute
+					}
+				}
+				redirect(modes[m.route.mode] + currentRoute)
+			} else {
+				$location[m.route.mode] = currentRoute
+				redirect(modes[m.route.mode] + currentRoute)
+			}
+
+			previousRoute = null
+		}
+	}
+
+	m.route.param = function (key) {
+		if (!routeParams) {
+			throw new Error("You must call m.route(element, defaultRoute, " +
+				"routes) before calling m.route.param()")
+		}
+
+		if (!key) {
+			return routeParams
+		}
+
+		return routeParams[key]
+	}
+
+	m.route.mode = "search"
+
+	function normalizeRoute(route) {
+		return route.slice(modes[m.route.mode].length)
+	}
+
+	function routeByValue(root, router, path) {
+		routeParams = {}
+
+		var queryStart = path.indexOf("?")
+		if (queryStart !== -1) {
+			routeParams = parseQueryString(
+				path.substr(queryStart + 1, path.length))
+			path = path.substr(0, queryStart)
+		}
+
+		// Get all routes and check if there's
+		// an exact match for the current path
+		var keys = Object.keys(router)
+		var index = keys.indexOf(path)
+
+		if (index !== -1){
+			m.mount(root, router[keys [index]])
+			return true
+		}
+
+		for (var route in router) {
+			if (hasOwn.call(router, route)) {
+				if (route === path) {
+					m.mount(root, router[route])
+					return true
+				}
+
+				var matcher = new RegExp("^" + route
+					.replace(/:[^\/]+?\.{3}/g, "(.*?)")
+					.replace(/:[^\/]+/g, "([^\\/]+)") + "\/?$")
+
+				if (matcher.test(path)) {
+					/* eslint-disable no-loop-func */
+					path.replace(matcher, function () {
+						var keys = route.match(/:[^\/]+/g) || []
+						var values = [].slice.call(arguments, 1, -2)
+						forEach(keys, function (key, i) {
+							routeParams[key.replace(/:|\./g, "")] =
+								decodeURIComponent(values[i])
+						})
+						m.mount(root, router[route])
+					})
+					/* eslint-enable no-loop-func */
+					return true
+				}
+			}
+		}
+	}
+
+	function routeUnobtrusive(e) {
+		e = e || event
+		if (e.ctrlKey || e.metaKey || e.shiftKey || e.which === 2) return
+
+		if (e.preventDefault) {
+			e.preventDefault()
+		} else {
+			e.returnValue = false
+		}
+
+		var currentTarget = e.currentTarget || e.srcElement
+		var args
+
+		if (m.route.mode === "pathname" && currentTarget.search) {
+			args = parseQueryString(currentTarget.search.slice(1))
+		} else {
+			args = {}
+		}
+
+		while (currentTarget && !/a/i.test(currentTarget.nodeName)) {
+			currentTarget = currentTarget.parentNode
+		}
+
+		// clear pendingRequests because we want an immediate route change
+		pendingRequests = 0
+		m.route(currentTarget[m.route.mode]
+			.slice(modes[m.route.mode].length), args)
+	}
+
+	function setScroll() {
+		if (m.route.mode !== "hash" && $location.hash) {
+			$location.hash = $location.hash
+		} else {
+			global.scrollTo(0, 0)
+		}
+	}
+
+	function buildQueryString(object, prefix) {
+		var duplicates = {}
+		var str = []
+
+		for (var prop in object) {
+			if (hasOwn.call(object, prop)) {
+				var key = prefix ? prefix + "[" + prop + "]" : prop
+				var value = object[prop]
+
+				if (value === null) {
+					str.push(encodeURIComponent(key))
+				} else if (isObject(value)) {
+					str.push(buildQueryString(value, key))
+				} else if (isArray(value)) {
+					var keys = []
+					duplicates[key] = duplicates[key] || {}
+					/* eslint-disable no-loop-func */
+					forEach(value, function (item) {
+						/* eslint-enable no-loop-func */
+						if (!duplicates[key][item]) {
+							duplicates[key][item] = true
+							keys.push(encodeURIComponent(key) + "=" +
+								encodeURIComponent(item))
+						}
+					})
+					str.push(keys.join("&"))
+				} else if (value !== undefined) {
+					str.push(encodeURIComponent(key) + "=" +
+						encodeURIComponent(value))
+				}
+			}
+		}
+
+		return str.join("&")
+	}
+
+	function parseQueryString(str) {
+		if (str === "" || str == null) return {}
+		if (str.charAt(0) === "?") str = str.slice(1)
+
+		var pairs = str.split("&")
+		var params = {}
+
+		forEach(pairs, function (string) {
+			var pair = string.split("=")
+			var key = decodeURIComponent(pair[0])
+			var value = pair.length === 2 ? decodeURIComponent(pair[1]) : null
+			if (params[key] != null) {
+				if (!isArray(params[key])) params[key] = [params[key]]
+				params[key].push(value)
+			} else params[key] = value
+		})
+
+		return params
+	}
+
+	m.route.buildQueryString = buildQueryString
+	m.route.parseQueryString = parseQueryString
+
+	function reset(root) {
+		var cacheKey = getCellCacheKey(root)
+		clear(root.childNodes, cellCache[cacheKey])
+		cellCache[cacheKey] = undefined
+	}
+
+	m.deferred = function () {
+		var deferred = new Deferred()
+		deferred.promise = propify(deferred.promise)
+		return deferred
+	}
+
+	function propify(promise, initialValue) {
+		var prop = m.prop(initialValue)
+		promise.then(prop)
+		prop.then = function (resolve, reject) {
+			return propify(promise.then(resolve, reject), initialValue)
+		}
+
+		prop["catch"] = prop.then.bind(null, null)
+		return prop
+	}
+	// Promiz.mithril.js | Zolmeister | MIT
+	// a modified version of Promiz.js, which does not conform to Promises/A+
+	// for two reasons:
+	//
+	// 1) `then` callbacks are called synchronously (because setTimeout is too
+	//    slow, and the setImmediate polyfill is too big
+	//
+	// 2) throwing subclasses of Error cause the error to be bubbled up instead
+	//    of triggering rejection (because the spec does not account for the
+	//    important use case of default browser error handling, i.e. message w/
+	//    line number)
+
+	var RESOLVING = 1
+	var REJECTING = 2
+	var RESOLVED = 3
+	var REJECTED = 4
+
+	function Deferred(onSuccess, onFailure) {
+		var self = this
+		var state = 0
+		var promiseValue = 0
+		var next = []
+
+		self.promise = {}
+
+		self.resolve = function (value) {
+			if (!state) {
+				promiseValue = value
+				state = RESOLVING
+
+				fire()
+			}
+
+			return self
+		}
+
+		self.reject = function (value) {
+			if (!state) {
+				promiseValue = value
+				state = REJECTING
+
+				fire()
+			}
+
+			return self
+		}
+
+		self.promise.then = function (onSuccess, onFailure) {
+			var deferred = new Deferred(onSuccess, onFailure)
+
+			if (state === RESOLVED) {
+				deferred.resolve(promiseValue)
+			} else if (state === REJECTED) {
+				deferred.reject(promiseValue)
+			} else {
+				next.push(deferred)
+			}
+
+			return deferred.promise
+		}
+
+		function finish(type) {
+			state = type || REJECTED
+			next.map(function (deferred) {
+				if (state === RESOLVED) {
+					deferred.resolve(promiseValue)
+				} else {
+					deferred.reject(promiseValue)
+				}
+			})
+		}
+
+		function thennable(then, success, failure, notThennable) {
+			if (((promiseValue != null && isObject(promiseValue)) ||
+					isFunction(promiseValue)) && isFunction(then)) {
+				try {
+					// count protects against abuse calls from spec checker
+					var count = 0
+					then.call(promiseValue, function (value) {
+						if (count++) return
+						promiseValue = value
+						success()
+					}, function (value) {
+						if (count++) return
+						promiseValue = value
+						failure()
+					})
+				} catch (e) {
+					m.deferred.onerror(e)
+					promiseValue = e
+					failure()
+				}
+			} else {
+				notThennable()
+			}
+		}
+
+		function fire() {
+			// check if it's a thenable
+			var then
+			try {
+				then = promiseValue && promiseValue.then
+			} catch (e) {
+				m.deferred.onerror(e)
+				promiseValue = e
+				state = REJECTING
+				return fire()
+			}
+
+			if (state === REJECTING) {
+				m.deferred.onerror(promiseValue)
+			}
+
+			thennable(then, function () {
+				state = RESOLVING
+				fire()
+			}, function () {
+				state = REJECTING
+				fire()
+			}, function () {
+				try {
+					if (state === RESOLVING && isFunction(onSuccess)) {
+						promiseValue = onSuccess(promiseValue)
+					} else if (state === REJECTING && isFunction(onFailure)) {
+						promiseValue = onFailure(promiseValue)
+						state = RESOLVING
+					}
+				} catch (e) {
+					m.deferred.onerror(e)
+					promiseValue = e
+					return finish()
+				}
+
+				if (promiseValue === self) {
+					promiseValue = TypeError()
+					finish()
+				} else {
+					thennable(then, function () {
+						finish(RESOLVED)
+					}, finish, function () {
+						finish(state === RESOLVING && RESOLVED)
+					})
+				}
+			})
+		}
+	}
+
+	m.deferred.onerror = function (e) {
+		if (type.call(e) === "[object Error]" &&
+				!/ Error/.test(e.constructor.toString())) {
+			pendingRequests = 0
+			throw e
+		}
+	}
+
+	m.sync = function (args) {
+		var deferred = m.deferred()
+		var outstanding = args.length
+		var results = []
+		var method = "resolve"
+
+		function synchronizer(pos, resolved) {
+			return function (value) {
+				results[pos] = value
+				if (!resolved) method = "reject"
+				if (--outstanding === 0) {
+					deferred.promise(results)
+					deferred[method](results)
+				}
+				return value
+			}
+		}
+
+		if (args.length > 0) {
+			forEach(args, function (arg, i) {
+				arg.then(synchronizer(i, true), synchronizer(i, false))
+			})
+		} else {
+			deferred.resolve([])
+		}
+
+		return deferred.promise
+	}
+
+	function identity(value) { return value }
+
+	function handleJsonp(options) {
+		var callbackKey = options.callbackName || "mithril_callback_" +
+			new Date().getTime() + "_" +
+			(Math.round(Math.random() * 1e16)).toString(36)
+
+		var script = $document.createElement("script")
+
+		global[callbackKey] = function (resp) {
+			script.parentNode.removeChild(script)
+			options.onload({
+				type: "load",
+				target: {
+					responseText: resp
+				}
+			})
+			global[callbackKey] = undefined
+		}
+
+		script.onerror = function () {
+			script.parentNode.removeChild(script)
+
+			options.onerror({
+				type: "error",
+				target: {
+					status: 500,
+					responseText: JSON.stringify({
+						error: "Error making jsonp request"
+					})
+				}
+			})
+			global[callbackKey] = undefined
+
+			return false
+		}
+
+		script.onload = function () {
+			return false
+		}
+
+		script.src = options.url +
+			(options.url.indexOf("?") > 0 ? "&" : "?") +
+			(options.callbackKey ? options.callbackKey : "callback") +
+			"=" + callbackKey +
+			"&" + buildQueryString(options.data || {})
+
+		$document.body.appendChild(script)
+	}
+
+	function createXhr(options) {
+		var xhr = new global.XMLHttpRequest()
+		xhr.open(options.method, options.url, true, options.user,
+			options.password)
+
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				if (xhr.status >= 200 && xhr.status < 300) {
+					options.onload({type: "load", target: xhr})
+				} else {
+					options.onerror({type: "error", target: xhr})
+				}
+			}
+		}
+
+		if (options.serialize === JSON.stringify &&
+				options.data &&
+				options.method !== "GET") {
+			xhr.setRequestHeader("Content-Type",
+				"application/json; charset=utf-8")
+		}
+
+		if (options.deserialize === JSON.parse) {
+			xhr.setRequestHeader("Accept", "application/json, text/*")
+		}
+
+		if (isObject(options.headers)) {
+			for (var header in options.headers) {
+				if (hasOwn.call(options.headers, header)) {
+					xhr.setRequestHeader(header, options.headers[header])
+				}
+			}
+		}
+
+		if (isFunction(options.config)) {
+			var maybeXhr = options.config(xhr, options)
+			if (maybeXhr != null) xhr = maybeXhr
+		}
+
+		var data = options.method === "GET" || !options.data ? "" : options.data
+
+		if (data && !isString(data) && data.constructor !== global.FormData) {
+			throw new Error("Request data should be either be a string or " +
+				"FormData. Check the `serialize` option in `m.request`")
+		}
+
+		xhr.send(data)
+		return xhr
+	}
+
+	function ajax(options) {
+		if (options.dataType && options.dataType.toLowerCase() === "jsonp") {
+			return handleJsonp(options)
+		} else {
+			return createXhr(options)
+		}
+	}
+
+	function bindData(options, data, serialize) {
+		if (options.method === "GET" && options.dataType !== "jsonp") {
+			var prefix = options.url.indexOf("?") < 0 ? "?" : "&"
+			var querystring = buildQueryString(data)
+			options.url += (querystring ? prefix + querystring : "")
+		} else {
+			options.data = serialize(data)
+		}
+	}
+
+	function parameterizeUrl(url, data) {
+		if (data) {
+			url = url.replace(/:[a-z]\w+/gi, function (token){
+				var key = token.slice(1)
+				var value = data[key] || token
+				delete data[key]
+				return value
+			})
+		}
+		return url
+	}
+
+	m.request = function (options) {
+		if (options.background !== true) m.startComputation()
+		var deferred = new Deferred()
+		var isJSONP = options.dataType &&
+			options.dataType.toLowerCase() === "jsonp"
+
+		var serialize, deserialize, extract
+
+		if (isJSONP) {
+			serialize = options.serialize =
+			deserialize = options.deserialize = identity
+
+			extract = function (jsonp) { return jsonp.responseText }
+		} else {
+			serialize = options.serialize = options.serialize || JSON.stringify
+
+			deserialize = options.deserialize =
+				options.deserialize || JSON.parse
+			extract = options.extract || function (xhr) {
+				if (xhr.responseText.length || deserialize !== JSON.parse) {
+					return xhr.responseText
+				} else {
+					return null
+				}
+			}
+		}
+
+		options.method = (options.method || "GET").toUpperCase()
+		options.url = parameterizeUrl(options.url, options.data)
+		bindData(options, options.data, serialize)
+		options.onload = options.onerror = function (ev) {
+			try {
+				ev = ev || event
+				var response = deserialize(extract(ev.target, options))
+				if (ev.type === "load") {
+					if (options.unwrapSuccess) {
+						response = options.unwrapSuccess(response, ev.target)
+					}
+
+					if (isArray(response) && options.type) {
+						forEach(response, function (res, i) {
+							response[i] = new options.type(res)
+						})
+					} else if (options.type) {
+						response = new options.type(response)
+					}
+
+					deferred.resolve(response)
+				} else {
+					if (options.unwrapError) {
+						response = options.unwrapError(response, ev.target)
+					}
+
+					deferred.reject(response)
+				}
+			} catch (e) {
+				deferred.reject(e)
+				m.deferred.onerror(e)
+			} finally {
+				if (options.background !== true) m.endComputation()
+			}
+		}
+
+		ajax(options)
+		deferred.promise = propify(deferred.promise, options.initialValue)
+		return deferred.promise
+	}
+
+	return m
+}); // eslint-disable-line
+
+},{}],54:[function(require,module,exports){
 module.exports={
    "ACTIONS": {
       "ACTIONS": "Actions",
