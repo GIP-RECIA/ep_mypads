@@ -93,7 +93,7 @@
           lastname: 'Fry',
           email: 'fry@planetexpress.com'
         };
-        user.set(params, done);
+        user.set(params,()=>done());
       });
     });
 

@@ -102,7 +102,7 @@
             next(new Error('not null to prevent real sending'));
           }
         });
-        server.listen(2525, done);
+        server.listen(2525,()=>done());
       });
 
       afterAll(function (done) {
