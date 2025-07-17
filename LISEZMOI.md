@@ -12,20 +12,23 @@ MyPads propose la gestion :
 * de groupes de pads, illimités par utilisateur, partageables;
 * des pads associés, avec le choix d'inviter des utilisateurs inscrits à les utiliser, d'y mettre un mot de passe ou de les rendre publics.
 
+## Prérequis
+
+* NodeJS >= 20
+* Etherpad >= 2.3.1
+
 ## Installation
 
 MyPads est publié sur NPM. Vous pouvez de fait l'installer directement depuis l'interface d'administration d'etherpad. Vous pourriez avoir besoin de redémarrer votre instance une fois le plugin installé.
 ATTENTION: si vous désinstallez MyPads, toutes les données associées seront définitivement *supprimées*.
 
+
+
 ### Installation manuelle
 
-Vous pouvez installer MyPads depuis les sources. Pour cela :
+À l'heure actuelle, MyPads est disponible publiquement sur NPM. Vous pouvez donc l'installer depuis l'administration d'Etherpad. Il se peut que vous deviez redémarrer votre instance Etherpad après l'installation du plugin.
 
-* cloner ce dépôt git où bon vous semble;
-* rendez-vous dans le répertoire de votre instance Etherpad;
-* entrez la commande `npm install /chemin/de/votre/clone/ep_mypads`;
-* relancez votre instance Etherpad et vous devriez voir *ep_mypads* dans votre interface d'administration et ainsi pouvoir directement le tester;
-* la page d'accueil est disponible sur http://votreinstance/mypads/index.html
+ATTENTION : si vous désinstallez MyPads, toutes ses données seront définitivement supprimées.
 
 ## Configuration
 

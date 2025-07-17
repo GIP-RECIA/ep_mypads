@@ -21,6 +21,11 @@ MyPads manages :
 * groups of pads per user, unlimited, sharable;
 * attached pads, with choice between invite known users to use them, making them private with password or letting them public.
 
+## Requirements
+
+* NodeJS >= 20
+* Etherpad >= 2.3.1
+
 ## Installation
 
 At the moment, MyPads is publicly available on NPM. So you can install it from etherpad administration. You may need a reboot of your etherpad instance after the plugin install.
