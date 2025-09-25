@@ -292,7 +292,7 @@ module.exports = (function () {
   */
 
   fn.isAdmin = function (req) {
-    var token = req.query.auth_token || req.body.auth_token;
+    var token = req.query?.auth_token || req.body?.auth_token;
     if (!token) { return false; }
     try {
       var jwt_payload = jwt.verify(token, auth.secret);
@@ -410,7 +410,7 @@ module.exports = (function () {
 
     app.post(authRoute + '/login', function (req, res) {
       var eplAuthorToken;
-      if (typeof(req.body.login) !== 'undefined' && typeof(req.cookies['token-'+req.body.login]) !== 'undefined') {
+      if (typeof(req.body?.login) !== 'undefined' && typeof(req.cookies['token-'+req.body?.login]) !== 'undefined') {
         eplAuthorToken = req.cookies['token-'+req.body.login];
       } else if (typeof(req.cookies.token) !== 'undefined') {
         eplAuthorToken = req.cookies.token;
@@ -849,7 +849,7 @@ module.exports = (function () {
           stop = true;
           res.status(400).send({ error: 'BACKEND.ERROR.AUTHENTICATION.NO_REGISTRATION' });
         } else {
-          key = req.body.login;
+          key = req.body?.login;
           if (conf.get('checkMails')) {
             var token = mail.genToken({ login: key, action: 'accountconfirm' });
             var url = conf.getRootUrl(req) +
@@ -885,7 +885,7 @@ module.exports = (function () {
       }
       // Update needed session values
       if (!stop) {
-        var u = auth.fn.getUser(req.body.auth_token);
+        var u = auth.fn.getUser(req.body?.auth_token);
         if (u && !fn.isAdmin(req)) {
           auth.tokens[u.login].color = req.body.color || u.color;
           if (!ld.isUndefined(req.body.useLoginAndColorInPads)) {
@@ -983,7 +983,7 @@ module.exports = (function () {
     */
 
     app.post(api.initialRoute + 'passrecover', function (req, res) {
-      var email = req.body.email;
+      var email = req.body?.email;
       var err;
       if (conf.isNotInternalAuth()) {
         err = 'BACKEND.ERROR.AUTHENTICATION.NO_RECOVER';
@@ -1047,8 +1047,8 @@ module.exports = (function () {
         err = 'BACKEND.ERROR.TOKEN.EXPIRED';
         return res.status(400).send({ error: err });
       }
-      var pass  = req.body.password;
-      var passC = req.body.passwordConfirm;
+      var pass  = req.body?.password;
+      var passC = req.body?.passwordConfirm;
       if (!pass || (pass !== passC)) {
         err = 'USER.ERR.PASSWORD_MISMATCH';
         return res.status(400).send({ error: err });
@@ -1072,7 +1072,7 @@ module.exports = (function () {
     */
 
     app.post(api.initialRoute + 'accountconfirm', function (req, res) {
-      var val = mail.tokens[req.body.token];
+      var val = mail?.tokens[req.body?.token];
       var err;
       if (conf.isNotInternalAuth()) {
         err = 'BACKEND.ERROR.AUTHENTICATION.NO_RECOVER';
@@ -1278,7 +1278,7 @@ module.exports = (function () {
     var canEdit = function (req, res, successFn) {
       var isAdmin = fn.isAdmin(req);
       if (isAdmin) { return successFn(); }
-      var u = auth.fn.getUser(req.body.auth_token);
+      var u = auth.fn.getUser(req.body?.auth_token);
       if (!u) {
         return fn.denied(res, 'BACKEND.ERROR.AUTHENTICATION.NOT_AUTH');
       }
@@ -1309,7 +1309,7 @@ module.exports = (function () {
 
     app.post(groupRoute, function (req, res) {
       var isAdmin = fn.isAdmin(req);
-      var u = auth.fn.getUser(req.body.auth_token);
+      var u = auth.fn.getUser(req.body?.auth_token);
       if (!u && !isAdmin) {
         return fn.denied(res, 'BACKEND.ERROR.AUTHENTICATION.NOT_AUTH');
       }
@@ -1350,7 +1350,7 @@ module.exports = (function () {
     */
 
     app.post(groupRoute + '/invite', function (req, res) {
-      if (!req.body.gid) {
+      if (!req.body?.gid) {
         return res.status(400)
           .send({ error: 'BACKEND.ERROR.TYPE.PARAMS_REQUIRED' });
       }
@@ -1423,7 +1423,7 @@ module.exports = (function () {
 
         // allPadsPublicsAuthentifiedOnly feature
         if (conf.get('allPadsPublicsAuthentifiedOnly') && req.route.method === 'get') {
-          var token = req.body.auth_token || req.query.auth_token;
+          var token = req.body?.auth_token || req.query?.auth_token;
           var u     = auth.fn.getUser(token);
           return (!u) ? fn.denied(res, 'BACKEND.ERROR.AUTHENTICATION.MUST_BE') : successFn(req, res, p);
         }

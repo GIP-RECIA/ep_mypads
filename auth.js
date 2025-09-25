@@ -374,10 +374,10 @@ module.exports = (function () {
   auth.fn.JWTFn = function (req, jwt_payload, admin, callback) {
     var checkFn = (admin ? auth.fn.checkAdminUser : auth.fn.checkMyPadsUser);
     var ns      = (admin ? 'adminTokens' : 'tokens');
-    var login   = jwt_payload.login;
+    var login   = jwt_payload?.login;
     var token   = auth[ns][login];
     if (!token || !jwt_payload.key) {
-      var pass = jwt_payload.password;
+      var pass = jwt_payload?.password;
       if (!ld.isString(pass)) {
         return callback(new Error('BACKEND.ERROR.TYPE.PASSWORD_STR'));
       }

@@ -19,57 +19,43 @@ cache:
 services:
   - rroemhild/test-openldap
 
+### Template
+##
+#
+.run_tests: &run_tests
+  stage: test
+  script:
+    - npm install
+    - npm run frontend:build
+    - git status
+    - git checkout -- package-lock.json
+    - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
+    - npm run lint
+    - npm run test
+    - npm run test-ldap
+  retry: 2
+
 ### Jobs
 ##
 #
 
 test-buster:
+  <<: *run_tests
   image: node:$NODE_VERSION-buster
-  stage: test
-  script:
-   - npm install
-   - npm run frontend:build
-   - git status
-   - git checkout -- package-lock.json
-   - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
-   - npm run lint
-   - npm run test
-   - npm run test-ldap
-  retry: 2
   parallel:
     matrix:
-      - NODE_VERSION: ['10', '12', '14']
+      - NODE_VERSION: ['18', '20']
 
 test-bullseye:
   image: node:$NODE_VERSION-bullseye
-  stage: test
-  script:
-   - npm install
-   - npm run frontend:build
-   - git status
-   - git checkout -- package-lock.json
-   - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
-   - npm run lint
-   - npm run test
-   - npm run test-ldap
-  retry: 2
+  <<: *run_tests
   parallel:
     matrix:
-      - NODE_VERSION: ['12', '14', '16']
+      - NODE_VERSION: ['18', '20']
 
 test-bookworm:
   image: node:$NODE_VERSION-bookworm
-  stage: test
-  script:
-   - npm install
-   - npm run frontend:build
-   - git status
-   - git checkout -- package-lock.json
-   - if [[ $(git status | grep -c "nothing to commit, working tree clean") -ne 1 ]]; then echo "*** You did’nt build the frontend! Aborting. Please run `make build` and commit ***"; exit 1; fi
-   - npm run lint
-   - npm run test
-   - npm run test-ldap
-  retry: 2
+  <<: *run_tests
   parallel:
     matrix:
-      - NODE_VERSION: ['16']
+      - NODE_VERSION: ['18', '20']

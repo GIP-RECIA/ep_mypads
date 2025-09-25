@@ -131,7 +131,7 @@ module.exports = (function () {
       }
       c.sortField(field);
       var direction = c.sortAsc() ? 'asc' : 'desc';
-      c.pads        = ld.sortByOrder(c.pads, field, direction);
+      c.pads        = ld.orderBy(c.pads, field, direction);
       sortingPreferences.updateValues({
         padByField: c.sortField(),
         padAsc: c.sortAsc()
