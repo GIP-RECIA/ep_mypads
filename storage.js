@@ -261,7 +261,9 @@ module.exports = (function () {
     };
 
     storage.fn.isPostgresDriver = function () {
-        return settings.dbSettings && storage.db && (storage.db.type === 'postgres' || storage.db.type === 'postgrespool');
+        return settings.dbSettings && 
+               storage.db &&
+               (storage.db.type === 'postgres' || storage.db.type === 'postgrespool');
     };
 
     storage.fn.getPostgres = function (cb) {

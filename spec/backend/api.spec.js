@@ -2218,7 +2218,11 @@
                                                             function (err, resp, b) {
                                                                 if (!err && resp.statusCode === 200) {
                                                                     token = b.token;
-                                                                    group.set({ name: 'sharedgroup', admin: uotherid, users: [uid] }, function (err, g) {
+                                                                    group.set(
+                                                                        {
+                                                                            name: 'sharedgroup',
+                                                                            admin: uotherid, users: [uid]
+                                                                        }, function (err, g) {
                                                                         if (err) { console.log(err); }
                                                                         gsharedid = g._id;
                                                                         group.set(
