@@ -24,9 +24,12 @@
   var specCommon = require('../common.js');
   var storage = require('../../../storage.js');
   var conf = require('../../../configuration.js');
+  var common = require('../../../model/common.js');
+  var group = require('../../../model/group.js');
   var user = require('../../../model/user.js');
   var userCache = require('../../../model/user-cache.js');
   var UPREFIX = storage.DBPREFIX.USER;
+  var CPREFIX = storage.DBPREFIX.CONF;
 
   describe('userCache', function () {
     beforeAll(specCommon.reInitDatabase);
