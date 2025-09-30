@@ -44,36 +44,6 @@ catch (e) {
   testMode = true;
   express  = require('express');
 }
-var settings;
-try {
-  // Normal case : when installed as a plugin
-  settings = require('ep_etherpad-lite/node/utils/Settings');
-}
-catch (e) {
-  // Testing case : we need to mock the express dependency
-  if (process.env.TEST_LDAP) {
-    settings = {
-      'ep_mypads': {
-        'ldap': {
-          'url': 'ldap://rroemhild-test-openldap',
-          'bindDN': 'cn=admin,dc=planetexpress,dc=com',
-          'bindCredentials': 'GoodNewsEveryone',
-          'searchBase': 'ou=people,dc=planetexpress,dc=com',
-          'searchFilter': '(uid={{username}})',
-          'properties': {
-            'login': 'uid',
-            'email': 'mail',
-            'firstname': 'givenName',
-            'lastname': 'sn'
-          },
-          'defaultLang': 'fr'
-        }
-      }
-    };
-  } else {
-    settings = {};
-  }
-}
 var bodyParser        = require('body-parser');
 var cookieParser      = require('cookie-parser');
 var decode            = require('js-base64').Base64.decode;

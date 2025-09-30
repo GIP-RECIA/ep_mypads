@@ -32,57 +32,14 @@
 */
 
 // External dependencies
+import settings from 'ep_etherpad-lite/node/utils/Settings';
+
 var ld         = require('lodash');
 var jwt        = require('jsonwebtoken');
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var LdapAuth   = require('ldapauth-fork');
 var CasAuth    = require('simple-cas-interface');
-var settings;
-try {
-  // Normal case : when installed as a plugin
-  settings = require('ep_etherpad-lite/node/utils/Settings');
-}
-catch (e) {
-  if (process.env.TEST_LDAP) {
-    settings = {
-      'users': {
-        'admin': {
-          'password': 'admin',
-          'is_admin': true
-        },
-        'parker': {
-          'password': 'lovesKubiak',
-          'is_admin': false
-        }
-      },
-      'ep_mypads': {
-        'ldap': {
-          'url': 'ldap://rroemhild-test-openldap',
-          'bindDN': 'cn=admin,dc=planetexpress,dc=com',
-          'bindCredentials': 'GoodNewsEveryone',
-          'searchBase': 'ou=people,dc=planetexpress,dc=com',
-          'searchFilter': '(uid={{username}})',
-          'properties': {
-            'login': 'uid',
-            'email': 'mail',
-            'firstname': 'givenName',
-            'lastname': 'sn'
-          },
-          'defaultLang': 'fr'
-        }
-      }
-    };
-  } else {
-    // Testing case : we need to mock the express dependency
-    settings = {
-      users: {
-        admin: { password: 'admin', is_admin: true },
-        grace: { password: 'admin', is_admin: true },
-        parker: { password: 'lovesKubiak', is_admin: false }
-      }
-    };
-  }
-}
+
 var passport    = require('passport');
 var JWTStrategy = require('passport-jwt').Strategy;
 var cuid        = require('cuid');

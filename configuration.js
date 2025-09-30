@@ -27,36 +27,8 @@
 *  This is the module for MyPads configuration.
 */
 
-var settings;
-try {
-  settings = require('ep_etherpad-lite/node/utils/Settings');
-}
-catch (e) {
-  if (process.env.TEST_LDAP) {
-    // Testing ldap case :
-    // please use https://github.com/rroemhild/docker-test-openldap
-    settings = {
-      'ep_mypads': {
-        'ldap': {
-          'url': 'ldap://rroemhild-test-openldap:10389',
-          'bindDN': 'cn=admin,dc=planetexpress,dc=com',
-          'bindCredentials': 'GoodNewsEveryone',
-          'searchBase': 'ou=people,dc=planetexpress,dc=com',
-          'searchFilter': '(uid={{username}})',
-          'properties': {
-            'login': 'uid',
-            'email': 'mail',
-            'firstname': 'givenName',
-            'lastname': 'sn'
-          },
-          'defaultLang': 'fr'
-        }
-      }
-    };
-  } else {
-    settings = {};
-  }
-}
+import settings from 'ep_etherpad-lite/node/utils/Settings';
+
 module.exports = (function() {
   'use strict';
 

@@ -21,6 +21,7 @@
 
 (function () {
   'use strict';
+
   var ld = require('lodash');
   var specCommon = require('./common.js');
   var common = require('../../model/common.js');

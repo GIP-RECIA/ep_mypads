@@ -22,6 +22,7 @@
 (function () {
   'use strict';
 
+  process.env.TEST_LDAP = true;
   var ld = require('lodash');
   var specCommon = require('./common.js');
   var conf = require('../../configuration.js');

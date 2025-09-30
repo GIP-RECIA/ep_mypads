@@ -27,20 +27,14 @@
  *  This module consists only on a wrapper around etherpad database.
  */
 
+import settings from 'ep_etherpad-lite/node/utils/Settings';
+
 module.exports = (function () {
     'use strict';
     // Dependencies
     var ld = require('lodash');
     var pg = require('pg');
     var storage = {};
-
-    var settings;
-    try {
-        // Normal case : when installed as a plugin
-        settings = require('ep_etherpad-lite/node/utils/Settings');
-    } catch (e) {
-        settings = {};
-    }
 
     var postgresDB;
 

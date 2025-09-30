@@ -34,8 +34,10 @@ services:
     - git checkout -- package-lock.json
     - if (git status | grep -q "nothing to commit, working tree clean"); then echo "*** You did’nt build the frontend! Aborting. Please run \"make build\" and commit ***"; exit 1; fi
     - npm run lint
+    - sed -e "s@import settings from 'ep_etherpad-lite/node/utils/Settings'@var settings = require('./spec/settings.js')@" -i auth.js configuration.js storage.js
     - npm run test
     - npm run test-ldap
+    - sed -e "s@var settings = require('\./spec/settings\.js')@import settings from 'ep_etherpad-lite/node/utils/Settings'@" -i auth.js configuration.js storage.js
   retry: 2
 
 ### Jobs
