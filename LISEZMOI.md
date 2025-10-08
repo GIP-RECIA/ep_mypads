@@ -36,4 +36,4 @@ Configurez un utilisateur administrateur dans le fichier `settings.json` d’Eth
 
 ## Feuille de route
 
-Elle est disponible au travers [des étapes et tickets](https://git.framasoft.org/framasoft/ep_mypads/issues).
+Elle est disponible au travers [des étapes et tickets](https://framagit.org/framasoft/Etherpad/ep_mypads/-/issues).

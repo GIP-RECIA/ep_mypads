@@ -37,4 +37,4 @@ Configure an admin user in Etherpad's `settings.json` and use those credentials 
 
 ## Roadmap
 
-It's available through [milestones and tickets](https://git.framasoft.org/framasoft/ep_mypads/issues).
+It's available through [milestones and tickets](https://framagit.org/framasoft/Etherpad/ep_mypads/-/issues).
