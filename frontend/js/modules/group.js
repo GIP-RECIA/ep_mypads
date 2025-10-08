@@ -552,6 +552,7 @@ module.exports = (function () {
         m('.panel-heading',
           m('h3.panel-title', conf.LANG.GROUP.ARCHIVED),
           m('button',{
+            class: 'btn',
             onclick: c.toggleArchived,
           },
           m('i.glyphicon.glyphicon-chevron-'+ (c.archivedIsVisible? 'up':'down')))
