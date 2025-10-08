@@ -294,17 +294,17 @@ module.exports = (function () {
     if (!token) { token = perm.fn.getVarFromReferer('auth_token', req); }
     var u = auth.fn.getUser(token);
     if (u && u.useLoginAndColorInPads) {
-      var opts = { userName: u.login };
+      var opts = { userName: encodeURIComponent(u.login) };
       if (u.padNickname) {
-        opts.userName = u.padNickname;
+        opts.userName = encodeURIComponent(u.padNickname);
       }
       if (conf.get('useFirstLastNameInPads')) {
         var firstname = (u.firstname) ? u.firstname : '';
         var lastname  = (u.lastname)  ? u.lastname  : '';
-        opts.userName = firstname+' '+lastname;
+        opts.userName = encodeURIComponent(firstname+' '+lastname);
       }
       if (u.color) {
-        opts.userColor      = u.color;
+        opts.userColor      = encodeURIComponent(u.color);
         req.query.userColor = opts.userColor;
       }
       perm.padAndAuthor[req.params.pid] = opts;
