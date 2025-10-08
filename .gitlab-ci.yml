@@ -28,6 +28,7 @@ services:
 .run_tests: &run_tests
   stage: test
   script:
+    - sed "/peerDependencies/,+2d" -i package.json
     - npm install
     - npm run frontend:build
     - git status
