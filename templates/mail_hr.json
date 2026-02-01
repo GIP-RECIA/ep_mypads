@@ -1,6 +1,6 @@
 {
-    "ACCOUNT_CONFIRMATION": "",
-    "ACCOUNT_CONFIRMATION_SUBJECT": "",
-    "PASSRECOVER": "",
-    "PASSRECOVER_SUBJECT": ""
+    "ACCOUNT_CONFIRMATION": "<%= login %>, pretplatio/la si se na <%= title %>. Ova instanca etherpada zahtijeva potvrdu e-poštom za aktiviranje tvog računa. Za nastavljanje posjeti ovu web adresu: <%= url %>. Ovaj URL će vrijediti samo <%= duration %> min. Nakon toga moraš kontaktirati administratora.",
+    "ACCOUNT_CONFIRMATION_SUBJECT": "Potvrda računa na <%= title %>",
+    "PASSRECOVER": "<%= login %>, za tvoju prijavu na <%= title %> je pokrenut zahtjev za mijenjanje lozinke. Ako želiš potvrditi mijenjanje lozinke, posjeti ovu web adresu: <%= url %>. Ako to nisi ti zatražio/la jednostavno zanemari ovaj e-mail. Adresa će prestati važiti za <%= duration %> min.",
+    "PASSRECOVER_SUBJECT": "Obnavljanje lozinke za <%= title %>"
 }
