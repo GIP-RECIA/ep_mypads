@@ -3,5 +3,13 @@
   "spec_files": [
     "model/*.spec.js",
     "*.spec.js"
-  ]
+  ],
+  "helpers": [
+    "../helpers/**/*.?(m)js"
+  ],
+  "env": {
+    "random": false,
+    "forbidDuplicateNames": true,
+    "verboseDeprecations": true
+  }
 }

@@ -488,7 +488,7 @@
           expect(ld.first(ld.keys(perm.padAndAuthor))).toBe('azerty');
           var opts = perm.padAndAuthor.azerty;
           expect(opts.userName).toBe('parker');
-          expect(opts.userColor).toBe('#00ff00');
+          expect(opts.userColor).toBe('%2300ff00');
           done();
         });
       });
@@ -506,7 +506,7 @@
             expect(ld.first(ld.keys(perm.padAndAuthor))).toBe('azerty');
             var opts = perm.padAndAuthor.azerty;
             expect(opts.userName).toBe('parker');
-            expect(opts.userColor).toBe('#00ff00');
+            expect(opts.userColor).toBe('%2300ff00');
             req.query.auth_token = getJwt('jerry');
             perm.setNameAndColor(req, res, function () {
               expect(ld.isObject(perm.padAndAuthor)).toBeTruthy();

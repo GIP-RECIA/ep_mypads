@@ -21,6 +21,7 @@
 
 (function () {
   'use strict';
+
   var ld = require('lodash');
   var specCommon = require('./common.js');
   var common = require('../../model/common.js');
@@ -79,7 +80,7 @@
           lastname: 'Lewis',
           email: 'parker@lewis.me'
         };
-        user.set(params, done);
+        user.set(params, ()=>done());
       });
     });
 

@@ -81,7 +81,7 @@ module.exports = (function () {
         model.users(resp.value.users);
         var tags = ld(resp.value.groups)
           .values()
-          .pluck('tags')
+          .map('tags')
           .flatten()
           .union()
           .value();

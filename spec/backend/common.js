@@ -21,7 +21,6 @@
 
 module.exports = (function () {
   'use strict';
-  var ld = require('lodash');
   var storage = require('../../storage.js');
   var common = {};
 
@@ -36,7 +35,11 @@ module.exports = (function () {
     var db = require('../../storage.js').db;
     db.close(function () {
       unlink('./test.db', function () {
-        db.init(ld.partial(storage.init, done));
+        db.init();
+        storage.init(function (err) {
+          if (err) { return done(err); }
+          done();
+        });
       });
     });
   };

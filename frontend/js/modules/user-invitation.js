@@ -119,7 +119,7 @@ module.exports = (function () {
       var current = ld(users.byId)
         .pick(c.isInvite ? c.group.users : c.group.admins)
         .values()
-        .pluck('login')
+        .map('login')
         .value();
       c.tag = new tag.controller({
         name: 'user-invite',
@@ -140,7 +140,7 @@ module.exports = (function () {
 
     c.userlistAdd = function (ulid) {
       var ul        = uInfo.userlists[ulid];
-      c.tag.current = ld.union(c.tag.current, ld.pluck(ul.users, 'login'));
+      c.tag.current = ld.union(c.tag.current, ld.map(ul.users, 'login'));
     };
 
     /**
@@ -181,7 +181,7 @@ module.exports = (function () {
           m('select.form-control', {
             name: 'userlists',
             onchange: m.withAttr('value', c.userlistAdd)
-          }, (ld.map(ld.pairs(auth.userInfo().userlists), function (ul) {
+          }, (ld.map(ld.toPairs(auth.userInfo().userlists), function (ul) {
             return m('option', { value: ul[0] }, ul[1].name);
           })).concat(m('option', {
             selected: true,

@@ -113,10 +113,17 @@ module.exports = (function() {
   */
 
   common.checkExistence = function (key, callback) {
-    storage.db.get(key, function(err, res) {
-      if (err) { return callback(err); }
-      return callback(null, !!res);
-    });
+    try {
+      storage.db.get(key)
+        .then(function(res) {
+          callback(null, !!res);
+        })
+        .catch(function(err) {
+          callback(err);
+        });
+    } catch (err) {
+      callback(err);
+    }
   };
 
   /**
@@ -170,20 +177,30 @@ module.exports = (function() {
       throw new TypeError('BACKEND.ERROR.TYPE.CALLBACK_FN');
     }
     key = PREFIX + key;
-    storage.db.get(key, function (err, obj) {
-      if (err) { return callback(err); }
-      if (ld.isUndefined(obj) || ld.isNull(obj)) {
-        return callback(new Error('BACKEND.ERROR.CONFIGURATION.KEY_NOT_FOUND'));
-      }
-      if (!del) {
-        return callback(null, obj);
-      } else {
-        storage.db.remove(key, function (err) {
-          if (err) { return callback(err); }
-          return callback(null, obj);
+    
+    try {
+      storage.db.get(key)
+        .then(function(obj) {
+          if (ld.isUndefined(obj) || ld.isNull(obj)) {
+            callback(new Error('BACKEND.ERROR.CONFIGURATION.KEY_NOT_FOUND'));
+          } else if (!del) {
+            callback(null, obj);
+          } else {
+            storage.db.remove(key)
+              .then(function() {
+                callback(null, obj);
+              })
+              .catch(function(err) {
+                callback(err);
+              });
+          }
+        })
+        .catch(function(err) {
+          callback(err);
         });
-      }
-    });
+    } catch (err) {
+      callback(err);
+    }
   };
 
   return common;

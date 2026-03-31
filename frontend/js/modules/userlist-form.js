@@ -78,7 +78,7 @@ module.exports = (function () {
       if (!c.addView()) {
         c.key      = m.route.param('key');
         c.userlist = uInfo.userlists[c.key];
-        current    = ld.pluck(c.userlist.users, 'login');
+        current    = ld.map(c.userlist.users, 'login');
         c.data.name(c.userlist.name);
       }
       var tags = ld.reduce(uInfo.userlists, function (memo, ul) {
