@@ -1,0 +1,167 @@
+:root {
+    --main-bg-color: #485365;
+    --second-bg-color: #576273;
+    --third-bg-color: #505b6c;
+    --main-color: #f2f3f4;
+    --second-color: #f4f4f4;
+    --third-color: #6A52AA;
+    --a-color: #8ceafd;
+    --a-hover-color: #64d3f3;
+    --first-red: #FDBBB3;
+    --second-red: #EAD8D7;
+    --first-yellow: #ffd953;
+    --color-on-red: #022E5E;
+    --color-on-green: #434445;
+    --blue-bg: #3375A1;
+    --gray-bg: #7B6C6B;
+}
+body.dark, body.dark .well {
+    background: var(--main-bg-color);
+    color: var(--main-color);
+}
+body.dark .well, body.dark .form-control {
+    border-color: var(--third-bg-color);
+}
+body.dark .well {
+    i.glyphicon-exclamation-sign {
+        color: var(--first-red);
+    }
+    a:hover, body.dark a:focus {
+        color: var(--a-hover-color);
+    }
+}
+body.dark i.glyphicon-exclamation-sign {
+    color: var(--second-red);
+    font-size: 1.2em;
+    margin-top: 0;
+}
+body.dark .ombre, body.dark table, body.dark .well input:not([class^="btn btn-"]), body.dark .well select, body.dark .list-group-item, body.dark header .lang select {
+    background: var(--second-bg-color) !important;
+    color: var(--main-color) !important;
+}
+body.dark input:not([class^="btn btn-"]), body.dark select, body.dark textarea {
+    background: var(--main-bg-color) !important;
+    color: var(--second-color) !important;
+}
+body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6, body.dark legend,
+body.dark .h1 .small, body.dark .h1 small, body.dark .h2 .small, body.dark .h2 small, body.dark .h3 .small, body.dark .h3 small, body.dark .h4 .small, body.dark .h4 small, body.dark .h5 .small, body.dark .h5 small, body.dark .h6 .small, body.dark .h6 small, body.dark h1 .small, body.dark h1 small, body.dark h2 .small, body.dark h2 small, body.dark h3 .small, body.dark h3 small, body.dark h4 .small, body.dark h4 small, body.dark h5 .small, body.dark h5 small, body.dark h6 .small, body.dark h6 small {
+    color: var(--second-color);
+}
+body.dark .trait {
+    background-color: var(--main-bg-color);
+}
+
+body.dark .nav-tabs > li.active > a, body.dark .nav-tabs > li.active > a:focus, body.dark .nav-tabs > li.active > a:hover {
+    color: var(--main-color);
+    background-color: var(--second-bg-color);
+    border-color: var(--main-bg-color);
+    border-bottom-color: transparent;
+}
+body.dark .nav-tabs > li.active > a:hover {
+    border-bottom-color: var(--main-bg-color);
+}
+body.dark .nav-tabs {
+    border-bottom-color: var(--main-bg-color);
+}
+body.dark .nav-tabs > li > a:hover {
+    border-color: var(--second-bg-color);
+    border-bottom-color: transparent;
+}
+body.dark .nav > li > a:hover, body.dark .nav > li > a:focus {
+    background-color: var(--main-bg-color) !important;
+    color: var(--a-hover-color);
+}
+body.dark .table-bordered > tbody > tr > td, body.dark .table-bordered > tbody > tr > th, body.dark .table-bordered > tfoot > tr > td, body.dark .table-bordered > tfoot > tr > th, body.dark .table-bordered > thead > tr > td, body.dark .table-bordered > thead > tr > th, body.dark .panel-default, body.dark input {
+    border-color: var(--main-bg-color);
+}
+body.dark .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: var(--main-bg-color) !important;
+}
+body.dark .table-bordered {
+    border-color: var(--main-bg-color)
+}
+body.dark .panel {
+    background-color: var(--main-bg-color);
+}
+body.dark .panel-primary {
+    border-color: var(--blue-bg);
+    .panel-heading {
+        background-color: var(--blue-bg);
+    }
+}
+body.dark .panel-info {
+    border-color: var(--main-bg-color);
+}
+body.dark .panel-default > .panel-heading,
+body.dark .panel-info > .panel-heading {
+    color: var(--main-color);
+    background-color: var(--main-bg-color);
+    border-color: var(--main-bg-color);
+}
+body.dark .panel-body {
+    background-color: var(--second-bg-color);
+}
+body.dark .panel-heading button {
+    background-color: var(--second-bg-color);
+    color: var(--main-color);
+}
+body.dark .panel-heading button:hover {
+    background-color: var(--main-bg-color);
+    color: var(--second-color);
+}
+body.dark .panel-warning > .panel-heading {
+    h3 {
+        color: var(--main-bg-color);
+    }
+    background-color: var(--first-yellow);
+}
+
+body.dark a, body.dark .mp-tooltip {
+    color: var(--a-color);
+}
+body.dark a.dark-theme-selector {
+    color: var(--main-color);
+}
+body.dark table a:hover {
+    color: var(--a-hover-color);
+}
+
+body.dark .btn i.glyphicon-star {
+    color: var(--first-yellow);
+}
+body.dark .btn.btn-info {
+    background-color: var(--blue-bg);
+    border-color: var(--blue-bg);
+}
+body.dark a.btn {
+    color: var(--main-color);
+}
+body.dark a.btn.btn-danger {
+    color: #fff;
+}
+body.dark a.btn.btn-default,
+body.dark a.btn.btn-add-pad {
+    color: var(--main-bg-color);
+}
+body.dark .restricted-group {
+    background-color: var(--first-yellow);
+    color: var(--third-color);
+}
+body.dark .private-group {
+    color: var(--color-on-red);
+}
+body.dark .public-group {
+    color: var(--color-on-green);
+}
+body.dark .label-default {
+    background-color: var(--gray-bg);
+}
+body.dark .small.glyphicon-remove {
+    color: var(--second-red)
+}
+body.dark .dark-theme-selector-moon {
+    display: block;
+}
+body.dark .dark-theme-selector-sun {
+    display: none;
+}

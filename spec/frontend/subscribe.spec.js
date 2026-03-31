@@ -53,7 +53,7 @@ module.exports = (function () {
   subscribe.run = function (app) {
 
     describe('subscription module testing', function () {
-      beforeAll(function (done) { subscribe.beforeAll(app, done); });
+      beforeAll(function (done) { subscribe.beforeAll(app,()=>done()); });
 
       it('should forbid subscription with no fill', function (done) {
         $el.submit.click();

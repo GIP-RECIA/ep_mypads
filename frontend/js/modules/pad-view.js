@@ -35,14 +35,14 @@ module.exports = (function () {
   var encode = require('js-base64').Base64.encode;
 
   // Local dependencies
-  var conf      = require('../configuration.js');
-  var auth      = require('../auth.js');
-  var layout    = require('./layout.js');
-  var model     = require('../model/group.js');
-  var padMark   = require('./pad-mark.js');
-  var padShare  = require('./pad-share.js');
-  var expandPad = require('../helpers/expandPad.js');
-  var ready     = require('../helpers/ready.js');
+  var conf          = require('../configuration.js');
+  var auth          = require('../auth.js');
+  var layout        = require('./layout.js');
+  var model         = require('../model/group.js');
+  var padMark       = require('./pad-mark.js');
+  var padShare      = require('./pad-share.js');
+  var expandPad     = require('../helpers/expandPad.js');
+  var ready         = require('../helpers/ready.js');
 
   var pad = {};
 
@@ -57,7 +57,8 @@ module.exports = (function () {
       pad: {},
       sendPass: m.prop(false),
       password: m.prop(''),
-      showIframe: m.prop(true)
+      showIframe: m.prop(true),
+      expandIframe: m.prop(expandPad.wantExpandedPad())
     };
 
     c.isAuth    = auth.isAuthenticated();
@@ -161,55 +162,63 @@ module.exports = (function () {
     var co = '';
     if (u) {
       if (((u.useLoginAndColorInPads || conf.SERVER.useFirstLastNameInPads) && u.color)) {
-        co = '&userColor=' + u.color;
+        co = '&userColor=' + encodeURIComponent(u.color);
       }
       if (conf.SERVER.useFirstLastNameInPads) {
         var firstname = (u.firstname) ? u.firstname : '';
         var lastname  = (u.lastname)  ? u.lastname  : '';
 
-        n = '&userName=' + firstname + ' ' + lastname;
+        n = '&userName=' + encodeURIComponent(firstname + ' ' + lastname);
       } else if (u.useLoginAndColorInPads) {
         if (u.padNickname) {
-          n = '&userName=' + u.padNickname;
+          n = '&userName=' + encodeURIComponent(u.padNickname);
         } else {
-          n = '&userName=' + u.login;
+          n = '&userName=' + encodeURIComponent(u.login);
         }
       }
     }
-    var link = conf.URLS.RAWBASE.replace('mypads/', '') + 'p/' + c.pad._id + '?' + p + a + co + n;
+    var link = conf.URLS.RAWBASE.replace('mypads/', '') + 'p/' + c.pad._id + '?' + (p + a + co + n).replace('&', '');
     return [
       m('p.text-right', [
-        m('a.btn.btn-default.expand-toggle', {
+        m('a', {
           href: '#',
-          title: conf.LANG.GROUP.PAD.EXPAND,
+          class: c.expandIframe() ? 'btn btn-default expand-toggle expanded' : 'btn btn-default expand-toggle',
+          title: c.expandIframe() ? conf.LANG.GROUP.PAD.REDUCE : conf.LANG.GROUP.PAD.EXPAND,
           onclick: function (e) {
             e.preventDefault();
-            if (expandPad.isExpanded()) {
-              expandPad.reduceIframe();
+            if (c.expandIframe()) {
+              c.expandIframe(false);
+              expandPad.setWantExpandedPadCookie(false);
             } else {
-              expandPad.expandIframe();
+              c.expandIframe(true);
+              expandPad.setWantExpandedPadCookie(true);
             }
             return true;
           }
         }, [
-          m('i.glyphicon.glyphicon-resize-full')
+          m('i', {
+            class: c.expandIframe() ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'
+          })
         ]),
         m('a.btn.btn-default.new-window', {
           href: link,
           target: '_blank',
           title: conf.LANG.GROUP.PAD.OPEN_TAB,
           onclick: function () {
-            expandPad.reduceIframe(false);
+            c.expandIframe(false);
             c.showIframe(false);
             return true;
           }
         }, [
           m('i.glyphicon.glyphicon-new-window')
         ])
-        ]),
+      ]),
       (function () {
         if (c.showIframe()) {
-          return m('iframe', { src: link });
+          return m('iframe', {
+            src: link,
+            style: c.expandIframe ? 'height: 80vh' : ''
+          });
         }
       })()
     ];

@@ -31,7 +31,7 @@
 // External dependencies
 var ld      = require('lodash');
 var cuid    = require('cuid');
-var emailjs = require('emailjs');
+var emailjsModule = import('emailjs');
 // Local dependencies
 require('./helpers.js'); // Helpers auto-init
 var conf = require('./configuration.js');
@@ -89,7 +89,7 @@ module.exports = (function () {
   * login after connection.
   */
 
-  mail.connect = function () {
+  mail.connect = async function () {
     var opts = {
       port: parseInt(conf.get('SMTPPort'), 10),
       host: conf.get('SMTPHost'),
@@ -103,9 +103,10 @@ module.exports = (function () {
       throw new TypeError('BACKEND.ERROR.TYPE.SMTP_CONFIG');
     }
     try {
-      mail.server = new emailjs.SMTPClient(opts);
+      mail.server = new (await emailjsModule).SMTPClient(opts);
     }
     catch (e) { console.error(e); }
+
   };
 
   /**
@@ -146,7 +147,12 @@ module.exports = (function () {
       subject: subject,
       text: message
     };
-    mail.server.send(envelope, callback);
+
+    try {
+      mail.server.send(envelope, callback);
+    }catch (e) {
+      console.error(e); }
+
   };
 
   /**
@@ -156,9 +162,9 @@ module.exports = (function () {
   * `SMTPHost` is defined.
   */
 
-  mail.init = function () {
+  mail.init = async function () {
     if (conf.get('SMTPHost')) {
-      mail.connect();
+      await mail.connect();
     }
   };
 

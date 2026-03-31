@@ -187,3 +187,12 @@ a.btn.btn-add-pad {
 .archived-group-view-notVisible {
   display: none;
 }
+
+a.dark-theme-selector {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.dark-theme-selector-moon {
+    display: none;
+}

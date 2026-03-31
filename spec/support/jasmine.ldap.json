@@ -1,6 +1,17 @@
 {
   "spec_dir": "spec/backend",
+  "helpers": [
+    "../helpers/**/*.?(m)js"
+  ],
   "spec_files": [
     "**/*[sS]pec.ldap.js"
-  ]
+  ],
+  "env": {
+    "stopSpecOnExpectationFailure": false,
+    "random": false,
+    "forbidDuplicateNames": true,
+    "failFast": false,
+    "oneFailurePerSpec": false,
+    "verboseDeprecations": true
+  }
 }

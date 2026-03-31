@@ -146,7 +146,7 @@ module.exports = (function () {
           if (v() !== c.currentConf[k]) { memo[k] = v; }
           return memo;
         }, {});
-        var pairs = ld.pairs(newConf);
+        var pairs = ld.toPairs(newConf);
         var _set  = function (pair) {
           m.request({
             method: 'PUT',

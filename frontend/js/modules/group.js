@@ -177,7 +177,7 @@ module.exports = (function () {
       c.sortField(field);
       var direction = c.sortAsc() ? 'asc' : 'desc';
       c.groups      = ld.transform(c.groups, function (memo, groups, type) {
-        memo[type] = ld.sortByOrder(groups, field, direction);
+        memo[type] = ld.orderBy(groups, field, direction);
       });
       sortingPreferences.updateValues({
         groupByField: c.sortField(),
@@ -552,6 +552,7 @@ module.exports = (function () {
         m('.panel-heading',
           m('h3.panel-title', conf.LANG.GROUP.ARCHIVED),
           m('button',{
+            class: 'btn',
             onclick: c.toggleArchived,
           },
           m('i.glyphicon.glyphicon-chevron-'+ (c.archivedIsVisible? 'up':'down')))

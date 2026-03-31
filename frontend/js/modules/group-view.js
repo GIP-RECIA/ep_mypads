@@ -131,7 +131,7 @@ module.exports = (function () {
       }
       c.sortField(field);
       var direction = c.sortAsc() ? 'asc' : 'desc';
-      c.pads        = ld.sortByOrder(c.pads, field, direction);
+      c.pads        = ld.orderBy(c.pads, field, direction);
       sortingPreferences.updateValues({
         padByField: c.sortField(),
         padAsc: c.sortAsc()
@@ -577,7 +577,7 @@ module.exports = (function () {
           m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
           ),
           view.pads(c)
-        ]),console.log(c),
+        ]),
         m('section.panel.panel-info.pads', [
           m('.panel-heading',
           m('h3.panel-title', adminPanelTitle)

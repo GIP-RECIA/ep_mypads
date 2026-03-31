@@ -39,10 +39,6 @@ module.exports = (function () {
    */
   expandPad.autoExpand = function(element, isInitialized) {
     if (isInitialized) { return; }
-
-    if (expandPad.wantExpandedPad()) {
-      expandPad.expandIframe();
-    }
   };
 
   /*
@@ -57,62 +53,15 @@ module.exports = (function () {
    * Check if iframe is expanded
    */
   expandPad.isExpanded = function() {
-      return ((document.querySelector('a.expand-toggle').className).indexOf('expanded') > -1);
+    return document.querySelector('a.expand-toggle').dataset.expanded;
+    //return ((document.querySelector('a.expand-toggle').className).indexOf('expanded') > -1);
   };
 
   /*
-   * Expand the iframe
+   * Set the cookie to remember the expandPad value
    */
-  expandPad.expandIframe = function() {
-    var iframe   = document.querySelector('section.pad iframe');
-    var aExpandI = document.querySelector('a.expand-toggle i');
-    var aExpand  = document.querySelector('a.expand-toggle');
-
-    if (iframe) {
-      iframe.style.height = '80vh';
-    }
-
-    if (aExpandI) {
-      aExpandI.classList.remove('glyphicon-resize-full');
-      aExpandI.classList.add('glyphicon-resize-small');
-    }
-
-    if (aExpand) {
-      aExpand.classList.add('expanded');
-      aExpand.title = conf.LANG.GROUP.PAD.REDUCE;
-    }
-
-    cookie.set('wantExpandedPad', 'true', { expires: 365, path: conf.URLS.RAWBASE });
-  };
-
-  /*
-   * Reduce the iframe
-   */
-  expandPad.reduceIframe = function(remember) {
-    if (typeof(remember) === 'undefined') {
-      remember = true;
-    }
-    var iframe   = document.querySelector('section.pad iframe');
-    var aExpandI = document.querySelector('a.expand-toggle i');
-    var aExpand  = document.querySelector('a.expand-toggle');
-
-    if (iframe) {
-      iframe.style.height = null;
-    }
-
-    if (aExpandI) {
-      aExpandI.classList.remove('glyphicon-resize-small');
-      aExpandI.classList.add('glyphicon-resize-full');
-    }
-
-    if (aExpand) {
-      aExpand.classList.remove('expanded');
-      aExpand.title = conf.LANG.GROUP.PAD.EXPAND;
-    }
-
-    if (remember) {
-      cookie.set('wantExpandedPad', 'false', { expires: 365, path: conf.URLS.RAWBASE });
-    }
+  expandPad.setWantExpandedPadCookie = function(value) {
+    cookie.set('wantExpandedPad', value.toString(), { expires: 365, path: conf.URLS.RAWBASE });
   };
 
   return expandPad;
