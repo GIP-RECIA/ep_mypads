@@ -1,6 +1,6 @@
 # Contributing
 
-Please, have a look at the [wiki](https://framagit.org/framasoft/ep_mypads/wikis/home).
+Please, have a look at the [wiki](https://framagit.org/framasoft/Etherpad/ep_mypads/wikis/home).
 
 ## Tests
 

@@ -577,7 +577,7 @@ module.exports = (function () {
           m('h3.panel-title', conf.LANG.GROUP.PAD.PADS)
           ),
           view.pads(c)
-        ]),console.log(c),
+        ]),
         m('section.panel.panel-info.pads', [
           m('.panel-heading',
           m('h3.panel-title', adminPanelTitle)

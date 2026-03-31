@@ -177,7 +177,7 @@ module.exports = (function () {
         }
       }
     }
-    var link = conf.URLS.RAWBASE.replace('mypads/', '') + 'p/' + c.pad._id + '?' + p + a + co + n;
+    var link = conf.URLS.RAWBASE.replace('mypads/', '') + 'p/' + c.pad._id + '?' + (p + a + co + n).replace('&', '');
     return [
       m('p.text-right', [
         m('a', {
@@ -212,7 +212,7 @@ module.exports = (function () {
         }, [
           m('i.glyphicon.glyphicon-new-window')
         ])
-        ]),
+      ]),
       (function () {
         if (c.showIframe()) {
           return m('iframe', {

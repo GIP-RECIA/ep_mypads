@@ -206,7 +206,7 @@ module.exports = (function () {
       // 60 days
       cookies.set('token', myPadsAuthorCookie, { expires: 60 });
     } else {
-      var browserAuthorCookie = cookies('token');
+      var browserAuthorCookie = cookies.get('token');
       if (browserAuthorCookie) {
         // 365 days
         cookies.set('token-' + resp.user.login, browserAuthorCookie, { expires: 365 });

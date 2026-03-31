@@ -22,23 +22,40 @@ services:
   - name: ghcr.io/rroemhild/docker-test-openldap
     alias: rroemhild-test-openldap
 
+### Variables
+##
+#
+variables:
+  DEBIAN_FRONTEND: noninteractive
+  VAR_SETTINGS_REG: "var settings = require('\\./spec/settings\\.js')"
+
 ### Template
 ##
 #
 .run_tests: &run_tests
   stage: test
+  before_script:
+    - if (grep -q "$VAR_SETTINGS_REG" auth.js configuration.js storage.js ||
+          ! grep -q "peerDependencies" package.json); then
+        echo -n "*** You have committed development patches. ";
+        echo "Please run \"make unpatch-for-dev\" and commit ***";
+        exit 1;
+      fi
   script:
-    - sed "/peerDependencies/,+2d" -i package.json
-    - npm install
+    - make patch-for-dev
+    - npm clean-install
+    - make patch-mithril
     - npm run frontend:build
     - git status
-    - git checkout -- package-lock.json
-    - if (git status | grep -q "nothing to commit, working tree clean"); then echo "*** You did’nt build the frontend! Aborting. Please run \"make build\" and commit ***"; exit 1; fi
+    - if (git status -- static/js/ |
+          grep -q "nothing to commit, working tree clean"); then
+        echo -n "*** You did’nt build the frontend! Aborting. ";
+        echo "Please run \"make build\" and commit ***";
+        exit 1;
+      fi
     - npm run lint
-    - sed -e "s@import settings from 'ep_etherpad-lite/node/utils/Settings'@var settings = require('./spec/settings.js')@" -i auth.js configuration.js storage.js
     - npm run test
     - npm run test-ldap
-    - sed -e "s@var settings = require('\./spec/settings\.js')@import settings from 'ep_etherpad-lite/node/utils/Settings'@" -i auth.js configuration.js storage.js
   retry: 2
 
 ### Jobs
