@@ -1,6 +1,6 @@
 {
-    "ACCOUNT_CONFIRMATION": "",
-    "ACCOUNT_CONFIRMATION_SUBJECT": "",
-    "PASSRECOVER": "",
-    "PASSRECOVER_SUBJECT": ""
+    "ACCOUNT_CONFIRMATION": "<%= login %>, subscribícheste a <%= title %>. Esta instancia de etherpad require unha confirmación por correo-e para activar a túa conta mediante o seguinte URL: <%= url %>. Este URL só será válido durante <%= duration %> minutos. Após este periodo, deberás poñerte en contacto coa administración.",
+    "ACCOUNT_CONFIRMATION_SUBJECT": "Confirmación da conta en <%= title %>",
+    "PASSRECOVER": "<%= login %>, fíxose unha solicitude de cambio de contrasinal en <%= title %> para o seu nome de usuario. Se queres confirmar este cambio de contrasinal, vai ao enderezo seguinte: <%= url %>. Se esta solicitude non é túa, simplemente ignora este correo. O enderezo deixará de ser valido en <%= duration %> minutos.",
+    "PASSRECOVER_SUBJECT": "Cambiar o contrasinal en <%= title %>"
 }
