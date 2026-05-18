@@ -14,6 +14,7 @@
     --color-on-green: #434445;
     --blue-bg: #3375A1;
     --gray-bg: #7B6C6B;
+    --bg-danger: #93453B;
 }
 body.dark, body.dark .well {
     background: var(--main-bg-color);
@@ -21,6 +22,9 @@ body.dark, body.dark .well {
 }
 body.dark .well, body.dark .form-control {
     border-color: var(--third-bg-color);
+}
+body.dark .bg-danger, body.dark a.bg-danger:hover:not(.btn) {
+    background-color: var(--bg-danger);
 }
 body.dark .well {
     i.glyphicon-exclamation-sign {
