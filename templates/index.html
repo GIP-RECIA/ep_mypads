@@ -14,7 +14,20 @@
     <%= HTMLExtraHead %>
   </head>
   <body<%= (hideHelpBlocks) ? ' class="hidehelpblocks"' : '' %>>
+    <header>
+      <extended-uportal-header
+        template-api-path="/commun/portal_template_api.tpl.json"
+        fname="MyPads"
+      >
+      </extended-uportal-header>
+    </header>
     <div id= "mypads"></div>
+    <footer>
+      <extended-uportal-footer
+        template-api-path="/commun/portal_template_api.tpl.json"
+      >
+      </extended-uportal-footer>
+    </footer>
     <script src="js/mypads.js"></script>
   </body>
 </html>

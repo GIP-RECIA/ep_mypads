@@ -511,3 +511,28 @@ $color5: lighten($nocThemeColor, 50%);
   color: #000;
   background-color: #FFCC00;
 }
+
+html {
+  font-size: unset;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--recia-header-height, 68px);
+  height: calc(100% - var(--recia-header-height, 68px));
+}
+
+#mypads {
+  flex-grow: 1;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+@media screen and (min-width: 768px) {
+  #mypads {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+}
