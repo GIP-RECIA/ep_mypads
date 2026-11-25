@@ -73,13 +73,13 @@ module.exports = (function () {
     '/': home,
     '/login': login,
     '/logout': logout,
-    '/passrecover': passRecover,
-    '/passrecover/:token': passRecover,
+    // '/passrecover': passRecover,
+    // '/passrecover/:token': passRecover,
     '/accountconfirm/:token': accountConfirm,
-    '/subscribe': subscribe,
-    '/myprofile': subscribe,
+    // '/subscribe': subscribe,
+    // '/myprofile': subscribe,
     '/mybookmarks': bookmark,
-    '/myuserlists': userlist,
+    // '/myuserlists': userlist,
     '/myuserlists/add': userlistForm,
     '/myuserlists/:key/edit': userlistForm,
     '/myuserlists/:key/remove': userlistRemove,
@@ -103,7 +103,7 @@ module.exports = (function () {
     '/admin/users/create': adminUsersCreate,
     '/admin/users/:login/edit': adminUserForm,
     '/admin/users/:login/remove': adminUserRemove,
-    '/tutorial': tutorial
+    // '/tutorial': tutorial
   };
 
   var myPadsBox = document.getElementById('mypads');

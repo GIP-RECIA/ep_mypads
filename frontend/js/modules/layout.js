@@ -62,27 +62,27 @@ module.exports = (function () {
           icon: 'star',
           txt: conf.LANG.MENU.BOOKMARK
         },
-        {
-          route: '/myuserlists',
-          icon: 'user',
-          txt: conf.LANG.MENU.USERLIST
-        },
-        {
-          route: '/myprofile',
-          icon: 'home',
-          txt: conf.LANG.MENU.PROFILE
-        },
+        // {
+        //   route: '/myuserlists',
+        //   icon: 'user',
+        //   txt: conf.LANG.MENU.USERLIST
+        // },
+        // {
+        //   route: '/myprofile',
+        //   icon: 'home',
+        //   txt: conf.LANG.MENU.PROFILE
+        // },
         // in waiting a better text
         // {
         //   route: '/tutorial',
         //   icon: 'info-sign',
         //   txt: conf.LANG.ACTIONS.HELP
         // },
-        {
-          route: '/logout',
-          icon: 'off',
-          txt: conf.LANG.MENU.LOGOUT
-        }
+        // {
+        //   route: '/logout',
+        //   icon: 'off',
+        //   txt: conf.LANG.MENU.LOGOUT
+        // }
       ],
       admin: [
         {
@@ -205,62 +205,62 @@ module.exports = (function () {
     }
     return [
       m(header, [
-        m('div.lang.container.form-inline', [
-          m('a', {
-            class: 'dark-theme-selector',
-            title: wantDarkTheme() ? 'Switch to light theme' : 'Switch to dark theme',
-            href: '#',
-            onclick: (e) => {
-              e.preventDefault();
-              let bod = document.querySelector('body.dark');
-              if (bod !== null) {
-                wantDarkTheme(false);
-                darkTheme.setWantDarkThemeCookie(false);
-                bod.classList.remove('dark');
-              } else {
-                wantDarkTheme(true);
-                darkTheme.setWantDarkThemeCookie(true);
-                document.querySelector('body').classList.add('dark');
-              }
-            }
-          }, [
-            m.trust(darkIcons.sun),
-            m.trust(darkIcons.moon)
-          ]),
-          m('select.form-control', ld.reduce(conf.SERVER.languages,
-            function (memo, val, key) {
-              var opts = {
-                onclick: conf.updateLang.bind(null, key),
-                value: key
-              };
-              if (key === conf.USERLANG) {
-                opts.selected = 'selected';
-              }
-              memo.push(m('option', opts, val));
-              return memo;
-            }, [])
-          ),
-        ]),
+        // m('div.lang.container.form-inline', [
+        //   m('a', {
+        //     class: 'dark-theme-selector',
+        //     title: wantDarkTheme() ? 'Switch to light theme' : 'Switch to dark theme',
+        //     href: '#',
+        //     onclick: (e) => {
+        //       e.preventDefault();
+        //       let bod = document.querySelector('body.dark');
+        //       if (bod !== null) {
+        //         wantDarkTheme(false);
+        //         darkTheme.setWantDarkThemeCookie(false);
+        //         bod.classList.remove('dark');
+        //       } else {
+        //         wantDarkTheme(true);
+        //         darkTheme.setWantDarkThemeCookie(true);
+        //         document.querySelector('body').classList.add('dark');
+        //       }
+        //     }
+        //   }, [
+        //     m.trust(darkIcons.sun),
+        //     m.trust(darkIcons.moon)
+        //   ]),
+        //   m('select.form-control', ld.reduce(conf.SERVER.languages,
+        //     function (memo, val, key) {
+        //       var opts = {
+        //         onclick: conf.updateLang.bind(null, key),
+        //         value: key
+        //       };
+        //       if (key === conf.USERLANG) {
+        //         opts.selected = 'selected';
+        //       }
+        //       memo.push(m('option', opts, val));
+        //       return memo;
+        //     }, [])
+        //   ),
+        // ]),
         m('div.container.ombre', [
-            m('a.link-home[href=/mypads]', [
-              m('img', {src:logo, width:'30', height:'30', class:'logo-img'}),
-              m('h1', conf.SERVER.title)
-            ]),
-          m('hr.trait', {role: 'presentation'}),
+          //   m('a.link-home[href=/mypads]', [
+          //     m('img', {src:logo, width:'30', height:'30', class:'logo-img'}),
+          //     m('h1', conf.SERVER.title)
+          //   ]),
+          // m('hr.trait', {role: 'presentation'}),
           m('nav', { class: 'menu-main' }, [
             m('ul.nav.nav-tabs', views.menuMain())
           ])
         ])
       ]),
-      m(mainC, [
+      m(mainC, { id: 'main', tabindex: -1 }, [
         m(section, { config: expandPad.autoExpand }, main || ''),
         m(asideC, aside || '')
       ]),
       m('section', { class: 'notification' }, notif.view(notif.controller())),
-      m(footer, m('p', [
-        m('span', m.trust(conf.LANG.GLOBAL.FOOTER + ' | ')),
-        m('a', { href: '/admin', config: m.route }, conf.LANG.MENU.ADMIN)
-      ]))
+      // m(footer, m('p', [
+      //   m('span', m.trust(conf.LANG.GLOBAL.FOOTER + ' | ')),
+      //   m('a', { href: '/admin', config: m.route }, conf.LANG.MENU.ADMIN)
+      // ]))
     ];
   };
 

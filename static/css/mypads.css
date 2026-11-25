@@ -8,3 +8,5 @@
 @import url('widgets/dropdown.css');
 /* Dark theme */
 @import url('dark-theme.css');
+/* Custom */
+@import url('custom.css');

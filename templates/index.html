@@ -2,19 +2,64 @@
 <!-- vim:set sw=2 ts=2 sts=2 ft=html expandtab: -->
 <html>
   <head>
-    <title>MyPads</title>
+    <title>Écriture collaborative</title>
     <meta name="viewport"     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta property="og:title" content="MyPads — Etherpad with accounts">
+    <meta property="og:title" content="Écriture collaborative">
     <meta property="og:type"  content="website">
     <meta property="og:url"   content="<%= mypadsURL %>">
     <meta property="og:image" content="<%= mypadsURL %>img/mypads_fav.ico">
     <link href="css/mypads.css"                  rel="stylesheet">
     <link href="img/mypads_fav.ico"              rel="shortcut icon">
     <link href="css/mypads-hide-help-blocks.css" rel="stylesheet">
+    <script src="/resource-server/webjars/gip-recia__ui-webcomponents/dist/r-header.js" type="module" defer></script>
+    <script src="/resource-server/webjars/gip-recia__ui-webcomponents/dist/r-page-layout.js" type="module" defer></script>
+    <script src="/resource-server/webjars/gip-recia__ui-webcomponents/dist/r-footer.js" type="module" defer></script>
     <%= HTMLExtraHead %>
   </head>
   <body<%= (hideHelpBlocks) ? ' class="hidehelpblocks"' : '' %>>
-    <div id= "mypads"></div>
+    <nav
+      role="navigation"
+      aria-label="Accès rapide"
+      class="skip-links"
+    >
+      <ul>
+        <li>
+          <a href="#main">Contenu</a>
+        </li>
+      </ul>
+    </nav>
+    <header>
+      <r-header
+        template-api-url="/commun/portal_template_api.tpl.json"
+        domain="lycees.netocentre.fr"
+        fname="MyPads"
+        navigation-drawer-visible
+      >
+      </r-header>
+    </header>
+
+    <div class="container">
+      <r-page-layout
+        back-link='{
+          "name": "Retour &agrave; l&#39;accueil",
+          "href": "https://lycees.netocentre.fr/portail",
+          "target": "_self",
+          "rel": "noopener noreferrer"
+        }'
+        page-title="Écriture collaborative"
+      >
+        <div id= "mypads"></div>
+      </r-page-layout>
+    </div>
+
+    <footer>
+      <r-footer
+        template-api-url="/commun/portal_template_api.tpl.json"
+        domain="lycees.netocentre.fr"
+      >
+      </r-footer>
+    </footer>
+
     <script src="js/mypads.js"></script>
   </body>
 </html>
